@@ -5,19 +5,23 @@ import 'DroppedFileWidget.dart';
 import 'duration_widget.dart';
 import 'model/file_DataModel.dart';
 import 'option_container.dart';
+import 'carousel_widget.dart';
+import 'home_page.dart';
 
 bool isPreviewMode = false;
 
 class CreatePoll extends StatefulWidget {
+  static const String route = '/create_poll';
   @override
   State<CreatePoll> createState() => _CreatePollState();
 }
 
 class _CreatePollState extends State<CreatePoll> {
   var children = <Widget>[];
+
   File_Data_Model? file;
-  
-  var days = [for (var i = 0; i < 24; i += 1) i];
+
+  var listDays = [for (var i = 0; i < 8; i += 1) i];
   var listHours = [for (var i = 0; i < 24; i += 1) i];
   var listMinutes = [for (var i = 0; i < 60; i += 1) i];
 
@@ -39,7 +43,6 @@ class _CreatePollState extends State<CreatePoll> {
                   child: isPreviewMode
                       ? DroppedFileWidget(
                           file: file,
-                          
                         )
                       : DropZoneWidget(
                           onDroppedFile: (file) => setState(() {
@@ -69,7 +72,7 @@ class _CreatePollState extends State<CreatePoll> {
                     contentPadding: EdgeInsets.all(10.0),
                     hintText: opText,
                     border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0))),
+                        borderRadius: BorderRadius.circular(6.0))),
               ),
             ),
           ],
@@ -89,7 +92,7 @@ class _CreatePollState extends State<CreatePoll> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 DurationWidget(
-                    'Days', _durationWidth * 0.25, height * 0.07, days),
+                    'Days', _durationWidth * 0.25, height * 0.07, listDays),
                 DurationWidget(
                     'Hours', _durationWidth * 0.25, height * 0.07, listHours),
                 DurationWidget('Minutes', _durationWidth * 0.25, height * 0.07,
@@ -108,7 +111,7 @@ class _CreatePollState extends State<CreatePoll> {
         decoration: BoxDecoration(
           color: Colors.transparent,
           borderRadius: BorderRadius.all(
-            Radius.circular(10.0),
+            Radius.circular(6.0),
           ),
         ),
         child: ElevatedButton(
@@ -118,7 +121,12 @@ class _CreatePollState extends State<CreatePoll> {
                 borderRadius: new BorderRadius.circular(20.0)),
             primary: Color(0xff092836),
           ),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => HomePage()),
+            );
+          },
         ),
       ));
     }

@@ -28,33 +28,25 @@ class _OptionContainerState extends State<OptionContainer> {
         child: Row(
           children: [
             Container(
-                width: width * 0.9,
+                width: width,
                 height: MediaQuery.of(context).size.height * 0.07,
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(6),
                     color: Colors.white),
                 child: TextField(
                   decoration: InputDecoration(
                       contentPadding: EdgeInsets.all(10.0),
-                      hintText: 'Option ' + index.toString()),
-                )),
-            Container(
-                width: width * 0.1,
-                height: MediaQuery.of(context).size.height * 0.07,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      primary: Colors.white, onPrimary: Colors.black38),
-                  child: Text(
-                    'X',
-                    style: TextStyle(fontFamily: 'Leto', fontSize: 20),
-                  ),
-                  onPressed: () {
-                    setState(() {
+                      //border: InputBorder.none,
+                      suffixIcon: IconButton(
+                        icon: Icon(Icons.delete_outlined),
+                        onPressed: () { setState(() {
                       if (_optionList.length > 2)
                         _optionList.removeAt(index - 1);
-                    });
-                  },
-                ))
+                    });},
+                      ),
+                      hintText: 'Option ' + index.toString()),
+                )),
+            
           ],
         )));
   }

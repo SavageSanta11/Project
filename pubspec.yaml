@@ -30,6 +30,9 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_dropzone: ^2.0.1
   image_picker: ^0.8.3+1
+  carousel_slider: ^4.0.0
+  polls: ^1.0.1
+  google_fonts: ^2.1.0
 
 dev_dependencies:
   flutter_test:
@@ -49,7 +52,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
      - assets/images/ic_megaphone_24.png
-  #   - images/a_dot_ham.jpeg
+     - assets/images/tiger.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

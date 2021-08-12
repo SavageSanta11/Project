@@ -19,6 +19,7 @@ class DroppedFileWidget extends StatefulWidget {
 class _DroppedFileWidgetState extends State<DroppedFileWidget> {
 
   File_Data_Model? file;
+  String previewImgUrl = "https://files.worldwildlife.org/wwfcmsprod/images/Tiger_resting_Bandhavgarh_National_Park_India/hero_small/6aofsvaglm_Medium_WW226365.jpg";
   
   @override
   Widget build(BuildContext context) {
@@ -40,7 +41,7 @@ class _DroppedFileWidgetState extends State<DroppedFileWidget> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Image.network(
-                      widget.file!.url,
+                      previewImgUrl,
                       width: kIsWeb
                           ? MediaQuery.of(context).size.width * 0.4
                           : MediaQuery.of(context).size.width * 0.8,
