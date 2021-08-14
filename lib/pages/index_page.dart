@@ -1,8 +1,33 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'create_poll.dart';
+import 'package:http/http.dart' as http;
+
+Future<void> registerUser(String emailId) async {
+  var headers = {'Content-Type': 'application/json'};
+
+  String email = json.encode(<String, String>{
+    "email": emailId,
+  });
+
+  http.Response response = await http.post(
+      Uri.parse('http://164.52.212.151:3012/api/access/account/register'),
+      headers: headers,
+      body: email);
+
+  var convertDataToJson = json.decode(response.body);
+
+  if (response.statusCode == 200) {
+    print(convertDataToJson["success"]);
+  } else {
+    print(response.reasonPhrase);
+  }
+}
 
 class Home extends StatelessWidget {
-  
+  static const String route = '/IndexPage';
+
   @override
   Widget build(BuildContext context) {
     Container _buildImageSection(double width, double height) {
@@ -44,7 +69,6 @@ class Home extends StatelessWidget {
           color: Colors.black,
           borderRadius: BorderRadius.all(Radius.circular(radius)),
         ),
-        
       ));
     }
 
@@ -77,14 +101,8 @@ class Home extends StatelessWidget {
                   fontFamily: 'Leto'),
             ),
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) {
-                    return CreatePoll();
-                  },
-                ),
-              );
+              Navigator.of(context).pushNamed(CreatePoll.route);
+              registerUser("kano@gmail.com");
             }),
       )));
     }

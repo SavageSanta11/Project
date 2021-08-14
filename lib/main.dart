@@ -3,9 +3,15 @@
 // found in the LICENSE file.
 
 import 'package:flutter/material.dart';
-import 'index_page.dart';
+import 'package:project/pages/create_poll.dart';
+import 'pages/index_page.dart';
+import 'package:url_strategy/url_strategy.dart';
+import 'pages/home_page.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  setPathUrlStrategy();
+  runApp(MyApp());
+}
 
 enum DeviceType { Phone, Tablet }
 
@@ -13,9 +19,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        //use MaterialApp() widget like this
-        home: Home() //create new widget class for this 'home' to
-        // escape 'No MediaQuery widget found' error
-        );
+      initialRoute: Home.route,
+      //use MaterialApp() widget like this
+       //create new widget class for this 'home' to
+      // escape 'No MediaQuery widget found' error
+      routes: {
+        Home.route: (context) => Home(),
+        CreatePoll.route: (context) => CreatePoll(),
+        HomePage.route: (context) => HomePage()
+      },
+    );
   }
 }

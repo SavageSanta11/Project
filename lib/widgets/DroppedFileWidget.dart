@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'model/file_DataModel.dart';
+import '../model/file_DataModel.dart';
 import 'package:flutter/foundation.dart';
-import 'create_poll.dart';
+import '../pages/create_poll.dart';
 import 'DropZoneWidget.dart';
 
 class DroppedFileWidget extends StatefulWidget {

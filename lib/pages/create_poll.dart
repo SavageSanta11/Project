@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:project/DropZoneWidget.dart';
+import 'package:project/widgets/DropZoneWidget.dart';
 
-import 'DroppedFileWidget.dart';
-import 'duration_widget.dart';
-import 'model/file_DataModel.dart';
-import 'option_container.dart';
-import 'carousel_widget.dart';
+import '../widgets/DroppedFileWidget.dart';
+import '../widgets/duration_widget.dart';
+import '../model/file_DataModel.dart';
+import '../widgets/option_container.dart';
 import 'home_page.dart';
 
 bool isPreviewMode = false;
 
 class CreatePoll extends StatefulWidget {
-  static const String route = '/create_poll';
+  static const String route = 'CreatePoll';
   @override
   State<CreatePoll> createState() => _CreatePollState();
 }
@@ -122,10 +121,7 @@ class _CreatePollState extends State<CreatePoll> {
             primary: Color(0xff092836),
           ),
           onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => HomePage()),
-            );
+            Navigator.of(context).pushNamed(HomePage.route);
           },
         ),
       ));

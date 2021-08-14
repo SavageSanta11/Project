@@ -1,3 +1,4 @@
+// ignore: camel_case_types
 class File_Data_Model{
   final String name;
   final String mime;
