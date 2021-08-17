@@ -67,10 +67,10 @@ class Polls extends StatefulWidget {
     this.allowCreatorVote = false,
     this.onVote,
     this.outlineColor = Colors.grey,
-    this.backgroundColor = Colors.blueGrey,
+    this.backgroundColor = Colors.white,
     this.onVoteBackgroundColor = Colors.blue,
     this.iconColor = Colors.black,
-    this.leadingBackgroundColor = Colors.blueGrey,
+    this.leadingBackgroundColor = Colors.white,
   })  : highest = null,
         getHighest = null,
         getTotal = null,
@@ -101,7 +101,7 @@ class Polls extends StatefulWidget {
       this.userChoice,
       this.backgroundColor = Colors.blue,
       this.leadingBackgroundColor = Colors.blueAccent,
-      this.onVoteBackgroundColor ,
+      this.onVoteBackgroundColor,
       this.iconColor = Colors.black})
       : allowCreatorVote = false,
         getTotal = null,
@@ -124,7 +124,7 @@ class Polls extends StatefulWidget {
       required this.question,
       this.backgroundColor = Colors.blue,
       this.leadingBackgroundColor = Colors.blueAccent,
-      this.onVoteBackgroundColor = Colors.blueGrey,
+      this.onVoteBackgroundColor = Colors.white,
       this.allowCreatorVote = false})
       : viewType = PollsType.creator,
         onVote = null,
@@ -149,7 +149,7 @@ class Polls extends StatefulWidget {
     required this.onVote,
     this.allowCreatorVote = false,
     this.outlineColor = Colors.blue,
-    this.backgroundColor = Colors.blueGrey,
+    this.backgroundColor = Colors.white,
   })  : viewType = PollsType.voter,
         userChoice = null,
         highest = null,
@@ -396,14 +396,14 @@ class _PollsState extends State<Polls> {
             children: [
               Container(
                 width: double.infinity,
-                padding: EdgeInsets.only(bottom: 10),
+                padding: EdgeInsets.only(bottom: 17),
                 child: Container(
                   margin: EdgeInsets.all(0),
                   width: MediaQuery.of(context).size.width,
                   padding: EdgeInsets.all(0),
-                  height: 35,
+                  height: 40,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(6),
+                    borderRadius: BorderRadius.circular(2),
                     color: widget.backgroundColor,
                   ),
                   // ignore: deprecated_member_use
@@ -419,11 +419,13 @@ class _PollsState extends State<Polls> {
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Padding(
-                        padding: EdgeInsets.fromLTRB(16, 0,0,0),
+                        padding: EdgeInsets.fromLTRB(16, 0, 0, 0),
                         child: Text(this.c1,
-                        
                             style: GoogleFonts.lato(
-                                fontSize: 14.0, color: Colors.black,fontWeight: FontWeight.bold, )),
+                              fontSize: 14.0,
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                            )),
                       ),
                     ),
                     borderSide: BorderSide(
@@ -437,14 +439,14 @@ class _PollsState extends State<Polls> {
               ),
               Container(
                 width: double.infinity,
-                padding: EdgeInsets.only(bottom: 10),
+                padding: EdgeInsets.only(bottom: 17),
                 child: Container(
                   margin: EdgeInsets.all(0),
                   padding: EdgeInsets.all(0),
-                  height: 35,
+                  height: 40,
                   width: MediaQuery.of(context).size.width,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(6),
+                    borderRadius: BorderRadius.circular(2),
                     color: widget.backgroundColor,
                   ),
                   // ignore: deprecated_member_use
@@ -458,12 +460,14 @@ class _PollsState extends State<Polls> {
                     color: Colors.green,
                     padding: EdgeInsets.all(5.0),
                     child: Align(
-                       alignment: Alignment.centerLeft,
+                      alignment: Alignment.centerLeft,
                       child: Padding(
-                        padding: EdgeInsets.fromLTRB(16, 0,0,0),
+                        padding: EdgeInsets.fromLTRB(16, 0, 0, 0),
                         child: Text(this.c2,
                             style: GoogleFonts.lato(
-                                fontSize: 14.0, color: Colors.black,fontWeight: FontWeight.bold)),
+                                fontSize: 14.0,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold)),
                       ),
                     ),
                     borderSide: BorderSide(
@@ -478,14 +482,14 @@ class _PollsState extends State<Polls> {
               this.c3 != null
                   ? Container(
                       width: double.infinity,
-                      padding: EdgeInsets.only(bottom: 10),
+                      padding: EdgeInsets.only(bottom: 17),
                       child: Container(
                         margin: EdgeInsets.all(0),
                         padding: EdgeInsets.all(0),
-                        height: 35,
+                        height: 40,
                         width: MediaQuery.of(context).size.width,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(6),
+                          borderRadius: BorderRadius.circular(2),
                           color: widget.backgroundColor,
                         ),
                         // ignore: deprecated_member_use
@@ -499,12 +503,14 @@ class _PollsState extends State<Polls> {
                           color: Colors.green,
                           padding: EdgeInsets.all(5.0),
                           child: Align(
-                             alignment: Alignment.centerLeft,
+                            alignment: Alignment.centerLeft,
                             child: Padding(
-                              padding: EdgeInsets.fromLTRB(16, 0,0,0),
+                              padding: EdgeInsets.fromLTRB(16, 0, 0, 0),
                               child: Text(this.c3 ?? '',
                                   style: GoogleFonts.lato(
-                                      fontSize: 14.0, color: Colors.black,fontWeight: FontWeight.bold)),
+                                      fontSize: 14.0,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold)),
                             ),
                           ),
                           borderSide: BorderSide(
@@ -520,14 +526,14 @@ class _PollsState extends State<Polls> {
               this.c4 != null
                   ? Container(
                       width: double.infinity,
-                      padding: EdgeInsets.only(bottom: 10),
+                      padding: EdgeInsets.only(bottom: 17),
                       child: Container(
                         margin: EdgeInsets.all(0),
                         padding: EdgeInsets.all(0),
-                        height: 35,
+                        height: 40,
                         width: MediaQuery.of(context).size.width,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(6),
+                          borderRadius: BorderRadius.circular(2),
                           color: widget.backgroundColor,
                         ),
                         // ignore: deprecated_member_use
@@ -543,10 +549,12 @@ class _PollsState extends State<Polls> {
                           child: Align(
                             alignment: Alignment.centerLeft,
                             child: Padding(
-                              padding: EdgeInsets.fromLTRB(16, 0,0,0),
+                              padding: EdgeInsets.fromLTRB(16, 0, 0, 0),
                               child: Text(this.c4 ?? '',
                                   style: GoogleFonts.lato(
-                                      fontSize: 14.0, color: Colors.black,fontWeight: FontWeight.bold)),
+                                      fontSize: 14.0,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold)),
                             ),
                           ),
                           borderSide: BorderSide(
@@ -562,14 +570,14 @@ class _PollsState extends State<Polls> {
               this.c5 != null
                   ? Container(
                       width: double.infinity,
-                      padding: EdgeInsets.only(bottom: 10),
+                      padding: EdgeInsets.only(bottom: 17),
                       child: Container(
                         margin: EdgeInsets.all(0),
                         padding: EdgeInsets.all(0),
-                        height: 35,
+                        height: 40,
                         width: MediaQuery.of(context).size.width,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(6),
+                          borderRadius: BorderRadius.circular(2),
                           color: widget.backgroundColor,
                         ),
                         // ignore: deprecated_member_use
@@ -583,12 +591,14 @@ class _PollsState extends State<Polls> {
                           color: Colors.green,
                           padding: EdgeInsets.all(5.0),
                           child: Align(
-                             alignment: Alignment.centerLeft,
+                            alignment: Alignment.centerLeft,
                             child: Padding(
-                             padding: EdgeInsets.fromLTRB(16, 0,0,0),
+                              padding: EdgeInsets.fromLTRB(16, 0, 0, 0),
                               child: Text(this.c5 ?? '',
                                   style: GoogleFonts.lato(
-                                      fontSize: 14.0, color: Colors.black,fontWeight: FontWeight.bold)),
+                                      fontSize: 14.0,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold)),
                             ),
                           ),
                           borderSide: BorderSide(
@@ -604,14 +614,14 @@ class _PollsState extends State<Polls> {
               this.c6 != null
                   ? Container(
                       width: double.infinity,
-                      padding: EdgeInsets.only(bottom: 10),
+                      padding: EdgeInsets.only(bottom: 17),
                       child: Container(
                         margin: EdgeInsets.all(0),
                         padding: EdgeInsets.all(0),
-                        height: 35,
+                        height: 40,
                         width: MediaQuery.of(context).size.width,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(6),
+                          borderRadius: BorderRadius.circular(2),
                           color: widget.backgroundColor,
                         ),
                         // ignore: deprecated_member_use
@@ -627,10 +637,12 @@ class _PollsState extends State<Polls> {
                           child: Align(
                             alignment: Alignment.centerLeft,
                             child: Padding(
-                              padding: EdgeInsets.fromLTRB(16, 0,0,0),
+                              padding: EdgeInsets.fromLTRB(16, 0, 0, 0),
                               child: Text(this.c6 ?? '',
                                   style: GoogleFonts.lato(
-                                      fontSize: 14.0, color: Colors.black,fontWeight: FontWeight.bold)),
+                                      fontSize: 14.0,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold)),
                             ),
                           ),
                           borderSide: BorderSide(
@@ -646,14 +658,14 @@ class _PollsState extends State<Polls> {
               this.c7 != null
                   ? Container(
                       width: double.infinity,
-                      padding: EdgeInsets.only(bottom: 10),
+                      padding: EdgeInsets.only(bottom: 17),
                       child: Container(
                         margin: EdgeInsets.all(0),
                         padding: EdgeInsets.all(0),
-                        height: 35,
+                        height: 40,
                         width: MediaQuery.of(context).size.width,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(6),
+                          borderRadius: BorderRadius.circular(2),
                           color: widget.backgroundColor,
                         ),
                         // ignore: deprecated_member_use
@@ -667,12 +679,14 @@ class _PollsState extends State<Polls> {
                           color: Colors.green,
                           padding: EdgeInsets.all(5.0),
                           child: Align(
-                             alignment: Alignment.centerLeft,
+                            alignment: Alignment.centerLeft,
                             child: Padding(
-                              padding: EdgeInsets.fromLTRB(16, 0,0,0),
+                              padding: EdgeInsets.fromLTRB(16, 0, 0, 0),
                               child: Text(this.c7 ?? '',
                                   style: GoogleFonts.lato(
-                                      fontSize: 14.0, color: Colors.black,fontWeight: FontWeight.bold)),
+                                      fontSize: 14.0,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold)),
                             ),
                           ),
                           borderSide: BorderSide(
@@ -688,14 +702,14 @@ class _PollsState extends State<Polls> {
               this.c8 != null
                   ? Container(
                       width: double.infinity,
-                      padding: EdgeInsets.only(bottom: 10),
+                      padding: EdgeInsets.only(bottom: 17),
                       child: Container(
                         margin: EdgeInsets.all(0),
                         padding: EdgeInsets.all(0),
-                        height: 35,
+                        height: 40,
                         width: MediaQuery.of(context).size.width,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(6),
+                          borderRadius: BorderRadius.circular(2),
                           color: widget.backgroundColor,
                         ),
                         // ignore: deprecated_member_use
@@ -709,12 +723,14 @@ class _PollsState extends State<Polls> {
                           color: Colors.green,
                           padding: EdgeInsets.all(5.0),
                           child: Align(
-                             alignment: Alignment.centerLeft,
+                            alignment: Alignment.centerLeft,
                             child: Padding(
-                             padding: EdgeInsets.fromLTRB(16, 0,0,0),
+                              padding: EdgeInsets.fromLTRB(16, 0, 0, 0),
                               child: Text(this.c8 ?? '',
                                   style: GoogleFonts.lato(
-                                      fontSize: 14.0, color: Colors.black,fontWeight: FontWeight.bold)),
+                                      fontSize: 14.0,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold)),
                             ),
                           ),
                           borderSide: BorderSide(
@@ -773,6 +789,7 @@ class _PollsState extends State<Polls> {
           margin: EdgeInsets.all(0),
           width: double.infinity,
           child: LinearPercentIndicator(
+              backgroundColor: Color(0xffedf0f3),
               animation: true,
               lineHeight: 43.0,
               animationDuration: 500,
@@ -788,7 +805,9 @@ class _PollsState extends State<Polls> {
                         padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
                         child: Text(this.c1,
                             style: GoogleFonts.lato(
-                                fontSize: 14.0, color: Colors.black,fontWeight: FontWeight.bold)),
+                                fontSize: 14.0,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold)),
                       ),
                       SizedBox(
                         width: 10,
@@ -803,7 +822,9 @@ class _PollsState extends State<Polls> {
                                 .toString() +
                             "%",
                         style: GoogleFonts.lato(
-                            fontSize: 14.0, color: Colors.black,fontWeight: FontWeight.bold)),
+                            fontSize: 14.0,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold)),
                   )
                 ],
               ),
@@ -817,7 +838,7 @@ class _PollsState extends State<Polls> {
           width: double.infinity,
           child: LinearPercentIndicator(
 //              width: MediaQuery.of(context).size.width,
-
+              backgroundColor: Color(0xffedf0f3),
               animation: true,
               lineHeight: 43.0,
               animationDuration: 500,
@@ -833,7 +854,9 @@ class _PollsState extends State<Polls> {
                         padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
                         child: Text(this.c2,
                             style: GoogleFonts.lato(
-                                fontSize: 14.0, color: Colors.black,fontWeight: FontWeight.bold)),
+                                fontSize: 14.0,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold)),
                       ),
                       SizedBox(
                         width: 10,
@@ -848,7 +871,9 @@ class _PollsState extends State<Polls> {
                                 .toString() +
                             "%",
                         style: GoogleFonts.lato(
-                            fontSize: 14.0, color: Colors.black,fontWeight: FontWeight.bold)),
+                            fontSize: 14.0,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold)),
                   )
                 ],
               ),
@@ -862,6 +887,7 @@ class _PollsState extends State<Polls> {
                 margin: EdgeInsets.all(0),
                 width: double.infinity,
                 child: LinearPercentIndicator(
+                    backgroundColor: Color(0xffedf0f3),
 //              width: MediaQuery.of(context).size.width,
 
                     animation: true,
@@ -879,7 +905,9 @@ class _PollsState extends State<Polls> {
                               padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
                               child: Text(this.c3 ?? '',
                                   style: GoogleFonts.lato(
-                                      fontSize: 14.0, color: Colors.black,fontWeight: FontWeight.bold)),
+                                      fontSize: 14.0,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold)),
                             ),
                             SizedBox(
                               width: 10,
@@ -902,7 +930,9 @@ class _PollsState extends State<Polls> {
                                       .toString() +
                                   "%",
                               style: GoogleFonts.lato(
-                                  fontSize: 14.0, color: Colors.black,fontWeight: FontWeight.bold)),
+                                  fontSize: 14.0,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold)),
                         )
                       ],
                     ),
@@ -917,6 +947,7 @@ class _PollsState extends State<Polls> {
                 margin: EdgeInsets.all(0),
                 width: double.infinity,
                 child: LinearPercentIndicator(
+                    backgroundColor: Color(0xffedf0f3),
                     animation: true,
                     lineHeight: 43.0,
                     animationDuration: 500,
@@ -932,7 +963,9 @@ class _PollsState extends State<Polls> {
                               padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
                               child: Text(this.c4.toString(),
                                   style: GoogleFonts.lato(
-                                      fontSize: 14.0, color: Colors.black,fontWeight: FontWeight.bold)),
+                                      fontSize: 14.0,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold)),
                             ),
                             SizedBox(
                               width: 10,
@@ -955,7 +988,9 @@ class _PollsState extends State<Polls> {
                                       .toString() +
                                   "%",
                               style: GoogleFonts.lato(
-                                  fontSize: 14.0, color: Colors.black,fontWeight: FontWeight.bold)),
+                                  fontSize: 14.0,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold)),
                         )
                       ],
                     ),
@@ -970,6 +1005,7 @@ class _PollsState extends State<Polls> {
                 margin: EdgeInsets.all(0),
                 width: double.infinity,
                 child: LinearPercentIndicator(
+                    backgroundColor: Color(0xffedf0f3),
                     animation: true,
                     lineHeight: 43.0,
                     animationDuration: 500,
@@ -985,7 +1021,9 @@ class _PollsState extends State<Polls> {
                               padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
                               child: Text(this.c5.toString(),
                                   style: GoogleFonts.lato(
-                                      fontSize: 14.0, color: Colors.black,fontWeight: FontWeight.bold)),
+                                      fontSize: 14.0,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold)),
                             ),
                             SizedBox(
                               width: 10,
@@ -1008,7 +1046,9 @@ class _PollsState extends State<Polls> {
                                       .toString() +
                                   "%",
                               style: GoogleFonts.lato(
-                                  fontSize: 14.0, color: Colors.black,fontWeight: FontWeight.bold)),
+                                  fontSize: 14.0,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold)),
                         )
                       ],
                     ),
@@ -1023,6 +1063,7 @@ class _PollsState extends State<Polls> {
                 margin: EdgeInsets.all(0),
                 width: double.infinity,
                 child: LinearPercentIndicator(
+                    backgroundColor: Color(0xffedf0f3),
                     animation: true,
                     lineHeight: 43.0,
                     animationDuration: 500,
@@ -1038,7 +1079,9 @@ class _PollsState extends State<Polls> {
                               padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
                               child: Text(this.c6.toString(),
                                   style: GoogleFonts.lato(
-                                      fontSize: 14.0, color: Colors.black,fontWeight: FontWeight.bold)),
+                                      fontSize: 14.0,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold)),
                             ),
                             SizedBox(
                               width: 10,
@@ -1061,7 +1104,9 @@ class _PollsState extends State<Polls> {
                                       .toString() +
                                   "%",
                               style: GoogleFonts.lato(
-                                  fontSize: 14.0, color: Colors.black,fontWeight: FontWeight.bold)),
+                                  fontSize: 14.0,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold)),
                         )
                       ],
                     ),
@@ -1076,6 +1121,7 @@ class _PollsState extends State<Polls> {
                 margin: EdgeInsets.all(0),
                 width: double.infinity,
                 child: LinearPercentIndicator(
+                    backgroundColor: Color(0xffedf0f3),
                     animation: true,
                     lineHeight: 43.0,
                     animationDuration: 500,
@@ -1091,7 +1137,9 @@ class _PollsState extends State<Polls> {
                               padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
                               child: Text(this.c7.toString(),
                                   style: GoogleFonts.lato(
-                                      fontSize: 14.0, color: Colors.black,fontWeight: FontWeight.bold)),
+                                      fontSize: 14.0,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold)),
                             ),
                             SizedBox(
                               width: 10,
@@ -1114,7 +1162,9 @@ class _PollsState extends State<Polls> {
                                       .toString() +
                                   "%",
                               style: GoogleFonts.lato(
-                                  fontSize: 14.0, color: Colors.black,fontWeight: FontWeight.bold)),
+                                  fontSize: 14.0,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold)),
                         )
                       ],
                     ),
@@ -1129,6 +1179,7 @@ class _PollsState extends State<Polls> {
                 margin: EdgeInsets.all(0),
                 width: double.infinity,
                 child: LinearPercentIndicator(
+                    backgroundColor: Color(0xffedf0f3),
                     animation: true,
                     lineHeight: 43.0,
                     animationDuration: 500,
@@ -1144,7 +1195,9 @@ class _PollsState extends State<Polls> {
                               padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
                               child: Text(this.c8.toString(),
                                   style: GoogleFonts.lato(
-                                      fontSize: 14.0, color: Colors.black,fontWeight: FontWeight.bold)),
+                                      fontSize: 14.0,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold)),
                             ),
                             SizedBox(
                               width: 10,
@@ -1167,7 +1220,9 @@ class _PollsState extends State<Polls> {
                                       .toString() +
                                   "%",
                               style: GoogleFonts.lato(
-                                  fontSize: 14.0, color: Colors.black,fontWeight: FontWeight.bold)),
+                                  fontSize: 14.0,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold)),
                         )
                       ],
                     ),
@@ -1221,9 +1276,11 @@ class _PollsState extends State<Polls> {
           height: 12,
         ),
         Container(
-          margin: EdgeInsets.fromLTRB(3, 3, 10, 3),
+          margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
           width: double.infinity,
           child: LinearPercentIndicator(
+            
+            backgroundColor: Color(0xffedf0f3),
             animation: true,
             lineHeight: 43.0,
             animationDuration: 500,
@@ -1239,7 +1296,9 @@ class _PollsState extends State<Polls> {
                       padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
                       child: Text(this.c1.toString(),
                           style: GoogleFonts.lato(
-                              fontSize: 14.0, color: Colors.black,fontWeight: FontWeight.bold)),
+                              fontSize: 14.0,
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold)),
                     ),
                     SizedBox(
                       width: 10,
@@ -1255,7 +1314,9 @@ class _PollsState extends State<Polls> {
                               .toString() +
                           "%",
                       style: GoogleFonts.lato(
-                          fontSize: 14.0, color: Colors.black,fontWeight: FontWeight.bold)),
+                          fontSize: 14.0,
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold)),
                 )
               ],
             ),
@@ -1266,9 +1327,10 @@ class _PollsState extends State<Polls> {
           ),
         ),
         Container(
-          margin: EdgeInsets.fromLTRB(3, 3, 10, 3),
+          margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
           width: double.infinity,
           child: LinearPercentIndicator(
+            backgroundColor: Color(0xffedf0f3),
 //              width: MediaQuery.of(context).size.width,
             animation: true,
             lineHeight: 43.0,
@@ -1285,7 +1347,9 @@ class _PollsState extends State<Polls> {
                       padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
                       child: Text(this.c2.toString(),
                           style: GoogleFonts.lato(
-                              fontSize: 14.0, color: Colors.black,fontWeight: FontWeight.bold)),
+                              fontSize: 14.0,
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold)),
                     ),
                     SizedBox(
                       width: 10,
@@ -1301,7 +1365,9 @@ class _PollsState extends State<Polls> {
                               .toString() +
                           "%",
                       style: GoogleFonts.lato(
-                          fontSize: 14.0, color: Colors.black,fontWeight: FontWeight.bold)),
+                          fontSize: 14.0,
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold)),
                 )
               ],
             ),
@@ -1314,9 +1380,10 @@ class _PollsState extends State<Polls> {
         this.c3 == null
             ? Offstage()
             : Container(
-                margin: EdgeInsets.fromLTRB(3, 3, 10, 3),
+                margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
                 width: double.infinity,
                 child: LinearPercentIndicator(
+                  backgroundColor: Color(0xffedf0f3),
 //              width: MediaQuery.of(context).size.width,
                   animation: true,
                   lineHeight: 43.0,
@@ -1333,7 +1400,9 @@ class _PollsState extends State<Polls> {
                             padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
                             child: Text(this.c3.toString(),
                                 style: GoogleFonts.lato(
-                                    fontSize: 14.0, color: Colors.black,fontWeight: FontWeight.bold)),
+                                    fontSize: 14.0,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold)),
                           ),
                           SizedBox(
                             width: 10,
@@ -1357,7 +1426,9 @@ class _PollsState extends State<Polls> {
                                     .toString() +
                                 "%",
                             style: GoogleFonts.lato(
-                                fontSize: 14.0, color: Colors.black,fontWeight: FontWeight.bold)),
+                                fontSize: 14.0,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold)),
                       )
                     ],
                   ),
@@ -1370,9 +1441,10 @@ class _PollsState extends State<Polls> {
         this.c4 == null
             ? Offstage()
             : Container(
-                margin: EdgeInsets.fromLTRB(3, 3, 10, 3),
+                margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
                 width: double.infinity,
                 child: LinearPercentIndicator(
+                  backgroundColor: Color(0xffedf0f3),
 //              width: MediaQuery.of(context).size.width,
                   animation: true,
                   lineHeight: 43.0,
@@ -1389,7 +1461,9 @@ class _PollsState extends State<Polls> {
                             padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
                             child: Text(this.c4.toString(),
                                 style: GoogleFonts.lato(
-                                    fontSize: 14.0, color: Colors.black,fontWeight: FontWeight.bold)),
+                                    fontSize: 14.0,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold)),
                           ),
                           SizedBox(
                             width: 10,
@@ -1413,7 +1487,9 @@ class _PollsState extends State<Polls> {
                                     .toString() +
                                 "%",
                             style: GoogleFonts.lato(
-                                fontSize: 14.0, color: Colors.black,fontWeight: FontWeight.bold)),
+                                fontSize: 14.0,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold)),
                       )
                     ],
                   ),
@@ -1426,9 +1502,10 @@ class _PollsState extends State<Polls> {
         this.c5 == null
             ? Offstage()
             : Container(
-                margin: EdgeInsets.fromLTRB(3, 3, 10, 3),
+                margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
                 width: double.infinity,
                 child: LinearPercentIndicator(
+                  backgroundColor: Color(0xffedf0f3),
 //              width: MediaQuery.of(context).size.width,
                   animation: true,
                   lineHeight: 43.0,
@@ -1445,7 +1522,9 @@ class _PollsState extends State<Polls> {
                             padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
                             child: Text(this.c5.toString(),
                                 style: GoogleFonts.lato(
-                                    fontSize: 14.0, color: Colors.black,fontWeight: FontWeight.bold)),
+                                    fontSize: 14.0,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold)),
                           ),
                           SizedBox(
                             width: 10,
@@ -1469,7 +1548,9 @@ class _PollsState extends State<Polls> {
                                     .toString() +
                                 "%",
                             style: GoogleFonts.lato(
-                                fontSize: 14.0, color: Colors.black,fontWeight: FontWeight.bold)),
+                                fontSize: 14.0,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold)),
                       )
                     ],
                   ),
@@ -1482,9 +1563,10 @@ class _PollsState extends State<Polls> {
         this.c6 == null
             ? Offstage()
             : Container(
-                margin: EdgeInsets.fromLTRB(3, 3, 10, 3),
+                margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
                 width: double.infinity,
                 child: LinearPercentIndicator(
+                  backgroundColor: Color(0xffedf0f3),
 //              width: MediaQuery.of(context).size.width,
                   animation: true,
                   lineHeight: 43.0,
@@ -1501,7 +1583,9 @@ class _PollsState extends State<Polls> {
                             padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
                             child: Text(this.c6.toString(),
                                 style: GoogleFonts.lato(
-                                    fontSize: 14.0, color: Colors.black,fontWeight: FontWeight.bold)),
+                                    fontSize: 14.0,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold)),
                           ),
                           SizedBox(
                             width: 10,
@@ -1525,7 +1609,9 @@ class _PollsState extends State<Polls> {
                                     .toString() +
                                 "%",
                             style: GoogleFonts.lato(
-                                fontSize: 14.0, color: Colors.black,fontWeight: FontWeight.bold)),
+                                fontSize: 14.0,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold)),
                       )
                     ],
                   ),
@@ -1538,11 +1624,13 @@ class _PollsState extends State<Polls> {
         this.c7 == null
             ? Offstage()
             : Container(
-                margin: EdgeInsets.fromLTRB(3, 3, 10, 3),
+                margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
                 width: double.infinity,
                 child: LinearPercentIndicator(
+                  backgroundColor: Color(0xffedf0f3),
 //              width: MediaQuery.of(context).size.width,
                   animation: true,
+                  
                   lineHeight: 43.0,
                   animationDuration: 500,
                   percent: PollMath.getPerc(this.v1, this.v2, this.v3, this.v4,
@@ -1557,7 +1645,9 @@ class _PollsState extends State<Polls> {
                             padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
                             child: Text(this.c7.toString(),
                                 style: GoogleFonts.lato(
-                                    fontSize: 14.0, color: Colors.black,fontWeight: FontWeight.bold)),
+                                    fontSize: 14.0,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold)),
                           ),
                           SizedBox(
                             width: 10,
@@ -1581,7 +1671,9 @@ class _PollsState extends State<Polls> {
                                     .toString() +
                                 "%",
                             style: GoogleFonts.lato(
-                                fontSize: 14.0, color: Colors.black,fontWeight: FontWeight.bold)),
+                                fontSize: 14.0,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold)),
                       )
                     ],
                   ),
@@ -1594,9 +1686,10 @@ class _PollsState extends State<Polls> {
         this.c8 == null
             ? Offstage()
             : Container(
-                margin: EdgeInsets.fromLTRB(3, 3, 10, 3),
+                margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
                 width: double.infinity,
                 child: LinearPercentIndicator(
+                  backgroundColor: Color(0xffedf0f3),
 //              width: MediaQuery.of(context).size.width,
                   animation: true,
                   lineHeight: 43.0,
@@ -1613,7 +1706,9 @@ class _PollsState extends State<Polls> {
                             padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
                             child: Text(this.c8.toString(),
                                 style: GoogleFonts.lato(
-                                    fontSize: 14.0, color: Colors.black,fontWeight: FontWeight.bold)),
+                                    fontSize: 14.0,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold)),
                           ),
                           SizedBox(
                             width: 10,
@@ -1637,7 +1732,9 @@ class _PollsState extends State<Polls> {
                                     .toString() +
                                 "%",
                             style: GoogleFonts.lato(
-                                fontSize: 14.0, color: Colors.black,fontWeight: FontWeight.bold)),
+                                fontSize: 14.0,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold)),
                       )
                     ],
                   ),
@@ -1654,11 +1751,7 @@ class _PollsState extends State<Polls> {
   /// simple logic to detect users choice and return a check icon
   Widget myOwnChoice(choice) {
     if (choice) {
-      return Icon(
-        Icons.check_circle_outline,
-        color: Colors.white,
-        size: 17,
-      );
+      return Container();
     } else {
       return Container();
     }

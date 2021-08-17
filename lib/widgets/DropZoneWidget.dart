@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import '../model/file_DataModel.dart';
@@ -7,10 +8,12 @@ import 'package:flutter_dropzone/flutter_dropzone.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
+import 'preview_widget.dart';
 
 const Color buttoncolor = Color(0xff102c34);
 String previewImgUrl = "";
 bool isPreviewmode = false;
+bool isPreviewImgUrl = false;
 
 GlobalKey<_DropZoneWidgetState> widgetKey = GlobalKey<_DropZoneWidgetState>();
 
@@ -31,21 +34,7 @@ class _DropZoneWidgetState extends State<DropZoneWidget> {
   var imageFile;
   File_Data_Model? file;
 
-  Future<void> getImgUrl() async {
-    var request = http.MultipartRequest(
-        'POST', Uri.parse('http://qonway.com:8089/api/v1/media/upload'));
-
-    request.files.add(await http.MultipartFile.fromPath(
-        'input_file', '/C:/Users/GigaB/Desktop/blue.png'));
-
-    http.StreamedResponse response = await request.send();
-
-    if (response.statusCode == 200) {
-      print(await response.stream.bytesToString());
-    } else {
-      print(response.reasonPhrase);
-    }
-  }
+  
 
   Future<void> uploadImage(filepath, url) async {
     var request = http.MultipartRequest('POST', Uri.parse(url));
@@ -69,35 +58,34 @@ class _DropZoneWidgetState extends State<DropZoneWidget> {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
-    double _uploadwidth = kIsWeb? width*0.4 : width*0.8;
-      return (Container(
-          
-          height: height*0.2,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              Stack(
-                alignment: Alignment.center,
-                children: [
-                  Container(
-                    width: _uploadwidth,
-                      height: height * 0.1,
-                    child: DropzoneView(
+    double _uploadwidth = kIsWeb ? width * 0.4 : width * 0.8;
+    return !isPreviewImgUrl? Container(
+        height: height * 0.2,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            Stack(
+              alignment: Alignment.center,
+              children: [
+                Container(
+                  width: _uploadwidth,
+                  height: height * 0.1,
+                  child: DropzoneView(
                     onCreated: (controller) => this.controller = controller,
                     onDrop: UploadedFile,
-                ),
                   ),
-                  Container(
-                      width: _uploadwidth,
-                      height: height * 0.1,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.only(
-                            topRight: Radius.circular(10.0),
-                            topLeft: Radius.circular(10.0)),
-                        color: Colors.white,
-                      ),
-                      child: TextFormField(
+                ),
+                Container(
+                  width: _uploadwidth,
+                  height: height * 0.1,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(10.0),
+                        topLeft: Radius.circular(10.0)),
+                    color: Colors.white,
+                  ),
+                  child: TextFormField(
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     decoration: const InputDecoration(
                       hintText: "Drag and drop a photo",
@@ -110,43 +98,51 @@ class _DropZoneWidgetState extends State<DropZoneWidget> {
                         return "Please enter valid URL";
                       } else {
                         isImgUrl = true;
+                        crawlUrl(value);
+
                         return null;
                       }
                     },
-                  ),),
-                ],
-              ),
-              Container(
-                width: _uploadwidth,
-                height: height * 0.07,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(10.0),
-                      bottomRight: Radius.circular(10.0)),
-                  color: Colors.white,
+                    onEditingComplete: () {
+                      setState(() {
+                        isPreviewImgUrl = true;
+                      });
+                    },
+                  ),
                 ),
-                child: ElevatedButton(
-              child: Text('Upload', style: TextStyle(fontFamily: 'Leto')),
-              style: ElevatedButton.styleFrom(
-                onPrimary: Colors.white,
-                primary: Colors.white,
+              ],
+            ),
+            Container(
+              width: _uploadwidth,
+              height: height * 0.07,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(10.0),
+                    bottomRight: Radius.circular(10.0)),
+                color: Colors.white,
               ),
-              onPressed: () async {
-                final events = await controller.pickFiles();
-                if (events.isEmpty) return;
-                UploadedFile(events.first);
+              child: ElevatedButton(
+                child: Text('Upload', style: TextStyle(fontFamily: 'Leto')),
+                style: ElevatedButton.styleFrom(
+                  onPrimary: Colors.white,
+                  primary: Colors.white,
+                ),
+                onPressed: () async {
+                  final events = await controller.pickFiles();
+                  if (events.isEmpty) return;
+                  UploadedFile(events.first);
 
-                setState(() {
-                  isPreviewmode = true;
-                });
-                /*setState(() async {
+                  setState(() {
+                    isPreviewmode = true;
+                  });
+                  /*setState(() async {
                 previewImgUrl = await openGallery();
               });*/
-              },
-            ),
-              )
-            ],
-          )));
+                },
+              ),
+            )
+          ],
+        )) : PreviewWidget();
   }
 
   // ignore: non_constant_identifier_names

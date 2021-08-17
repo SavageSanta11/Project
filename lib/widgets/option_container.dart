@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 
+typedef void IntCallback(int length);
+
+List<String> optionList = ["Option 1", "Option 2"];
+
 class OptionContainer extends StatefulWidget {
   final double width;
   final double height;
-  OptionContainer(this.width, this.height);
+ 
+  final IntCallback onLengthChanged;
+  OptionContainer(this.width, this.height,  this.onLengthChanged);
 
   @override
   _OptionContainerState createState() => _OptionContainerState();
@@ -11,7 +17,7 @@ class OptionContainer extends StatefulWidget {
 
 class _OptionContainerState extends State<OptionContainer> {
   var children = <Widget>[];
-  List<String> _optionList = ["Option 1", "Option 2"];
+  
 
   Container _createSizing(double height) {
     return (Container(
@@ -34,14 +40,18 @@ class _OptionContainerState extends State<OptionContainer> {
                     borderRadius: BorderRadius.circular(6),
                     color: Colors.white),
                 child: TextField(
+                  onChanged: (val){
+                    optionList[index-1] = val;
+                  },
                   decoration: InputDecoration(
                       contentPadding: EdgeInsets.all(10.0),
                       //border: InputBorder.none,
                       suffixIcon: IconButton(
                         icon: Icon(Icons.delete_outlined),
                         onPressed: () { setState(() {
-                      if (_optionList.length > 2)
-                        _optionList.removeAt(index - 1);
+                      if (optionList.length > 2)
+                        optionList.removeAt(index - 1);
+                        widget.onLengthChanged(optionList.length);
                     });},
                       ),
                       hintText: 'Option ' + index.toString()),
@@ -72,8 +82,9 @@ class _OptionContainerState extends State<OptionContainer> {
               ),
               onPressed: () {
                 setState(() {
-                  _optionList
-                      .add('Option ' + (_optionList.length + 1).toString());
+                  optionList
+                      .add('Option ' + (optionList.length + 1).toString());
+                      widget.onLengthChanged(optionList.length);
                 });
               },
             ),
@@ -92,12 +103,12 @@ class _OptionContainerState extends State<OptionContainer> {
     double localwidth = width * 0.8;
     children = [];
 
-    for (var i = 0; i < _optionList.length; i++) {
+    for (var i = 0; i < optionList.length; i++) {
       children.add(_createSizing(height));
       children.add(_createOptionEntry(localwidth, i + 1));
     }
 
-    if (_optionList.length < 4) {
+    if (optionList.length < 4) {
       children.add(_createButton(localwidth, height));
     }
 

@@ -96,8 +96,8 @@ class _polldata_widgetState extends State<polldata_widget> {
           physics: const AlwaysScrollableScrollPhysics(),
           children: [
             Container(
-                height: height * 0.3,
-                width: isWeb ? width * 0.25 : width * 0.95,
+                height: height * 0.25,
+                width: isWeb ? width * 0.23 : width * 0.95,
                 decoration: BoxDecoration(
                   image: DecorationImage(
                       image: NetworkImage(previewImgUrl), fit: BoxFit.cover),
@@ -160,7 +160,8 @@ class _polldata_widgetState extends State<polldata_widget> {
                 userChoice: usersWhoVoted[this.user],
                 onVoteBackgroundColor: Color(0xffe4ccc0),
                 leadingBackgroundColor: Color(0xff8ed0e0),
-                backgroundColor: Color(0xffecf0f3),
+                backgroundColor: Color(0xffedf0f3),
+                outlineColor: Color(0xffedf0f3),
                 onVote: (choice) {
                   setState(() {
                     this.usersWhoVoted[this.user] = choice;
@@ -263,13 +264,7 @@ class _polldata_widgetState extends State<polldata_widget> {
     }
 
     return Container(
-        decoration: new BoxDecoration(
-          boxShadow: [
-            new BoxShadow(
-                color: isWeb ? Colors.grey : Color(0xffedf0f3),
-                blurRadius: 5.0),
-          ],
-        ),
+        
         child: _getCardData(width, height, isWeb));
   }
 }

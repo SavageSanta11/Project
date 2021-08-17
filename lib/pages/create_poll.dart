@@ -1,5 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:project/widgets/DropZoneWidget.dart';
+import 'package:http/http.dart' as http;
 
 import '../widgets/DroppedFileWidget.dart';
 import '../widgets/duration_widget.dart';
@@ -8,6 +12,48 @@ import '../widgets/option_container.dart';
 import 'home_page.dart';
 
 bool isPreviewMode = false;
+
+String question = "";
+
+int days = 0;
+int hours = 0;
+int minutes = 0;
+int options = 2;
+String option = "";
+
+String body = json.encode(<String, dynamic>{
+  "contentUrl": "http://164.52.212.151:8089/api/v1/media/content/ypannx5.png",
+  "previewUrls": [
+    "http://164.52.212.151:8089/api/v1/media/preview/ypannx5.png",
+    "http://164.52.212.151:8089/api/v1/media/preview/ypannx5.png"
+  ],
+  "question": question,
+  "answers": {
+    "options": options,
+    "option_1": optionList[0],
+    "option_2": optionList[1],
+    "option_3": optionList[2],
+    "option_4": optionList[3],
+  },
+  "duration": {"days": days, "hours": hours, "minutes": minutes},
+  "tags": ["delhi", "metro", "mumbai", "rail"]
+});
+
+Future<void> createPollRest() async {
+  var headers = {
+    'Authorization':
+        'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTYyOTE5MjA5OCwianRpIjoiNzg5NWU0YjItZDc1Yy00YzcyLTg5NDMtNzU4ZTRlYTM4OTRhIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6Imthbm9AcW9ud2F5LmNvbSIsIm5iZiI6MTYyOTE5MjA5OCwiZXhwIjoxNjI5MTkyOTk4fQ.TNkqBuWYP-IYyyoehijcjogIZMAyB9cfMTOWNHYRwlo',
+    'Content-Type': 'application/json'
+  };
+
+  http.Response response = await http.post(
+      Uri.parse('http://164.52.212.151:3012/api/access/poll/create'),
+      headers: headers,
+      body: body);
+
+  var convertDataToJson = json.decode(response.body);
+  print(convertDataToJson);
+}
 
 class CreatePoll extends StatefulWidget {
   static const String route = 'CreatePoll';
@@ -20,7 +66,37 @@ class _CreatePollState extends State<CreatePoll> {
 
   File_Data_Model? file;
 
-  var listDays = [for (var i = 0; i < 8; i += 1) i];
+  // Step 2: Define a function with the same signature
+  // as the callback, so the callback will point to it,
+  // this new function will get the data from the child,
+  // set it to the global variable (from step 1)
+  // in the parent, and then update the UI by setState((){});
+  void updateDays(int duration) {
+    setState(() {
+      days = duration;
+    });
+  }
+
+  void updateHours(int duration) {
+    setState(() {
+      hours = duration;
+    });
+  }
+
+  void updateMinutes(int duration) {
+    setState(() {
+      minutes = duration;
+    });
+  }
+
+
+  void updateOptions(int num) {
+    setState(() {
+      options = num;
+    });
+  }
+
+  var listDays = [for (var i = 0; i < 22; i += 1) i];
   var listHours = [for (var i = 0; i < 24; i += 1) i];
   var listMinutes = [for (var i = 0; i < 60; i += 1) i];
 
@@ -67,6 +143,9 @@ class _CreatePollState extends State<CreatePoll> {
                 ),
               ),
               child: TextField(
+                onChanged: (val) {
+                  question = val;
+                },
                 decoration: InputDecoration(
                     contentPadding: EdgeInsets.all(10.0),
                     hintText: opText,
@@ -90,12 +169,12 @@ class _CreatePollState extends State<CreatePoll> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                DurationWidget(
-                    'Days', _durationWidth * 0.25, height * 0.07, listDays),
-                DurationWidget(
-                    'Hours', _durationWidth * 0.25, height * 0.07, listHours),
+                DurationWidget('Days', _durationWidth * 0.25, height * 0.07,
+                    listDays, updateDays),
+                DurationWidget('Hours', _durationWidth * 0.25, height * 0.07,
+                    listHours, updateHours),
                 DurationWidget('Minutes', _durationWidth * 0.25, height * 0.07,
-                    listMinutes),
+                    listMinutes, updateMinutes),
               ],
             ),
           ),
@@ -121,6 +200,8 @@ class _CreatePollState extends State<CreatePoll> {
             primary: Color(0xff092836),
           ),
           onPressed: () {
+            createPollRest();
+
             Navigator.of(context).pushNamed(HomePage.route);
           },
         ),
@@ -152,8 +233,10 @@ class _CreatePollState extends State<CreatePoll> {
           children: [
             _createUploadMedia(width, height * 0.4),
             //DroppedFileWidget(file: file,),
+
             _createQuestionField(width, height),
-            OptionContainer(width, height),
+
+            OptionContainer(width, height, updateOptions),
             _createDurationContainer(width, height),
             _createPublishContainer(width, height * 0.1)
           ]));

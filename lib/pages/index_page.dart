@@ -1,10 +1,14 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:project/pages/home_page.dart';
 import 'create_poll.dart';
 import 'package:http/http.dart' as http;
 
-Future<void> registerUser(String emailId) async {
+String access_token = "";
+String refresh_token = "";
+
+Future<String> registerUser(String emailId) async {
   var headers = {'Content-Type': 'application/json'};
 
   String email = json.encode(<String, String>{
@@ -18,15 +22,18 @@ Future<void> registerUser(String emailId) async {
 
   var convertDataToJson = json.decode(response.body);
 
-  if (response.statusCode == 200) {
-    print(convertDataToJson["success"]);
-  } else {
-    print(response.reasonPhrase);
-  }
+  access_token = convertDataToJson["data"]["access_token"];
+  refresh_token = convertDataToJson["data"]["refresh_token"];
+ 
+  return convertDataToJson["data"]["type"];
 }
+
+
 
 class Home extends StatelessWidget {
   static const String route = '/IndexPage';
+
+  String userType = "";
 
   @override
   Widget build(BuildContext context) {
@@ -100,9 +107,13 @@ class Home extends StatelessWidget {
                   fontWeight: FontWeight.w400,
                   fontFamily: 'Leto'),
             ),
-            onPressed: () {
-              Navigator.of(context).pushNamed(CreatePoll.route);
-              registerUser("kano@gmail.com");
+            onPressed: () async {
+              userType = await registerUser("kano@qonway.com");
+              if (userType == "influencer") {
+                Navigator.of(context).pushNamed(CreatePoll.route);
+              } else {
+                Navigator.of(context).pushNamed(HomePage.route);
+              }
             }),
       )));
     }

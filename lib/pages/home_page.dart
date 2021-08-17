@@ -12,6 +12,7 @@ class HomePage extends StatefulWidget {
 
 // ignore: camel_case_types
 class _HomePageState extends State<HomePage> {
+  // ignore: unused_field
   int _currentIndex = 0;
 
   List cardList = [polldata_widget()];
@@ -99,7 +100,7 @@ class _HomePageState extends State<HomePage> {
               items: cardList.map((card) {
                 return Builder(builder: (BuildContext context) {
                   return Container(
-                    width: width * 0.25,
+                    width: width * 0.23,
                     child: card,
                   );
                 });
