@@ -2,14 +2,22 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../model/file_DataModel.dart';
 import 'package:flutter/foundation.dart';
-import '../pages/create_poll.dart';
-import 'DropZoneWidget.dart';
+
+typedef void BoolCallback(bool previewMode);
 
 class DroppedFileWidget extends StatefulWidget {
   final File_Data_Model? file;
- 
-  const DroppedFileWidget(
-      {Key? key, required this.file})
+  bool previewState = false;
+  final BoolCallback onPreviewStateChanged;
+  String previewImgUrl =
+      "";
+
+  DroppedFileWidget(
+      {Key? key,
+      required this.file,
+      required this.previewState,
+      required this.onPreviewStateChanged,
+      required this.previewImgUrl})
       : super(key: key);
 
   @override
@@ -17,10 +25,9 @@ class DroppedFileWidget extends StatefulWidget {
 }
 
 class _DroppedFileWidgetState extends State<DroppedFileWidget> {
-
   File_Data_Model? file;
-  String previewImgUrl = "https://files.worldwildlife.org/wwfcmsprod/images/Tiger_resting_Bandhavgarh_National_Park_India/hero_small/6aofsvaglm_Medium_WW226365.jpg";
   
+
   @override
   Widget build(BuildContext context) {
     return buildImage(context);
@@ -31,7 +38,7 @@ class _DroppedFileWidgetState extends State<DroppedFileWidget> {
 
     print(widget.file!.url);
 
-    return isPreviewMode
+    return widget.previewState
         ? Column(
             children: [
               Padding(
@@ -41,7 +48,7 @@ class _DroppedFileWidgetState extends State<DroppedFileWidget> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Image.network(
-                      previewImgUrl,
+                      widget.previewImgUrl,
                       width: kIsWeb
                           ? MediaQuery.of(context).size.width * 0.4
                           : MediaQuery.of(context).size.width * 0.8,
@@ -61,8 +68,9 @@ class _DroppedFileWidgetState extends State<DroppedFileWidget> {
                           ),
                           onPressed: () {
                             setState(() {
-                              isPreviewMode = false;
+                              widget.previewState = false;
                             });
+                            widget.onPreviewStateChanged(widget.previewState);
                           },
                         ))
                   ],
@@ -70,12 +78,7 @@ class _DroppedFileWidgetState extends State<DroppedFileWidget> {
               ),
             ],
           )
-        : DropZoneWidget(
-                          onDroppedFile: (file) => setState(() {
-                            this.file = file;
-                            isPreviewMode = true;
-                          }),
-                        );
+        : buildEmptyFile();
   }
 
   Widget buildEmptyFile() {

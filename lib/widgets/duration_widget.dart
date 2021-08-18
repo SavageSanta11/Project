@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 typedef void IntCallback(int time);
 
+
 class DurationWidget extends StatefulWidget {
   final String text;
   final double width;

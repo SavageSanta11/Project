@@ -1,26 +1,22 @@
-import 'dart:convert';
-import 'dart:io';
-
 import '../model/file_DataModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dropzone/flutter_dropzone.dart';
-import 'package:image_picker/image_picker.dart';
+
 import 'package:flutter/foundation.dart';
-import 'package:http/http.dart' as http;
-import 'preview_widget.dart';
 
 const Color buttoncolor = Color(0xff102c34);
-String previewImgUrl = "";
-bool isPreviewmode = false;
-bool isPreviewImgUrl = false;
+
+typedef void StringCallback(String url);
+
 
 GlobalKey<_DropZoneWidgetState> widgetKey = GlobalKey<_DropZoneWidgetState>();
 
 class DropZoneWidget extends StatefulWidget {
   final ValueChanged<File_Data_Model> onDroppedFile;
+  final StringCallback onValidUrl;
 
-  const DropZoneWidget({Key? key, required this.onDroppedFile})
+  const DropZoneWidget({Key? key, required this.onDroppedFile, required this.onValidUrl})
       : super(key: key);
   @override
   _DropZoneWidgetState createState() => _DropZoneWidgetState();
@@ -28,38 +24,17 @@ class DropZoneWidget extends StatefulWidget {
 
 class _DropZoneWidgetState extends State<DropZoneWidget> {
   late DropzoneViewController controller;
-  bool highlight = false;
-  bool isImgUrl = false;
 
-  var imageFile;
+ 
   File_Data_Model? file;
-
-  
-
-  Future<void> uploadImage(filepath, url) async {
-    var request = http.MultipartRequest('POST', Uri.parse(url));
-    request.files.add(http.MultipartFile('image',
-        File(filepath).readAsBytes().asStream(), File(filepath).lengthSync(),
-        filename: filepath.split("/").last));
-    // ignore: unused_local_variable
-    var res = await request.send();
-  }
-
-  Future<void> openGallery() async {
-    final picker = ImagePicker();
-    var pickedFile = await picker.pickImage(source: ImageSource.gallery);
-    setState(() {
-      imageFile = File(pickedFile!.path);
-    });
-    print(imageFile.runtimeType);
-  }
+  String url = "";
 
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     double _uploadwidth = kIsWeb ? width * 0.4 : width * 0.8;
-    return !isPreviewImgUrl? Container(
+    return Container(
         height: height * 0.2,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -97,16 +72,14 @@ class _DropZoneWidgetState extends State<DropZoneWidget> {
                       if (!Uri.parse(value!).isAbsolute) {
                         return "Please enter valid URL";
                       } else {
-                        isImgUrl = true;
-                        crawlUrl(value);
-
+                        url = value;
+                        
                         return null;
                       }
                     },
-                    onEditingComplete: () {
-                      setState(() {
-                        isPreviewImgUrl = true;
-                      });
+                    onFieldSubmitted: (value){
+                      
+                      widget.onValidUrl(value);
                     },
                   ),
                 ),
@@ -131,18 +104,11 @@ class _DropZoneWidgetState extends State<DropZoneWidget> {
                   final events = await controller.pickFiles();
                   if (events.isEmpty) return;
                   UploadedFile(events.first);
-
-                  setState(() {
-                    isPreviewmode = true;
-                  });
-                  /*setState(() async {
-                previewImgUrl = await openGallery();
-              });*/
                 },
               ),
             )
           ],
-        )) : PreviewWidget();
+        ));
   }
 
   // ignore: non_constant_identifier_names
@@ -163,9 +129,6 @@ class _DropZoneWidgetState extends State<DropZoneWidget> {
         File_Data_Model(name: name, mime: mime, bytes: byte, url: url);
 
     widget.onDroppedFile(droppedFile);
-    setState(() {
-      highlight = false;
-    });
   }
 }
 

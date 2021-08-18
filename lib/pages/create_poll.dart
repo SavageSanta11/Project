@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:project/widgets/DropZoneWidget.dart';
 import 'package:http/http.dart' as http;
 
@@ -14,6 +13,10 @@ import 'home_page.dart';
 bool isPreviewMode = false;
 
 String question = "";
+String previewImgUrl = "";
+String urlParam = "";
+
+bool isImgUrl = false;
 
 int days = 0;
 int hours = 0;
@@ -55,6 +58,22 @@ Future<void> createPollRest() async {
   print(convertDataToJson);
 }
 
+Future<String> crawlUrl(String url) async {
+  var headers = {
+    'Authorization':
+        'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTYyOTI4Njg2NywianRpIjoiMWZkYmQ0OWMtNmI5Mi00OWJjLTlhMGUtYzEwNTZlOWFmYWY5IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6Imthbm9AcW9ud2F5LmNvbSIsIm5iZiI6MTYyOTI4Njg2NywiZXhwIjoxNjI5Mjg3NzY3fQ.Gq7mXuF7UWd42kn1EyduiNv7HEY_UPbv8LI3VpZf_NU'
+  };
+
+  http.Response response = await http.get(
+    Uri.parse('http://164.52.212.151:3012/api/access/crawl/url?url=' + url),
+    headers: headers,
+  );
+
+  var convertDataToJson = json.decode(response.body);
+  previewImgUrl = convertDataToJson["data"]["preview_image_url"];
+  return (previewImgUrl);
+}
+
 class CreatePoll extends StatefulWidget {
   static const String route = 'CreatePoll';
   @override
@@ -66,11 +85,6 @@ class _CreatePollState extends State<CreatePoll> {
 
   File_Data_Model? file;
 
-  // Step 2: Define a function with the same signature
-  // as the callback, so the callback will point to it,
-  // this new function will get the data from the child,
-  // set it to the global variable (from step 1)
-  // in the parent, and then update the UI by setState((){});
   void updateDays(int duration) {
     setState(() {
       days = duration;
@@ -89,12 +103,31 @@ class _CreatePollState extends State<CreatePoll> {
     });
   }
 
-
   void updateOptions(int num) {
     setState(() {
       options = num;
     });
   }
+
+  void updatePreviewMode(bool previewMode) {
+    setState(() {
+      isPreviewMode = previewMode;
+      isImgUrl = false;
+    });
+  }
+
+  void updateValidUrl(String url) async{
+
+    previewImgUrl = await crawlUrl(url);
+    
+    setState(() {
+      isImgUrl = true;
+      isPreviewMode = true;
+    });
+    print(previewImgUrl);
+  }
+
+  
 
   var listDays = [for (var i = 0; i < 22; i += 1) i];
   var listHours = [for (var i = 0; i < 24; i += 1) i];
@@ -118,12 +151,16 @@ class _CreatePollState extends State<CreatePoll> {
                   child: isPreviewMode
                       ? DroppedFileWidget(
                           file: file,
+                          previewState: isPreviewMode,
+                          onPreviewStateChanged: updatePreviewMode,
+                          previewImgUrl: isImgUrl? previewImgUrl : "https://files.worldwildlife.org/wwfcmsprod/images/Tiger_resting_Bandhavgarh_National_Park_India/hero_small/6aofsvaglm_Medium_WW226365.jpg",
                         )
                       : DropZoneWidget(
                           onDroppedFile: (file) => setState(() {
                             this.file = file;
                             isPreviewMode = true;
                           }),
+                          onValidUrl: updateValidUrl,
                         )),
             ],
           )));
