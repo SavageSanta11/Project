@@ -6,17 +6,18 @@ import 'package:flutter_dropzone/flutter_dropzone.dart';
 import 'package:flutter/foundation.dart';
 
 const Color buttoncolor = Color(0xff102c34);
+File_Data_Model? file;
 
 typedef void StringCallback(String url);
-
 
 GlobalKey<_DropZoneWidgetState> widgetKey = GlobalKey<_DropZoneWidgetState>();
 
 class DropZoneWidget extends StatefulWidget {
   final ValueChanged<File_Data_Model> onDroppedFile;
-  final StringCallback onValidUrl;
+  final StringCallback onSubmitted;
 
-  const DropZoneWidget({Key? key, required this.onDroppedFile, required this.onValidUrl})
+  const DropZoneWidget(
+      {Key? key, required this.onDroppedFile, required this.onSubmitted})
       : super(key: key);
   @override
   _DropZoneWidgetState createState() => _DropZoneWidgetState();
@@ -24,10 +25,6 @@ class DropZoneWidget extends StatefulWidget {
 
 class _DropZoneWidgetState extends State<DropZoneWidget> {
   late DropzoneViewController controller;
-
- 
-  File_Data_Model? file;
-  String url = "";
 
   @override
   Widget build(BuildContext context) {
@@ -72,14 +69,12 @@ class _DropZoneWidgetState extends State<DropZoneWidget> {
                       if (!Uri.parse(value!).isAbsolute) {
                         return "Please enter valid URL";
                       } else {
-                        url = value;
-                        
                         return null;
                       }
                     },
-                    onFieldSubmitted: (value){
-                      
-                      widget.onValidUrl(value);
+                    onFieldSubmitted: (value) {
+                      widget.onSubmitted(
+                          value); // to get the value entered in the textformfield
                     },
                   ),
                 ),

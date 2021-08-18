@@ -1,41 +1,33 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../model/file_DataModel.dart';
 import 'package:flutter/foundation.dart';
 
 typedef void BoolCallback(bool previewMode);
 
-class ImageFromLinkWidget extends StatefulWidget {
-  
+// ignore: must_be_immutable
+class ImageWidget extends StatefulWidget {
   bool previewState = false;
   final BoolCallback onPreviewStateChanged;
-  String previewImgUrl =
-      "";
+  String previewImgUrl = "";
 
-  ImageFromLinkWidget(
+  ImageWidget(
       {Key? key,
-      
       required this.previewState,
       required this.onPreviewStateChanged,
       required this.previewImgUrl})
       : super(key: key);
 
   @override
-  _ImageFromLinkWidgetState createState() => _ImageFromLinkWidgetState();
+  _ImageWidgetState createState() => _ImageWidgetState();
 }
 
-class _ImageFromLinkWidgetState extends State<ImageFromLinkWidget> {
- 
-  
-
+class _ImageWidgetState extends State<ImageWidget> {
   @override
   Widget build(BuildContext context) {
     return buildImage(context);
   }
 
   Widget buildImage(BuildContext context) {
-    
-
     return widget.previewState
         ? Column(
             children: [

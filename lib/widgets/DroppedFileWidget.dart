@@ -5,20 +5,18 @@ import 'package:flutter/foundation.dart';
 
 typedef void BoolCallback(bool previewMode);
 
+// ignore: must_be_immutable
 class DroppedFileWidget extends StatefulWidget {
   final File_Data_Model? file;
   bool previewState = false;
   final BoolCallback onPreviewStateChanged;
-  String previewImgUrl =
-      "";
 
-  DroppedFileWidget(
-      {Key? key,
-      required this.file,
-      required this.previewState,
-      required this.onPreviewStateChanged,
-      required this.previewImgUrl})
-      : super(key: key);
+  DroppedFileWidget({
+    Key? key,
+    required this.file,
+    required this.previewState,
+    required this.onPreviewStateChanged,
+  }) : super(key: key);
 
   @override
   _DroppedFileWidgetState createState() => _DroppedFileWidgetState();
@@ -26,7 +24,6 @@ class DroppedFileWidget extends StatefulWidget {
 
 class _DroppedFileWidgetState extends State<DroppedFileWidget> {
   File_Data_Model? file;
-  
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +45,7 @@ class _DroppedFileWidgetState extends State<DroppedFileWidget> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Image.network(
-                      widget.previewImgUrl,
+                      file!.url,
                       width: kIsWeb
                           ? MediaQuery.of(context).size.width * 0.4
                           : MediaQuery.of(context).size.width * 0.8,

@@ -3,26 +3,25 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:project/widgets/DropZoneWidget.dart';
 import 'package:http/http.dart' as http;
-
-import '../widgets/DroppedFileWidget.dart';
+import 'package:project/widgets/ImageWidget.dart';
 import '../widgets/duration_widget.dart';
 import '../model/file_DataModel.dart';
 import '../widgets/option_container.dart';
 import 'home_page.dart';
 
+bool isUrlMode = false;
 bool isPreviewMode = false;
+bool isImgUrl = false;
 
 String question = "";
 String previewImgUrl = "";
 String urlParam = "";
 
-bool isImgUrl = false;
-
 int days = 0;
 int hours = 0;
 int minutes = 0;
 int options = 2;
-String option = "";
+
 
 String body = json.encode(<String, dynamic>{
   "contentUrl": "http://164.52.212.151:8089/api/v1/media/content/ypannx5.png",
@@ -61,7 +60,7 @@ Future<void> createPollRest() async {
 Future<String> crawlUrl(String url) async {
   var headers = {
     'Authorization':
-        'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTYyOTI4Njg2NywianRpIjoiMWZkYmQ0OWMtNmI5Mi00OWJjLTlhMGUtYzEwNTZlOWFmYWY5IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6Imthbm9AcW9ud2F5LmNvbSIsIm5iZiI6MTYyOTI4Njg2NywiZXhwIjoxNjI5Mjg3NzY3fQ.Gq7mXuF7UWd42kn1EyduiNv7HEY_UPbv8LI3VpZf_NU'
+        'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTYyOTI4OTQzMCwianRpIjoiMzhmMTUxNzYtYTZmNi00Y2MzLWJhYzEtZDIzZDBiNGU5YTM5IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6Imthbm9AcW9ud2F5LmNvbSIsIm5iZiI6MTYyOTI4OTQzMCwiZXhwIjoxNjI5MjkwMzMwfQ.Bygp1ZNopE1J70ir3zOJNuZi6SQfTD_K9DfEZ3pOybo'
   };
 
   http.Response response = await http.get(
@@ -109,25 +108,24 @@ class _CreatePollState extends State<CreatePoll> {
     });
   }
 
-  void updatePreviewMode(bool previewMode) {
+  void updatePreviewMode(bool urlMode) {
     setState(() {
-      isPreviewMode = previewMode;
+      isUrlMode = urlMode; // sets urlMode to false as X has been pressed
+      isPreviewMode = false;
       isImgUrl = false;
     });
   }
 
-  void updateValidUrl(String url) async{
-
+  void updateValidUrl(String url) async {
     previewImgUrl = await crawlUrl(url);
-    
+
     setState(() {
       isImgUrl = true;
+      isUrlMode = true;
       isPreviewMode = true;
     });
     print(previewImgUrl);
   }
-
-  
 
   var listDays = [for (var i = 0; i < 22; i += 1) i];
   var listHours = [for (var i = 0; i < 24; i += 1) i];
@@ -148,19 +146,22 @@ class _CreatePollState extends State<CreatePoll> {
             mainAxisSize: MainAxisSize.max,
             children: [
               Container(
-                  child: isPreviewMode
-                      ? DroppedFileWidget(
-                          file: file,
-                          previewState: isPreviewMode,
-                          onPreviewStateChanged: updatePreviewMode,
-                          previewImgUrl: isImgUrl? previewImgUrl : "https://files.worldwildlife.org/wwfcmsprod/images/Tiger_resting_Bandhavgarh_National_Park_India/hero_small/6aofsvaglm_Medium_WW226365.jpg",
+                  child: isUrlMode
+                      ? ImageWidget(
+                          previewState:
+                              isUrlMode, // to check if the file must be displayed or not
+                          onPreviewStateChanged:
+                              updatePreviewMode, //to set urlMode to false when x is pressed
+                          previewImgUrl: isImgUrl
+                              ? previewImgUrl
+                              : "https://files.worldwildlife.org/wwfcmsprod/images/Tiger_resting_Bandhavgarh_National_Park_India/hero_small/6aofsvaglm_Medium_WW226365.jpg",
                         )
                       : DropZoneWidget(
                           onDroppedFile: (file) => setState(() {
                             this.file = file;
-                            isPreviewMode = true;
+                            isUrlMode = true;
                           }),
-                          onValidUrl: updateValidUrl,
+                          onSubmitted: updateValidUrl,
                         )),
             ],
           )));

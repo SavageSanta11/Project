@@ -5,8 +5,8 @@ import 'package:project/pages/home_page.dart';
 import 'create_poll.dart';
 import 'package:http/http.dart' as http;
 
-String access_token = "";
-String refresh_token = "";
+String accessToken = "";
+String refreshToken = "";
 
 Future<String> registerUser(String emailId) async {
   var headers = {'Content-Type': 'application/json'};
@@ -22,14 +22,15 @@ Future<String> registerUser(String emailId) async {
 
   var convertDataToJson = json.decode(response.body);
 
-  access_token = convertDataToJson["data"]["access_token"];
-  refresh_token = convertDataToJson["data"]["refresh_token"];
+  accessToken = convertDataToJson["data"]["access_token"];
+  refreshToken = convertDataToJson["data"]["refresh_token"];
  
   return convertDataToJson["data"]["type"];
 }
 
 
 
+// ignore: must_be_immutable
 class Home extends StatelessWidget {
   static const String route = '/IndexPage';
 

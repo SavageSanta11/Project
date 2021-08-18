@@ -278,6 +278,7 @@ class _PollsState extends State<Polls> {
 
   @override
   void initState() {
+    // ignore: todo
     // TODO: implement initState
     super.initState();
 
@@ -1893,6 +1894,7 @@ class PollMath {
           slot6res +
           slot7res +
           slot8res;
+      // ignore: empty_statements
       ;
       div = sum == 0 ? 0 : (1 / sum) * slot1res;
     }
