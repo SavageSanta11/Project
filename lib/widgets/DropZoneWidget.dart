@@ -8,16 +8,14 @@ import 'package:flutter/foundation.dart';
 const Color buttoncolor = Color(0xff102c34);
 File_Data_Model? file;
 
-typedef void StringCallback(String url);
 
 GlobalKey<_DropZoneWidgetState> widgetKey = GlobalKey<_DropZoneWidgetState>();
-
 class DropZoneWidget extends StatefulWidget {
   final ValueChanged<File_Data_Model> onDroppedFile;
-  final StringCallback onSubmitted;
+  final double width;
+  final double height;
 
-  const DropZoneWidget(
-      {Key? key, required this.onDroppedFile, required this.onSubmitted})
+  const DropZoneWidget({Key? key, required this.onDroppedFile, required this.width, required this.height})
       : super(key: key);
   @override
   _DropZoneWidgetState createState() => _DropZoneWidgetState();
@@ -25,85 +23,22 @@ class DropZoneWidget extends StatefulWidget {
 
 class _DropZoneWidgetState extends State<DropZoneWidget> {
   late DropzoneViewController controller;
-
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
-    double height = MediaQuery.of(context).size.height;
-    double _uploadwidth = kIsWeb ? width * 0.4 : width * 0.8;
-    return Container(
-        height: height * 0.2,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            Stack(
-              alignment: Alignment.center,
-              children: [
-                Container(
-                  width: _uploadwidth,
-                  height: height * 0.1,
-                  child: DropzoneView(
-                    onCreated: (controller) => this.controller = controller,
-                    onDrop: UploadedFile,
-                  ),
-                ),
-                Container(
-                  width: _uploadwidth,
-                  height: height * 0.1,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(10.0),
-                        topLeft: Radius.circular(10.0)),
-                    color: Colors.white,
-                  ),
-                  child: TextFormField(
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    decoration: const InputDecoration(
-                      hintText: "Drag and drop a photo",
-                      border: InputBorder.none,
-                      fillColor: Colors.white,
-                      filled: true,
-                    ),
-                    validator: (value) {
-                      if (!Uri.parse(value!).isAbsolute) {
-                        return "Please enter valid URL";
-                      } else {
-                        return null;
-                      }
-                    },
-                    onFieldSubmitted: (value) {
-                      widget.onSubmitted(
-                          value); // to get the value entered in the textformfield
-                    },
-                  ),
-                ),
-              ],
-            ),
-            Container(
-              width: _uploadwidth,
-              height: height * 0.07,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(10.0),
-                    bottomRight: Radius.circular(10.0)),
-                color: Colors.white,
-              ),
-              child: ElevatedButton(
-                child: Text('Upload', style: TextStyle(fontFamily: 'Leto')),
-                style: ElevatedButton.styleFrom(
-                  onPrimary: Colors.white,
-                  primary: Colors.white,
-                ),
-                onPressed: () async {
-                  final events = await controller.pickFiles();
-                  if (events.isEmpty) return;
-                  UploadedFile(events.first);
-                },
-              ),
-            )
-          ],
-        ));
+    
+    Container _createDropzoneSection(double width, double height){
+      return Container(
+        width: width,
+        height: height ,
+        child: DropzoneView(
+          onCreated: (controller) => this.controller = controller,
+          onDrop: UploadedFile,
+        ),
+      );
+    }
+
+    return _createDropzoneSection(widget.width, widget.height);
+
   }
 
   // ignore: non_constant_identifier_names

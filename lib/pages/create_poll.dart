@@ -1,27 +1,25 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:project/widgets/DropZoneWidget.dart';
 import 'package:http/http.dart' as http;
-import 'package:project/widgets/ImageWidget.dart';
+
 import '../widgets/duration_widget.dart';
 import '../model/file_DataModel.dart';
 import '../widgets/option_container.dart';
+import '../widgets/previewMode.dart';
+import '../widgets/uploadMedia.dart';
 import 'home_page.dart';
 
-bool isUrlMode = false;
 bool isPreviewMode = false;
-bool isImgUrl = false;
 
 String question = "";
-String previewImgUrl = "";
-String urlParam = "";
 
 int days = 0;
 int hours = 0;
 int minutes = 0;
 int options = 2;
-
+String option = "";
+String previewImgUrl = "";
 
 String body = json.encode(<String, dynamic>{
   "contentUrl": "http://164.52.212.151:8089/api/v1/media/content/ypannx5.png",
@@ -29,6 +27,7 @@ String body = json.encode(<String, dynamic>{
     "http://164.52.212.151:8089/api/v1/media/preview/ypannx5.png",
     "http://164.52.212.151:8089/api/v1/media/preview/ypannx5.png"
   ],
+  "email": "kano@qonway.com",
   "question": question,
   "answers": {
     "options": options,
@@ -44,7 +43,7 @@ String body = json.encode(<String, dynamic>{
 Future<void> createPollRest() async {
   var headers = {
     'Authorization':
-        'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTYyOTE5MjA5OCwianRpIjoiNzg5NWU0YjItZDc1Yy00YzcyLTg5NDMtNzU4ZTRlYTM4OTRhIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6Imthbm9AcW9ud2F5LmNvbSIsIm5iZiI6MTYyOTE5MjA5OCwiZXhwIjoxNjI5MTkyOTk4fQ.TNkqBuWYP-IYyyoehijcjogIZMAyB9cfMTOWNHYRwlo',
+        'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTYyOTI4MjQyMiwianRpIjoiNWMyZmNkYTQtZjgyZS00ODhlLWFmZGEtNTFiZmEyYmZlMzJkIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6Imthbm9AcW9ud2F5LmNvbSIsIm5iZiI6MTYyOTI4MjQyMiwiZXhwIjoxNjI5MjgzMzIyfQ.L6O-rXKbo8vtcyT0K071o108Lljpr_PjLmw14rDHVvI',
     'Content-Type': 'application/json'
   };
 
@@ -60,7 +59,7 @@ Future<void> createPollRest() async {
 Future<String> crawlUrl(String url) async {
   var headers = {
     'Authorization':
-        'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTYyOTI4OTQzMCwianRpIjoiMzhmMTUxNzYtYTZmNi00Y2MzLWJhYzEtZDIzZDBiNGU5YTM5IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6Imthbm9AcW9ud2F5LmNvbSIsIm5iZiI6MTYyOTI4OTQzMCwiZXhwIjoxNjI5MjkwMzMwfQ.Bygp1ZNopE1J70ir3zOJNuZi6SQfTD_K9DfEZ3pOybo'
+        'Bearer  eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTYyOTI4MjQyMiwianRpIjoiNWMyZmNkYTQtZjgyZS00ODhlLWFmZGEtNTFiZmEyYmZlMzJkIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6Imthbm9AcW9ud2F5LmNvbSIsIm5iZiI6MTYyOTI4MjQyMiwiZXhwIjoxNjI5MjgzMzIyfQ.L6O-rXKbo8vtcyT0K071o108Lljpr_PjLmw14rDHVvI'
   };
 
   http.Response response = await http.get(
@@ -108,11 +107,9 @@ class _CreatePollState extends State<CreatePoll> {
     });
   }
 
-  void updatePreviewMode(bool urlMode) {
+  void updatePreviewMode(bool flag) {
     setState(() {
-      isUrlMode = urlMode; // sets urlMode to false as X has been pressed
-      isPreviewMode = false;
-      isImgUrl = false;
+      isPreviewMode = flag;
     });
   }
 
@@ -120,8 +117,6 @@ class _CreatePollState extends State<CreatePoll> {
     previewImgUrl = await crawlUrl(url);
 
     setState(() {
-      isImgUrl = true;
-      isUrlMode = true;
       isPreviewMode = true;
     });
     print(previewImgUrl);
@@ -135,8 +130,14 @@ class _CreatePollState extends State<CreatePoll> {
 
   @override
   Widget build(BuildContext context) {
+    Widget _uploadMediaWidget;
+
     Container _createUploadMedia(double width, double height) {
       double _uploadwidth = width * 0.8;
+
+      _uploadMediaWidget = uploadMode(
+          width * 0.8, height * 0.8, updatePreviewMode, updateValidUrl);
+
       return (Container(
           color: Colors.transparent,
           height: height,
@@ -145,24 +146,7 @@ class _CreatePollState extends State<CreatePoll> {
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.max,
             children: [
-              Container(
-                  child: isUrlMode
-                      ? ImageWidget(
-                          previewState:
-                              isUrlMode, // to check if the file must be displayed or not
-                          onPreviewStateChanged:
-                              updatePreviewMode, //to set urlMode to false when x is pressed
-                          previewImgUrl: isImgUrl
-                              ? previewImgUrl
-                              : "https://files.worldwildlife.org/wwfcmsprod/images/Tiger_resting_Bandhavgarh_National_Park_India/hero_small/6aofsvaglm_Medium_WW226365.jpg",
-                        )
-                      : DropZoneWidget(
-                          onDroppedFile: (file) => setState(() {
-                            this.file = file;
-                            isUrlMode = true;
-                          }),
-                          onSubmitted: updateValidUrl,
-                        )),
+              Container(child: _uploadMediaWidget),
             ],
           )));
     }
@@ -269,7 +253,11 @@ class _CreatePollState extends State<CreatePoll> {
       return (ListView(
           physics: const AlwaysScrollableScrollPhysics(),
           children: [
-            _createUploadMedia(width, height * 0.4),
+            isPreviewMode
+                ? PreviewMode(width * 0.8, double.infinity , updatePreviewMode,
+                    previewImgUrl)
+                : _createUploadMedia(width, height * 0.4),
+
             //DroppedFileWidget(file: file,),
 
             _createQuestionField(width, height),

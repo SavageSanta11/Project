@@ -96,7 +96,7 @@ class _polldata_widgetState extends State<polldata_widget> {
           physics: const AlwaysScrollableScrollPhysics(),
           children: [
             Container(
-                height: height * 0.25,
+                height: height * 0.22,
                 width: isWeb ? width * 0.23 : width * 0.95,
                 decoration: BoxDecoration(
                   image: DecorationImage(
@@ -109,7 +109,7 @@ class _polldata_widgetState extends State<polldata_widget> {
                 textAlign: TextAlign.left,
                 style: TextStyle(
                   color: Colors.blueGrey,
-                  fontSize: isWeb? 16.0 : 14.0,
+                  fontSize: isWeb? 14.0 : 12.0,
                   
                 ),
               ),

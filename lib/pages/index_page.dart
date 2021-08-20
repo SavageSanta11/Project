@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:project/pages/home_page.dart';
+
 import 'create_poll.dart';
 import 'package:http/http.dart' as http;
 
@@ -110,11 +111,15 @@ class Home extends StatelessWidget {
             ),
             onPressed: () async {
               userType = await registerUser("kano@qonway.com");
+              print(userType);
               if (userType == "influencer") {
+                
                 Navigator.of(context).pushNamed(CreatePoll.route);
               } else {
                 Navigator.of(context).pushNamed(HomePage.route);
               }
+              //Navigator.of(context).pushNamed(CreatePoll.route);
+
             }),
       )));
     }
