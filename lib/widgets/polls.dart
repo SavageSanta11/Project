@@ -385,367 +385,390 @@ class _PollsState extends State<Polls> {
 
   /// voterWidget creates view for users to cast their votes
   Widget voterWidget(context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+    
+    return ListView(
+      
       children: <Widget>[
         widget.question,
+        Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 16, 0, 8),
+                  child: Text(
+                     "14 votes",
+                    style: GoogleFonts.lato(
+                      fontSize:16.0,
+                      color: Colors.blueGrey,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 16, 0, 8),
+                  child: Text(
+                   "3 hours left",
+                    style: GoogleFonts.lato(
+                      fontSize: 16.0,
+                      color: Colors.blueGrey,
+                    ),
+                  ),
+                ),
+              ],
+            ),
         SizedBox(
           height: 12,
         ),
-        SingleChildScrollView(
-          child: Column(
-            children: [
-              Container(
-                width: double.infinity,
-                padding: EdgeInsets.only(bottom: 17),
-                child: Container(
-                  margin: EdgeInsets.all(0),
-                  width: MediaQuery.of(context).size.width,
-                  padding: EdgeInsets.all(0),
-                  height: 40,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(2),
-                    color: widget.backgroundColor,
+        Column(
+          children: [
+            Container(
+              width: double.infinity,
+              padding: EdgeInsets.only(bottom: 17),
+              child: Container(
+                margin: EdgeInsets.all(0),
+                width: MediaQuery.of(context).size.width,
+                padding: EdgeInsets.all(0),
+                height: 45,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(2),
+                  color: widget.backgroundColor,
+                ),
+                // ignore: deprecated_member_use
+                child: OutlineButton(
+                  onPressed: () {
+                    setState(() {
+                      userPollChoice = 1;
+                    });
+                    widget.onVote!(userPollChoice);
+                  },
+                  color: Colors.green,
+                  padding: EdgeInsets.all(5.0),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Padding(
+                      padding: EdgeInsets.fromLTRB(16, 0, 0, 0),
+                      child: Text(this.c1,
+                          style: GoogleFonts.lato(
+                            fontSize: 16.0,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                          )),
+                    ),
                   ),
-                  // ignore: deprecated_member_use
-                  child: OutlineButton(
-                    onPressed: () {
-                      setState(() {
-                        userPollChoice = 1;
-                      });
-                      widget.onVote!(userPollChoice);
-                    },
-                    color: Colors.green,
-                    padding: EdgeInsets.all(5.0),
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Padding(
-                        padding: EdgeInsets.fromLTRB(16, 0, 0, 0),
-                        child: Text(this.c1,
-                            style: GoogleFonts.lato(
-                              fontSize: 14.0,
+                  borderSide: BorderSide(
+                    color: widget.outlineColor,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: new BorderRadius.circular(6.0),
+                  ),
+                ),
+              ),
+            ),
+            Container(
+              width: double.infinity,
+              padding: EdgeInsets.only(bottom: 17),
+              child: Container(
+                margin: EdgeInsets.all(0),
+                padding: EdgeInsets.all(0),
+               height: 45,
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(2),
+                  color: widget.backgroundColor,
+                ),
+                // ignore: deprecated_member_use
+                child: OutlineButton(
+                  onPressed: () {
+                    setState(() {
+                      userPollChoice = 2;
+                    });
+                    widget.onVote!(userPollChoice);
+                  },
+                  color: Colors.green,
+                  padding: EdgeInsets.all(5.0),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Padding(
+                      padding: EdgeInsets.fromLTRB(16, 0, 0, 0),
+                      child: Text(this.c2,
+                          style: GoogleFonts.lato(
+                              fontSize: 16.0,
                               color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                            )),
-                      ),
+                              fontWeight: FontWeight.bold)),
                     ),
-                    borderSide: BorderSide(
-                      color: widget.outlineColor,
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: new BorderRadius.circular(6.0),
-                    ),
+                  ),
+                  borderSide: BorderSide(
+                    color: widget.outlineColor,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: new BorderRadius.circular(6.0),
                   ),
                 ),
               ),
-              Container(
-                width: double.infinity,
-                padding: EdgeInsets.only(bottom: 17),
-                child: Container(
-                  margin: EdgeInsets.all(0),
-                  padding: EdgeInsets.all(0),
-                  height: 40,
-                  width: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(2),
-                    color: widget.backgroundColor,
-                  ),
-                  // ignore: deprecated_member_use
-                  child: OutlineButton(
-                    onPressed: () {
-                      setState(() {
-                        userPollChoice = 2;
-                      });
-                      widget.onVote!(userPollChoice);
-                    },
-                    color: Colors.green,
-                    padding: EdgeInsets.all(5.0),
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Padding(
-                        padding: EdgeInsets.fromLTRB(16, 0, 0, 0),
-                        child: Text(this.c2,
-                            style: GoogleFonts.lato(
-                                fontSize: 14.0,
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold)),
+            ),
+            this.c3 != null
+                ? Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.only(bottom: 17),
+                    child: Container(
+                      margin: EdgeInsets.all(0),
+                      padding: EdgeInsets.all(0),
+                      height: 45,
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(2),
+                        color: widget.backgroundColor,
+                      ),
+                      // ignore: deprecated_member_use
+                      child: OutlineButton(
+                        onPressed: () {
+                          setState(() {
+                            userPollChoice = 3;
+                          });
+                          widget.onVote!(userPollChoice);
+                        },
+                        color: Colors.green,
+                        padding: EdgeInsets.all(5.0),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Padding(
+                            padding: EdgeInsets.fromLTRB(16, 0, 0, 0),
+                            child: Text(this.c3 ?? '',
+                                style: GoogleFonts.lato(
+                                    fontSize: 16.0,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold)),
+                          ),
+                        ),
+                        borderSide: BorderSide(
+                          color: widget.outlineColor,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: new BorderRadius.circular(6.0),
+                        ),
                       ),
                     ),
-                    borderSide: BorderSide(
-                      color: widget.outlineColor,
+                  )
+                : Offstage(),
+            this.c4 != null
+                ? Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.only(bottom: 17),
+                    child: Container(
+                      margin: EdgeInsets.all(0),
+                      padding: EdgeInsets.all(0),
+                      height: 45,
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(2),
+                        color: widget.backgroundColor,
+                      ),
+                      // ignore: deprecated_member_use
+                      child: OutlineButton(
+                        onPressed: () {
+                          setState(() {
+                            userPollChoice = 4;
+                          });
+                          widget.onVote!(userPollChoice);
+                        },
+                        color: Colors.green,
+                        padding: EdgeInsets.all(5.0),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Padding(
+                            padding: EdgeInsets.fromLTRB(16, 0, 0, 0),
+                            child: Text(this.c4 ?? '',
+                                style: GoogleFonts.lato(
+                                    fontSize: 16.0,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold)),
+                          ),
+                        ),
+                        borderSide: BorderSide(
+                          color: widget.outlineColor,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: new BorderRadius.circular(6.0),
+                        ),
+                      ),
                     ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: new BorderRadius.circular(6.0),
+                  )
+                : Offstage(),
+            this.c5 != null
+                ? Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.only(bottom: 17),
+                    child: Container(
+                      margin: EdgeInsets.all(0),
+                      padding: EdgeInsets.all(0),
+                      height: 45,
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(2),
+                        color: widget.backgroundColor,
+                      ),
+                      // ignore: deprecated_member_use
+                      child: OutlineButton(
+                        onPressed: () {
+                          setState(() {
+                            userPollChoice = 5;
+                          });
+                          widget.onVote!(userPollChoice);
+                        },
+                        color: Colors.green,
+                        padding: EdgeInsets.all(5.0),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Padding(
+                            padding: EdgeInsets.fromLTRB(16, 0, 0, 0),
+                            child: Text(this.c5 ?? '',
+                                style: GoogleFonts.lato(
+                                    fontSize: 16.0,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold)),
+                          ),
+                        ),
+                        borderSide: BorderSide(
+                          color: widget.outlineColor,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: new BorderRadius.circular(6.0),
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-              ),
-              this.c3 != null
-                  ? Container(
-                      width: double.infinity,
-                      padding: EdgeInsets.only(bottom: 17),
-                      child: Container(
-                        margin: EdgeInsets.all(0),
-                        padding: EdgeInsets.all(0),
-                        height: 40,
-                        width: MediaQuery.of(context).size.width,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(2),
-                          color: widget.backgroundColor,
+                  )
+                : Offstage(),
+            this.c6 != null
+                ? Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.only(bottom: 17),
+                    child: Container(
+                      margin: EdgeInsets.all(0),
+                      padding: EdgeInsets.all(0),
+                      height: 45,
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(2),
+                        color: widget.backgroundColor,
+                      ),
+                      // ignore: deprecated_member_use
+                      child: OutlineButton(
+                        onPressed: () {
+                          setState(() {
+                            userPollChoice = 6;
+                          });
+                          widget.onVote!(userPollChoice);
+                        },
+                        color: Colors.green,
+                        padding: EdgeInsets.all(5.0),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Padding(
+                            padding: EdgeInsets.fromLTRB(16, 0, 0, 0),
+                            child: Text(this.c6 ?? '',
+                                style: GoogleFonts.lato(
+                                    fontSize: 16.0,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold)),
+                          ),
                         ),
-                        // ignore: deprecated_member_use
-                        child: OutlineButton(
-                          onPressed: () {
-                            setState(() {
-                              userPollChoice = 3;
-                            });
-                            widget.onVote!(userPollChoice);
-                          },
-                          color: Colors.green,
-                          padding: EdgeInsets.all(5.0),
-                          child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: Padding(
-                              padding: EdgeInsets.fromLTRB(16, 0, 0, 0),
-                              child: Text(this.c3 ?? '',
-                                  style: GoogleFonts.lato(
-                                      fontSize: 14.0,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold)),
-                            ),
-                          ),
-                          borderSide: BorderSide(
-                            color: widget.outlineColor,
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(6.0),
-                          ),
+                        borderSide: BorderSide(
+                          color: widget.outlineColor,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: new BorderRadius.circular(6.0),
                         ),
                       ),
-                    )
-                  : Offstage(),
-              this.c4 != null
-                  ? Container(
-                      width: double.infinity,
-                      padding: EdgeInsets.only(bottom: 17),
-                      child: Container(
-                        margin: EdgeInsets.all(0),
-                        padding: EdgeInsets.all(0),
-                        height: 40,
-                        width: MediaQuery.of(context).size.width,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(2),
-                          color: widget.backgroundColor,
+                    ),
+                  )
+                : Offstage(),
+            this.c7 != null
+                ? Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.only(bottom: 17),
+                    child: Container(
+                      margin: EdgeInsets.all(0),
+                      padding: EdgeInsets.all(0),
+                      height: 45,
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(2),
+                        color: widget.backgroundColor,
+                      ),
+                      // ignore: deprecated_member_use
+                      child: OutlineButton(
+                        onPressed: () {
+                          setState(() {
+                            userPollChoice = 7;
+                          });
+                          widget.onVote!(userPollChoice);
+                        },
+                        color: Colors.green,
+                        padding: EdgeInsets.all(5.0),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Padding(
+                            padding: EdgeInsets.fromLTRB(16, 0, 0, 0),
+                            child: Text(this.c7 ?? '',
+                                style: GoogleFonts.lato(
+                                    fontSize: 16.0,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold)),
+                          ),
                         ),
-                        // ignore: deprecated_member_use
-                        child: OutlineButton(
-                          onPressed: () {
-                            setState(() {
-                              userPollChoice = 4;
-                            });
-                            widget.onVote!(userPollChoice);
-                          },
-                          color: Colors.green,
-                          padding: EdgeInsets.all(5.0),
-                          child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: Padding(
-                              padding: EdgeInsets.fromLTRB(16, 0, 0, 0),
-                              child: Text(this.c4 ?? '',
-                                  style: GoogleFonts.lato(
-                                      fontSize: 14.0,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold)),
-                            ),
-                          ),
-                          borderSide: BorderSide(
-                            color: widget.outlineColor,
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(6.0),
-                          ),
+                        borderSide: BorderSide(
+                          color: widget.outlineColor,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: new BorderRadius.circular(6.0),
                         ),
                       ),
-                    )
-                  : Offstage(),
-              this.c5 != null
-                  ? Container(
-                      width: double.infinity,
-                      padding: EdgeInsets.only(bottom: 17),
-                      child: Container(
-                        margin: EdgeInsets.all(0),
-                        padding: EdgeInsets.all(0),
-                        height: 40,
-                        width: MediaQuery.of(context).size.width,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(2),
-                          color: widget.backgroundColor,
+                    ),
+                  )
+                : Offstage(),
+            this.c8 != null
+                ? Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.only(bottom: 17),
+                    child: Container(
+                      margin: EdgeInsets.all(0),
+                      padding: EdgeInsets.all(0),
+                      height: 45,
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(2),
+                        color: widget.backgroundColor,
+                      ),
+                      // ignore: deprecated_member_use
+                      child: OutlineButton(
+                        onPressed: () {
+                          setState(() {
+                            userPollChoice = 8;
+                          });
+                          widget.onVote!(userPollChoice);
+                        },
+                        color: Colors.green,
+                        padding: EdgeInsets.all(5.0),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Padding(
+                            padding: EdgeInsets.fromLTRB(16, 0, 0, 0),
+                            child: Text(this.c8 ?? '',
+                                style: GoogleFonts.lato(
+                                    fontSize: 16.0,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold)),
+                          ),
                         ),
-                        // ignore: deprecated_member_use
-                        child: OutlineButton(
-                          onPressed: () {
-                            setState(() {
-                              userPollChoice = 5;
-                            });
-                            widget.onVote!(userPollChoice);
-                          },
-                          color: Colors.green,
-                          padding: EdgeInsets.all(5.0),
-                          child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: Padding(
-                              padding: EdgeInsets.fromLTRB(16, 0, 0, 0),
-                              child: Text(this.c5 ?? '',
-                                  style: GoogleFonts.lato(
-                                      fontSize: 14.0,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold)),
-                            ),
-                          ),
-                          borderSide: BorderSide(
-                            color: widget.outlineColor,
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(6.0),
-                          ),
+                        borderSide: BorderSide(
+                          color: widget.outlineColor,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: new BorderRadius.circular(6.0),
                         ),
                       ),
-                    )
-                  : Offstage(),
-              this.c6 != null
-                  ? Container(
-                      width: double.infinity,
-                      padding: EdgeInsets.only(bottom: 17),
-                      child: Container(
-                        margin: EdgeInsets.all(0),
-                        padding: EdgeInsets.all(0),
-                        height: 40,
-                        width: MediaQuery.of(context).size.width,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(2),
-                          color: widget.backgroundColor,
-                        ),
-                        // ignore: deprecated_member_use
-                        child: OutlineButton(
-                          onPressed: () {
-                            setState(() {
-                              userPollChoice = 6;
-                            });
-                            widget.onVote!(userPollChoice);
-                          },
-                          color: Colors.green,
-                          padding: EdgeInsets.all(5.0),
-                          child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: Padding(
-                              padding: EdgeInsets.fromLTRB(16, 0, 0, 0),
-                              child: Text(this.c6 ?? '',
-                                  style: GoogleFonts.lato(
-                                      fontSize: 14.0,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold)),
-                            ),
-                          ),
-                          borderSide: BorderSide(
-                            color: widget.outlineColor,
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(6.0),
-                          ),
-                        ),
-                      ),
-                    )
-                  : Offstage(),
-              this.c7 != null
-                  ? Container(
-                      width: double.infinity,
-                      padding: EdgeInsets.only(bottom: 17),
-                      child: Container(
-                        margin: EdgeInsets.all(0),
-                        padding: EdgeInsets.all(0),
-                        height: 40,
-                        width: MediaQuery.of(context).size.width,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(2),
-                          color: widget.backgroundColor,
-                        ),
-                        // ignore: deprecated_member_use
-                        child: OutlineButton(
-                          onPressed: () {
-                            setState(() {
-                              userPollChoice = 7;
-                            });
-                            widget.onVote!(userPollChoice);
-                          },
-                          color: Colors.green,
-                          padding: EdgeInsets.all(5.0),
-                          child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: Padding(
-                              padding: EdgeInsets.fromLTRB(16, 0, 0, 0),
-                              child: Text(this.c7 ?? '',
-                                  style: GoogleFonts.lato(
-                                      fontSize: 14.0,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold)),
-                            ),
-                          ),
-                          borderSide: BorderSide(
-                            color: widget.outlineColor,
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(6.0),
-                          ),
-                        ),
-                      ),
-                    )
-                  : Offstage(),
-              this.c8 != null
-                  ? Container(
-                      width: double.infinity,
-                      padding: EdgeInsets.only(bottom: 17),
-                      child: Container(
-                        margin: EdgeInsets.all(0),
-                        padding: EdgeInsets.all(0),
-                        height: 40,
-                        width: MediaQuery.of(context).size.width,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(2),
-                          color: widget.backgroundColor,
-                        ),
-                        // ignore: deprecated_member_use
-                        child: OutlineButton(
-                          onPressed: () {
-                            setState(() {
-                              userPollChoice = 8;
-                            });
-                            widget.onVote!(userPollChoice);
-                          },
-                          color: Colors.green,
-                          padding: EdgeInsets.all(5.0),
-                          child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: Padding(
-                              padding: EdgeInsets.fromLTRB(16, 0, 0, 0),
-                              child: Text(this.c8 ?? '',
-                                  style: GoogleFonts.lato(
-                                      fontSize: 14.0,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold)),
-                            ),
-                          ),
-                          borderSide: BorderSide(
-                            color: widget.outlineColor,
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(6.0),
-                          ),
-                        ),
-                      ),
-                    )
-                  : Offstage(),
-            ],
-          ),
+                    ),
+                  )
+                : Offstage(),
+          ],
         )
       ],
     );
@@ -792,7 +815,7 @@ class _PollsState extends State<Polls> {
           child: LinearPercentIndicator(
               backgroundColor: Color(0xffedf0f3),
               animation: true,
-              lineHeight: 43.0,
+              lineHeight: 45.0,
               animationDuration: 500,
               percent: PollMath.getPerc(this.v1, this.v2, this.v3, this.v4,
                   this.v5, this.v6, this.v7, this.v8, 1)[0],
@@ -806,7 +829,7 @@ class _PollsState extends State<Polls> {
                         padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
                         child: Text(this.c1,
                             style: GoogleFonts.lato(
-                                fontSize: 14.0,
+                                fontSize: 16.0,
                                 color: Colors.black,
                                 fontWeight: FontWeight.bold)),
                       ),
@@ -823,7 +846,7 @@ class _PollsState extends State<Polls> {
                                 .toString() +
                             "%",
                         style: GoogleFonts.lato(
-                            fontSize: 14.0,
+                            fontSize: 16.0,
                             color: Colors.black,
                             fontWeight: FontWeight.bold)),
                   )
@@ -841,7 +864,7 @@ class _PollsState extends State<Polls> {
 //              width: MediaQuery.of(context).size.width,
               backgroundColor: Color(0xffedf0f3),
               animation: true,
-              lineHeight: 43.0,
+              lineHeight: 45.0,
               animationDuration: 500,
               percent: PollMath.getPerc(this.v1, this.v2, this.v3, this.v4,
                   this.v5, this.v6, this.v7, this.v8, 2)[0],
@@ -855,7 +878,7 @@ class _PollsState extends State<Polls> {
                         padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
                         child: Text(this.c2,
                             style: GoogleFonts.lato(
-                                fontSize: 14.0,
+                                fontSize: 16.0,
                                 color: Colors.black,
                                 fontWeight: FontWeight.bold)),
                       ),
@@ -872,7 +895,7 @@ class _PollsState extends State<Polls> {
                                 .toString() +
                             "%",
                         style: GoogleFonts.lato(
-                            fontSize: 14.0,
+                            fontSize: 16.0,
                             color: Colors.black,
                             fontWeight: FontWeight.bold)),
                   )
@@ -892,7 +915,7 @@ class _PollsState extends State<Polls> {
 //              width: MediaQuery.of(context).size.width,
 
                     animation: true,
-                    lineHeight: 43.0,
+                    lineHeight: 45.0,
                     animationDuration: 500,
                     percent: PollMath.getPerc(this.v1, this.v2, this.v3,
                         this.v4, this.v5, this.v6, this.v7, this.v8, 3)[0],
@@ -906,7 +929,7 @@ class _PollsState extends State<Polls> {
                               padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
                               child: Text(this.c3 ?? '',
                                   style: GoogleFonts.lato(
-                                      fontSize: 14.0,
+                                      fontSize: 16.0,
                                       color: Colors.black,
                                       fontWeight: FontWeight.bold)),
                             ),
@@ -931,7 +954,7 @@ class _PollsState extends State<Polls> {
                                       .toString() +
                                   "%",
                               style: GoogleFonts.lato(
-                                  fontSize: 14.0,
+                                  fontSize: 16.0,
                                   color: Colors.black,
                                   fontWeight: FontWeight.bold)),
                         )
@@ -950,7 +973,7 @@ class _PollsState extends State<Polls> {
                 child: LinearPercentIndicator(
                     backgroundColor: Color(0xffedf0f3),
                     animation: true,
-                    lineHeight: 43.0,
+                    lineHeight: 45.0,
                     animationDuration: 500,
                     percent: PollMath.getPerc(this.v1, this.v2, this.v3,
                         this.v4, this.v5, this.v6, this.v7, this.v8, 4)[0],
@@ -964,7 +987,7 @@ class _PollsState extends State<Polls> {
                               padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
                               child: Text(this.c4.toString(),
                                   style: GoogleFonts.lato(
-                                      fontSize: 14.0,
+                                      fontSize: 16.0,
                                       color: Colors.black,
                                       fontWeight: FontWeight.bold)),
                             ),
@@ -989,7 +1012,7 @@ class _PollsState extends State<Polls> {
                                       .toString() +
                                   "%",
                               style: GoogleFonts.lato(
-                                  fontSize: 14.0,
+                                  fontSize: 16.0,
                                   color: Colors.black,
                                   fontWeight: FontWeight.bold)),
                         )
@@ -1008,7 +1031,7 @@ class _PollsState extends State<Polls> {
                 child: LinearPercentIndicator(
                     backgroundColor: Color(0xffedf0f3),
                     animation: true,
-                    lineHeight: 43.0,
+                    lineHeight: 45.0,
                     animationDuration: 500,
                     percent: PollMath.getPerc(this.v1, this.v2, this.v3,
                         this.v4, this.v5, this.v6, this.v7, this.v8, 5)[0],
@@ -1022,7 +1045,7 @@ class _PollsState extends State<Polls> {
                               padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
                               child: Text(this.c5.toString(),
                                   style: GoogleFonts.lato(
-                                      fontSize: 14.0,
+                                      fontSize: 16.0,
                                       color: Colors.black,
                                       fontWeight: FontWeight.bold)),
                             ),
@@ -1047,7 +1070,7 @@ class _PollsState extends State<Polls> {
                                       .toString() +
                                   "%",
                               style: GoogleFonts.lato(
-                                  fontSize: 14.0,
+                                  fontSize: 16.0,
                                   color: Colors.black,
                                   fontWeight: FontWeight.bold)),
                         )
@@ -1066,7 +1089,7 @@ class _PollsState extends State<Polls> {
                 child: LinearPercentIndicator(
                     backgroundColor: Color(0xffedf0f3),
                     animation: true,
-                    lineHeight: 43.0,
+                    lineHeight: 45.0,
                     animationDuration: 500,
                     percent: PollMath.getPerc(this.v1, this.v2, this.v3,
                         this.v4, this.v5, this.v6, this.v7, this.v8, 6)[0],
@@ -1080,7 +1103,7 @@ class _PollsState extends State<Polls> {
                               padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
                               child: Text(this.c6.toString(),
                                   style: GoogleFonts.lato(
-                                      fontSize: 14.0,
+                                      fontSize: 16.0,
                                       color: Colors.black,
                                       fontWeight: FontWeight.bold)),
                             ),
@@ -1105,7 +1128,7 @@ class _PollsState extends State<Polls> {
                                       .toString() +
                                   "%",
                               style: GoogleFonts.lato(
-                                  fontSize: 14.0,
+                                  fontSize: 16.0,
                                   color: Colors.black,
                                   fontWeight: FontWeight.bold)),
                         )
@@ -1124,7 +1147,7 @@ class _PollsState extends State<Polls> {
                 child: LinearPercentIndicator(
                     backgroundColor: Color(0xffedf0f3),
                     animation: true,
-                    lineHeight: 43.0,
+                    lineHeight: 45.0,
                     animationDuration: 500,
                     percent: PollMath.getPerc(this.v1, this.v2, this.v3,
                         this.v4, this.v5, this.v6, this.v7, this.v8, 7)[0],
@@ -1138,7 +1161,7 @@ class _PollsState extends State<Polls> {
                               padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
                               child: Text(this.c7.toString(),
                                   style: GoogleFonts.lato(
-                                      fontSize: 14.0,
+                                      fontSize: 16.0,
                                       color: Colors.black,
                                       fontWeight: FontWeight.bold)),
                             ),
@@ -1163,7 +1186,7 @@ class _PollsState extends State<Polls> {
                                       .toString() +
                                   "%",
                               style: GoogleFonts.lato(
-                                  fontSize: 14.0,
+                                  fontSize: 16.0,
                                   color: Colors.black,
                                   fontWeight: FontWeight.bold)),
                         )
@@ -1182,7 +1205,7 @@ class _PollsState extends State<Polls> {
                 child: LinearPercentIndicator(
                     backgroundColor: Color(0xffedf0f3),
                     animation: true,
-                    lineHeight: 43.0,
+                    lineHeight: 45.0,
                     animationDuration: 500,
                     percent: PollMath.getPerc(this.v1, this.v2, this.v3,
                         this.v4, this.v5, this.v6, this.v7, this.v8, 8)[0],
@@ -1196,7 +1219,7 @@ class _PollsState extends State<Polls> {
                               padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
                               child: Text(this.c8.toString(),
                                   style: GoogleFonts.lato(
-                                      fontSize: 14.0,
+                                      fontSize: 16.0,
                                       color: Colors.black,
                                       fontWeight: FontWeight.bold)),
                             ),
@@ -1221,7 +1244,7 @@ class _PollsState extends State<Polls> {
                                       .toString() +
                                   "%",
                               style: GoogleFonts.lato(
-                                  fontSize: 14.0,
+                                  fontSize: 16.0,
                                   color: Colors.black,
                                   fontWeight: FontWeight.bold)),
                         )
@@ -1277,13 +1300,14 @@ class _PollsState extends State<Polls> {
           height: 12,
         ),
         Container(
+          
           margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
           width: double.infinity,
           child: LinearPercentIndicator(
             
             backgroundColor: Color(0xffedf0f3),
             animation: true,
-            lineHeight: 43.0,
+            lineHeight: 45.0,
             animationDuration: 500,
             percent: PollMath.getPerc(this.v1, this.v2, this.v3, this.v4,
                 this.v5, this.v6, this.v7, this.v8, 1)[0],
@@ -1297,7 +1321,7 @@ class _PollsState extends State<Polls> {
                       padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
                       child: Text(this.c1.toString(),
                           style: GoogleFonts.lato(
-                              fontSize: 14.0,
+                              fontSize: 16.0,
                               color: Colors.black,
                               fontWeight: FontWeight.bold)),
                     ),
@@ -1315,7 +1339,7 @@ class _PollsState extends State<Polls> {
                               .toString() +
                           "%",
                       style: GoogleFonts.lato(
-                          fontSize: 14.0,
+                          fontSize: 16.0,
                           color: Colors.black,
                           fontWeight: FontWeight.bold)),
                 )
@@ -1334,7 +1358,7 @@ class _PollsState extends State<Polls> {
             backgroundColor: Color(0xffedf0f3),
 //              width: MediaQuery.of(context).size.width,
             animation: true,
-            lineHeight: 43.0,
+            lineHeight: 45.0,
             animationDuration: 500,
             percent: PollMath.getPerc(this.v1, this.v2, this.v3, this.v4,
                 this.v5, this.v6, this.v7, this.v8, 2)[0],
@@ -1348,7 +1372,7 @@ class _PollsState extends State<Polls> {
                       padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
                       child: Text(this.c2.toString(),
                           style: GoogleFonts.lato(
-                              fontSize: 14.0,
+                              fontSize: 16.0,
                               color: Colors.black,
                               fontWeight: FontWeight.bold)),
                     ),
@@ -1366,7 +1390,7 @@ class _PollsState extends State<Polls> {
                               .toString() +
                           "%",
                       style: GoogleFonts.lato(
-                          fontSize: 14.0,
+                          fontSize: 16.0,
                           color: Colors.black,
                           fontWeight: FontWeight.bold)),
                 )
@@ -1387,7 +1411,7 @@ class _PollsState extends State<Polls> {
                   backgroundColor: Color(0xffedf0f3),
 //              width: MediaQuery.of(context).size.width,
                   animation: true,
-                  lineHeight: 43.0,
+                  lineHeight: 45.0,
                   animationDuration: 500,
                   percent: PollMath.getPerc(this.v1, this.v2, this.v3, this.v4,
                       this.v5, this.v6, this.v7, this.v8, 3)[0],
@@ -1401,7 +1425,7 @@ class _PollsState extends State<Polls> {
                             padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
                             child: Text(this.c3.toString(),
                                 style: GoogleFonts.lato(
-                                    fontSize: 14.0,
+                                    fontSize: 16.0,
                                     color: Colors.black,
                                     fontWeight: FontWeight.bold)),
                           ),
@@ -1427,7 +1451,7 @@ class _PollsState extends State<Polls> {
                                     .toString() +
                                 "%",
                             style: GoogleFonts.lato(
-                                fontSize: 14.0,
+                                fontSize: 16.0,
                                 color: Colors.black,
                                 fontWeight: FontWeight.bold)),
                       )
@@ -1448,7 +1472,7 @@ class _PollsState extends State<Polls> {
                   backgroundColor: Color(0xffedf0f3),
 //              width: MediaQuery.of(context).size.width,
                   animation: true,
-                  lineHeight: 43.0,
+                  lineHeight: 45.0,
                   animationDuration: 500,
                   percent: PollMath.getPerc(this.v1, this.v2, this.v3, this.v4,
                       this.v5, this.v6, this.v7, this.v8, 4)[0],
@@ -1462,7 +1486,7 @@ class _PollsState extends State<Polls> {
                             padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
                             child: Text(this.c4.toString(),
                                 style: GoogleFonts.lato(
-                                    fontSize: 14.0,
+                                    fontSize: 16.0,
                                     color: Colors.black,
                                     fontWeight: FontWeight.bold)),
                           ),
@@ -1488,7 +1512,7 @@ class _PollsState extends State<Polls> {
                                     .toString() +
                                 "%",
                             style: GoogleFonts.lato(
-                                fontSize: 14.0,
+                                fontSize: 16.0,
                                 color: Colors.black,
                                 fontWeight: FontWeight.bold)),
                       )
@@ -1509,7 +1533,7 @@ class _PollsState extends State<Polls> {
                   backgroundColor: Color(0xffedf0f3),
 //              width: MediaQuery.of(context).size.width,
                   animation: true,
-                  lineHeight: 43.0,
+                 lineHeight: 45.0,
                   animationDuration: 500,
                   percent: PollMath.getPerc(this.v1, this.v2, this.v3, this.v4,
                       this.v5, this.v6, this.v7, this.v8, 5)[0],
@@ -1523,7 +1547,7 @@ class _PollsState extends State<Polls> {
                             padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
                             child: Text(this.c5.toString(),
                                 style: GoogleFonts.lato(
-                                    fontSize: 14.0,
+                                    fontSize: 16.0,
                                     color: Colors.black,
                                     fontWeight: FontWeight.bold)),
                           ),
@@ -1549,7 +1573,7 @@ class _PollsState extends State<Polls> {
                                     .toString() +
                                 "%",
                             style: GoogleFonts.lato(
-                                fontSize: 14.0,
+                                fontSize: 16.0,
                                 color: Colors.black,
                                 fontWeight: FontWeight.bold)),
                       )
@@ -1570,7 +1594,7 @@ class _PollsState extends State<Polls> {
                   backgroundColor: Color(0xffedf0f3),
 //              width: MediaQuery.of(context).size.width,
                   animation: true,
-                  lineHeight: 43.0,
+                  lineHeight: 45.0,
                   animationDuration: 500,
                   percent: PollMath.getPerc(this.v1, this.v2, this.v3, this.v4,
                       this.v5, this.v6, this.v7, this.v8, 6)[0],
@@ -1584,7 +1608,7 @@ class _PollsState extends State<Polls> {
                             padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
                             child: Text(this.c6.toString(),
                                 style: GoogleFonts.lato(
-                                    fontSize: 14.0,
+                                    fontSize: 16.0,
                                     color: Colors.black,
                                     fontWeight: FontWeight.bold)),
                           ),
@@ -1610,7 +1634,7 @@ class _PollsState extends State<Polls> {
                                     .toString() +
                                 "%",
                             style: GoogleFonts.lato(
-                                fontSize: 14.0,
+                                fontSize: 16.0,
                                 color: Colors.black,
                                 fontWeight: FontWeight.bold)),
                       )
@@ -1632,7 +1656,7 @@ class _PollsState extends State<Polls> {
 //              width: MediaQuery.of(context).size.width,
                   animation: true,
                   
-                  lineHeight: 43.0,
+                 lineHeight: 45.0,
                   animationDuration: 500,
                   percent: PollMath.getPerc(this.v1, this.v2, this.v3, this.v4,
                       this.v5, this.v6, this.v7, this.v8, 7)[0],
@@ -1646,7 +1670,7 @@ class _PollsState extends State<Polls> {
                             padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
                             child: Text(this.c7.toString(),
                                 style: GoogleFonts.lato(
-                                    fontSize: 14.0,
+                                    fontSize: 16.0,
                                     color: Colors.black,
                                     fontWeight: FontWeight.bold)),
                           ),
@@ -1672,7 +1696,7 @@ class _PollsState extends State<Polls> {
                                     .toString() +
                                 "%",
                             style: GoogleFonts.lato(
-                                fontSize: 14.0,
+                                fontSize: 16.0,
                                 color: Colors.black,
                                 fontWeight: FontWeight.bold)),
                       )
@@ -1693,7 +1717,7 @@ class _PollsState extends State<Polls> {
                   backgroundColor: Color(0xffedf0f3),
 //              width: MediaQuery.of(context).size.width,
                   animation: true,
-                  lineHeight: 43.0,
+                  lineHeight: 45.0,
                   animationDuration: 500,
                   percent: PollMath.getPerc(this.v1, this.v2, this.v3, this.v4,
                       this.v5, this.v6, this.v7, this.v8, 8)[0],
@@ -1707,7 +1731,7 @@ class _PollsState extends State<Polls> {
                             padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
                             child: Text(this.c8.toString(),
                                 style: GoogleFonts.lato(
-                                    fontSize: 14.0,
+                                    fontSize: 16.0,
                                     color: Colors.black,
                                     fontWeight: FontWeight.bold)),
                           ),
@@ -1733,7 +1757,7 @@ class _PollsState extends State<Polls> {
                                     .toString() +
                                 "%",
                             style: GoogleFonts.lato(
-                                fontSize: 14.0,
+                                fontSize: 16.0,
                                 color: Colors.black,
                                 fontWeight: FontWeight.bold)),
                       )

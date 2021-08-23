@@ -145,6 +145,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   // ignore: unused_field
   int _currentIndex = 0;
+  bool currentPage = false;
 
   List cardList = [polldata_widget()];
 
@@ -160,7 +161,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     Material _buildDesktopView(double width, double height) {
       return Material(
-        child: (Column(
+        child: (Stack(
           children: <Widget>[
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -175,9 +176,7 @@ class _HomePageState extends State<HomePage> {
                         size: 40,
                       ),
                       color: Color(0xff092836),
-                      onPressed: () {
-                        
-                      },
+                      onPressed: () {},
                     ),
                     SizedBox(
                       width: 20.0,
@@ -219,30 +218,31 @@ class _HomePageState extends State<HomePage> {
                 ),
               ],
             ),
-            SizedBox(
-              height: 50.0,
-            ),
-            CarouselSlider(
-              options: CarouselOptions(
-                height: height * 0.80,
-                viewportFraction: 0.35,
-                enableInfiniteScroll: true,
-                autoPlayCurve: Curves.fastOutSlowIn,
-                enlargeCenterPage: true,
-                onPageChanged: (index, reason) {
-                  setState(() {
-                    _currentIndex = index;
+            Padding(
+              padding: const EdgeInsets.all(32.0),
+              child: CarouselSlider(
+                options: CarouselOptions(
+                  height: height * 0.9,
+                 
+                  viewportFraction: 0.35,
+                  enableInfiniteScroll: true,
+                  autoPlayCurve: Curves.fastOutSlowIn,
+                  enlargeCenterPage: true,
+                  onPageChanged: (index, reason) {
+                    setState(() {
+                      _currentIndex = index;
+                    });
+                  },
+                ),
+                items: cardList.map((card) {
+                  return Builder(builder: (BuildContext context) {
+                    return Container(
+                      width: width * 0.27,
+                      child: card,
+                    );
                   });
-                },
+                }).toList(),
               ),
-              items: cardList.map((card) {
-                return Builder(builder: (BuildContext context) {
-                  return Container(
-                    width: width * 0.23,
-                    child: card,
-                  );
-                });
-              }).toList(),
             ),
           ],
         )),
