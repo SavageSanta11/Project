@@ -29,6 +29,23 @@ class _uploadModeState extends State<uploadMode> {
   var imageFile;
   File_Data_Model? file;
 
+  final ImagePicker _picker = ImagePicker();
+  File? _imageFile;
+  
+  // Check this code working for image files or not
+  Future<void> _getImage(ImageSource source) async {
+    var image = await _picker.pickImage(source: source);
+    if (image != null) {
+      final tempImage = File(image.path);
+      print('---------------->'+image.path.toString()+'<----------------');
+      setState(() {
+        this._imageFile = tempImage;
+        //TODO: send file as _imageFile and path as image.path
+      });
+    }
+    Navigator.pop(context);
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -95,10 +112,11 @@ class _uploadModeState extends State<uploadMode> {
                   primary: Colors.white,
                 ),
           onPressed: () async {
-            openGallery();
+            /*openGallery();
              final events = await controller.pickFiles();
                   if (events.isEmpty) return;
-                  widgetKey.currentState!.UploadedFile(events.first);
+                  widgetKey.currentState!.UploadedFile(events.first);*/
+                  _getImage(ImageSource.gallery);
           },
         ),
       ));

@@ -1,10 +1,32 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:project/pages/comment_page.dart';
 import 'polls.dart';
 
 // ignore: camel_case_types
+
+GlobalKey key = GlobalKey();
+
+Widget selectedCard = SizedBox();
+
 class polldata_widget extends StatefulWidget {
-  const polldata_widget({Key? key}) : super(key: key);
+  final String previewUrl;
+  final String pollTitle;
+  final String username;
+  final String question;
+  final int votes;
+  final int time;
+
+  const polldata_widget(
+      {Key? key,
+      required this.username,
+      required this.question,
+      required this.votes,
+      required this.time,
+      required this.previewUrl,
+      required this.pollTitle})
+      : super(key: key);
 
   @override
   _polldata_widgetState createState() => _polldata_widgetState();
@@ -38,8 +60,8 @@ class _polldata_widgetState extends State<polldata_widget> {
   Widget build(BuildContext context) {
     Container _createShareButton(double width, double height, bool isWeb) {
       return (Container(
-        width: isWeb ? width * 0.25 : width * 0.95,
-        height: height * 0.06,
+        width: kIsWeb ? width * 0.125 : width * 0.95,
+        height: height * 0.05,
         decoration: BoxDecoration(
           color: Colors.transparent,
           borderRadius: BorderRadius.all(
@@ -50,9 +72,9 @@ class _polldata_widgetState extends State<polldata_widget> {
           child: Text(
             'SHARE',
             style: GoogleFonts.lato(
-              fontSize: isWeb ? 16.0 : 14.0,
-              color: Color(0xff092836),
-            ),
+                fontSize: isWeb ? 16.0 : 14.0,
+                color: Colors.black,
+                fontWeight: FontWeight.bold),
           ),
           style: ElevatedButton.styleFrom(
             shape: new RoundedRectangleBorder(
@@ -65,168 +87,134 @@ class _polldata_widgetState extends State<polldata_widget> {
       ));
     }
 
-    Container _createJoinButton(double width, double height, bool isWeb) {
-      return (Container(
-        width: isWeb ? width * 0.25 : width * 0.95,
-        height: height * 0.05,
+    Container _getCardData(
+      double width,
+      double height,
+      bool isWeb,
+    ) {
+      return Container(
+        
+        width: width * 0.25,
         decoration: BoxDecoration(
-          color: Colors.transparent,
-          borderRadius: BorderRadius.all(
-            Radius.circular(6.0),
-          ),
-        ),
-        child: ElevatedButton(
-          child: Text("JOIN NOW",
-              style: GoogleFonts.lato(
-                fontSize: 16.0,
-                color: Color(0xff092836),
-              )),
-          style: ElevatedButton.styleFrom(
-            shape: new RoundedRectangleBorder(
-                borderRadius: new BorderRadius.circular(20.0)),
-            primary: Colors.white,
-          ),
-          onPressed: () {},
-        ),
-      ));
-    }
-
-    Card _getCardData(double width, double height, bool isWeb) {
-      return Card(
-        clipBehavior: Clip.antiAlias,
-        child: ListView(
-          physics: const AlwaysScrollableScrollPhysics(),
-          children: [
-            Container(
-                height: height * 0.25,
-                width: isWeb ? width * 0.27 : width * 0.95,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: NetworkImage(previewImgUrl), fit: BoxFit.cover),
-                )),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16.0, 20, 0, 8),
-              child: Text(
-                username,
-                textAlign: TextAlign.left,
-                style: TextStyle(
-                  color: Colors.blueGrey,
-                  fontSize: isWeb ? 14.0 : 12.0,
-                ),
-              ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey,
+              blurRadius: 5.0,
+              offset: Offset(2.0, 0),
             ),
-            
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
-              child: Container(
-                width: width*0.27,
-                height: height*0.35,
-                child: Polls(
-                  
-                  children: [
-                    // This cannot be less than 2, else will throw an exception
-                    Polls.options(title: 'I agree', value: option1),
-                    Polls.options(title: 'I disagree', value: option2),
-                    
-                  ],
-                  question: Text(
-                    questionText,
-                    style: GoogleFonts.lato(
-                        fontSize: isWeb ? 24.0 : 18.0,
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  currentUser: this.user,
-                  creatorID: this.creator,
-                  voteData: usersWhoVoted,
-                  userChoice: usersWhoVoted[this.user],
-                  onVoteBackgroundColor: Color(0xffe4ccc0),
-                  leadingBackgroundColor: Color(0xff8ed0e0),
-                  backgroundColor: Color(0xffedf0f3),
-                  
-                  outlineColor: Color(0xffedf0f3),
-                  onVote: (choice) {
-                    setState(() {
-                      this.usersWhoVoted[this.user] = choice;
-                    });
-                    if (choice == 1) {
-                      setState(() {
-                        option1 += 1.0;
-                      });
-                    }
-                    if (choice == 2) {
-                      setState(() {
-                        option2 += 1.0;
-                      });
-                    }
-                    
-                  },
-                ),
-              ),
-            ),
-            Padding(
-              padding: isWeb? const EdgeInsets.fromLTRB(16.0, 64, 16, 0) : const EdgeInsets.fromLTRB(16.0, 8, 16, 0),
-              child: _createShareButton(width, height, isWeb),
-            )
           ],
         ),
-      );
-    }
-
-    // ignore: unused_element
-    Container _endingCard(double width, double height, bool isWeb) {
-      return Container(
-        decoration: BoxDecoration(
-            gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                stops: [0.3, 1],
-                colors: [Color(0xff8dcdde), Colors.purple])),
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
+        child: Card(
+          clipBehavior: Clip.antiAlias,
           child: ListView(
+            physics: const AlwaysScrollableScrollPhysics(),
             children: [
+              Container(
+                  height: height * 0.25,
+                  width: isWeb ? width * 0.25 : width * 0.95,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: NetworkImage(widget.previewUrl),
+                        fit: BoxFit.cover),
+                  )),
               Padding(
-                padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+                padding: const EdgeInsets.fromLTRB(16.0, 20, 0, 8),
                 child: Text(
-                  "Join",
-                  style: GoogleFonts.lato(
-                    fontSize: isWeb ? 66 : 60,
-                    color: Colors.white,
+                  widget.pollTitle,
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: isWeb ? 18.0 : 12.0,
                   ),
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+                padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
+                child: Divider(
+                  color: Colors.black,
+                  thickness: 3.0,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16.0, 8, 0, 0),
                 child: Text(
-                  "the",
-                  style: GoogleFonts.lato(
-                    fontSize: isWeb ? 66 : 60,
-                    color: Colors.white,
+                  widget.username,
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
+                    color: Colors.blueGrey,
+                    fontSize: isWeb ? 14.0 : 12.0,
                   ),
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
-                child: Text(
-                  'waitlist',
-                  style: GoogleFonts.lato(
-                    fontSize: isWeb ? 66 : 60,
-                    color: Colors.white,
+                padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
+                child: Container(
+                  width: width * 0.25,
+                  height: height * 0.35,
+                  child: Polls(
+                    children: [
+                      // This cannot be less than 2, else will throw an exception
+                      Polls.options(title: 'I agree', value: option1),
+                      Polls.options(title: 'I disagree', value: option2),
+                    ],
+                    question: Text(
+                      widget.question,
+                      style: GoogleFonts.lato(
+                          fontSize: isWeb ? 24.0 : 18.0,
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    currentUser: this.user,
+                    creatorID: this.creator,
+                    voteData: usersWhoVoted,
+                    userChoice: usersWhoVoted[this.user],
+                    onVoteBackgroundColor: Color(0xffe4ccc0),
+                    leadingBackgroundColor: Color(0xff8ed0e0),
+                    backgroundColor: Color(0xffedf0f3),
+                    outlineColor: Color(0xffedf0f3),
+                    onVote: (choice) {
+                      setState(() {
+                        this.usersWhoVoted[this.user] = choice;
+                      });
+                      if (choice == 1) {
+                        setState(() {
+                          option1 += 1.0;
+                        });
+                      }
+                      if (choice == 2) {
+                        setState(() {
+                          option2 += 1.0;
+                        });
+                      }
+                    },
                   ),
                 ),
               ),
               Padding(
-                padding: isWeb
-                    ? EdgeInsets.fromLTRB(20, 150, 20, 0)
-                    : EdgeInsets.fromLTRB(5, 100, 5, 0),
-                child: _createJoinButton(width, height, isWeb),
+                padding: kIsWeb
+                    ? EdgeInsets.fromLTRB(16, 0, 20, 10)
+                    : EdgeInsets.fromLTRB(5, 100, 5, 10),
+                child: Row(
+                  children: [
+                    TextButton.icon(
+                        onPressed: () {
+                          Navigator.of(context).pushNamed(CommentPage.route);
+                        },
+                        icon: Icon(Icons.comment, color: Colors.black,),
+                        label: Text('13', style: TextStyle(color: Colors.black),)),
+                    SizedBox(
+                      width: width * 0.02,
+                    ),
+                    _createShareButton(width, height, isWeb)
+                  ],
+                ),
               )
             ],
           ),
         ),
       );
     }
+
 
     // ignore: unused_local_variable
     Widget pollcard;
@@ -239,16 +227,11 @@ class _polldata_widgetState extends State<polldata_widget> {
 
     if (aspectRatio >= 1.5) {
       pollcard = _getCardData(width, height, isWeb);
-      isWeb = true;
     } else {
       pollcard = _getCardData(width, height, isWeb);
       isWeb = false;
     }
 
-    return Container(
-      
-        decoration:
-            BoxDecoration(boxShadow: [BoxShadow(color: Color(0xffebeff2), blurRadius: 5.0)]),
-        child: _getCardData(width, height, isWeb));
+    return pollcard;
   }
 }
