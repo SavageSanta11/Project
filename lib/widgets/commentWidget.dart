@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart';
@@ -41,10 +42,8 @@ class _CommentsState extends State<Comments> {
           'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTYyOTQzMjE5MSwianRpIjoiZTQzYjMyYmQtOGNlNS00ODU4LWFjNjQtOGJlNzBjMGI0MTY5IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6Imthbm9AcW9ud2F5LmNvbSIsIm5iZiI6MTYyOTQzMjE5MSwiZXhwIjoxNjI5NDMzMDkxfQ.mMHDB_oBSxnjGK8MYXRGrVw9yV-pajJ8YOi5LLbxdII',
       'Content-Type': 'application/json'
     };
-    String body = json.encode(<String, String>{
-      "poll_id": poll_id,
-      "text": text
-    });
+    String body =
+        json.encode(<String, String>{"poll_id": poll_id, "text": text});
 
     http.Response response = await http.post(
         Uri.parse('http://164.52.212.151:3012/api/access/record/comment'),
@@ -73,13 +72,12 @@ class _CommentsState extends State<Comments> {
     });
   }
 
-  Widget _buildComment(String comment, int index) {
+  Widget _buildComment(String comment, int index, ) {
     return new Container(
       width: 300.0,
       height: 106.0,
       decoration: BoxDecoration(
-        border: Border.all(),
-      ),
+          border: Border(bottom: BorderSide(width: 1, color: Colors.black))),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Padding(
           padding: const EdgeInsets.all(2.0),
@@ -132,6 +130,7 @@ class _CommentsState extends State<Comments> {
   }
 
   List comments = [];
+  String enteredText = "";
 
   Future<void> showComments(String poll_id, int skip, int pageSize) async {
     String uri =
@@ -162,32 +161,98 @@ class _CommentsState extends State<Comments> {
   }
 
   Widget build(BuildContext context) {
-    if (isLoaded) {
-      return Scaffold(
-        body: Container(
-          child: Column(
-            children: [
-              Container(
-                width: 300.0,
-                child: TextField(
-                  controller: _textFieldController,
-                  decoration: InputDecoration(border: OutlineInputBorder()),
-                  //autofocus: true,
-                  onSubmitted: (val) {
-                    _addComment(val);
-                    recordComment('yjhhonw', val);
-                    _textFieldController.clear();
-                  },
+    Scaffold commentSection(double height, double width) {
+      if (isLoaded) {
+        return Scaffold(
+          body: Container(
+            height: height,
+            width: width,
+            decoration: BoxDecoration(border: Border.all()),
+            child: Column(
+              children: [
+                Container(
+                  width: width,
+                  height: height * 0.15,
+                  child: TextField(
+                    inputFormatters: [LengthLimitingTextInputFormatter(100)],
+                    controller: _textFieldController,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                    ),
+                    maxLines: 3,
+
+                    onChanged: (value) {
+                      setState(() {
+                        enteredText = value;
+                      });
+                    },
+
+                    //autofocus: true,
+                    onSubmitted: (val) {
+                      
+                    },
+                  ),
                 ),
-              ),
-              Container(
-                  height: 300.0, width: 300.0, child: _buildCommentList()),
-            ],
+                Row(
+                  children: [
+                    Container(
+                        height: height * 0.04,
+                        width: width * 0.75,
+                        decoration: BoxDecoration(color: Color(0xffececec)),
+                        child: Padding(
+                          padding: const EdgeInsets.all(2.0),
+                          child: Text(
+                            enteredText.length.toString() + "/100",
+                            textAlign: TextAlign.end,
+                          ),
+                        )),
+                    Container(
+                      width: width * 0.245,
+                      height: height * 0.04,
+                      decoration: BoxDecoration(color: Colors.black),
+                      child: TextButton(
+                        child: Text(
+                          'Comment',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        onPressed: () {
+                          _addComment(enteredText);
+                      recordComment('yjhhonw', enteredText);
+                      _textFieldController.clear();
+                        },
+                      ),
+                    )
+                  ],
+                ),
+                Container(
+                    height: height * 0.79,
+                    width: width,
+                    child: _buildCommentList()),
+              ],
+            ),
           ),
-        ),
-      );
-    } else {
-      return Text('loading comments');
+        );
+      } else {
+        return Scaffold();
+      }
     }
+
+    Widget commentcard;
+
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
+    bool isWeb = false;
+
+    double aspectRatio =
+        MediaQuery.of(context).size.width / MediaQuery.of(context).size.height;
+
+    if (aspectRatio >= 1.5) {
+      commentcard = commentSection(height * 0.8, width * 0.40);
+    } else {
+      commentcard = commentSection(height, width);
+      isWeb = false;
+    }
+
+    return commentcard;
   }
 }

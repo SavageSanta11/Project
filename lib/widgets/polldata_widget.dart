@@ -8,6 +8,8 @@ import 'polls.dart';
 
 GlobalKey key = GlobalKey();
 
+typedef void BoolCallback(bool viewComment);
+
 Widget selectedCard = SizedBox();
 
 class polldata_widget extends StatefulWidget {
@@ -17,6 +19,7 @@ class polldata_widget extends StatefulWidget {
   final String question;
   final int votes;
   final int time;
+  final BoolCallback onViewcomment;
 
   const polldata_widget(
       {Key? key,
@@ -25,7 +28,8 @@ class polldata_widget extends StatefulWidget {
       required this.votes,
       required this.time,
       required this.previewUrl,
-      required this.pollTitle})
+      required this.pollTitle,
+      required this.onViewcomment})
       : super(key: key);
 
   @override
@@ -56,11 +60,13 @@ class _polldata_widgetState extends State<polldata_widget> {
   String creator = "eddy@mail.com";
 
   List<String> pollOptions = ["Option1", "Option2", "Option3"];
+
+  bool viewComment = false;
   @override
   Widget build(BuildContext context) {
     Container _createShareButton(double width, double height, bool isWeb) {
       return (Container(
-        width: kIsWeb ? width * 0.125 : width * 0.95,
+        width: width * 0.125, 
         height: height * 0.05,
         decoration: BoxDecoration(
           color: Colors.transparent,
@@ -93,8 +99,7 @@ class _polldata_widgetState extends State<polldata_widget> {
       bool isWeb,
     ) {
       return Container(
-        
-        width: width * 0.25,
+        width:  width * 0.25,
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
@@ -198,10 +203,20 @@ class _polldata_widgetState extends State<polldata_widget> {
                   children: [
                     TextButton.icon(
                         onPressed: () {
-                          Navigator.of(context).pushNamed(CommentPage.route);
+                          setState(() {
+                            viewComment = !viewComment;
+                          });
+                          widget.onViewcomment(viewComment);
+                          
                         },
-                        icon: Icon(Icons.comment, color: Colors.black,),
-                        label: Text('13', style: TextStyle(color: Colors.black),)),
+                        icon: Icon(
+                          Icons.comment,
+                          color: Colors.black,
+                        ),
+                        label: Text(
+                          '13',
+                          style: TextStyle(color: Colors.black),
+                        )),
                     SizedBox(
                       width: width * 0.02,
                     ),
@@ -214,7 +229,6 @@ class _polldata_widgetState extends State<polldata_widget> {
         ),
       );
     }
-
 
     // ignore: unused_local_variable
     Widget pollcard;

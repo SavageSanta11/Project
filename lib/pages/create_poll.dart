@@ -191,11 +191,11 @@ class _CreatePollState extends State<CreatePoll> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                DurationWidget('Days', _durationWidth * 0.25, height * 0.07,
+                DurationWidget('Days', _durationWidth * 0.29, height * 0.07,
                     listDays, updateDays),
-                DurationWidget('Hours', _durationWidth * 0.25, height * 0.07,
+                DurationWidget('Hours', _durationWidth * 0.29, height * 0.07,
                     listHours, updateHours),
-                DurationWidget('Minutes', _durationWidth * 0.25, height * 0.07,
+                DurationWidget('Minutes', _durationWidth * 0.29, height * 0.07,
                     listMinutes, updateMinutes),
               ],
             ),
@@ -206,6 +206,7 @@ class _CreatePollState extends State<CreatePoll> {
 
     Container _createPublishButton(double width, double height) {
       return (Container(
+        
         width: width,
         height: height,
         decoration: BoxDecoration(
@@ -214,7 +215,7 @@ class _CreatePollState extends State<CreatePoll> {
             Radius.circular(6.0),
           ),
         ),
-        child: ElevatedButton(
+        child:ElevatedButton(
           child: Text('Publish', style: TextStyle(fontFamily: 'Leto')),
           style: ElevatedButton.styleFrom(
             shape: new RoundedRectangleBorder(
@@ -223,7 +224,7 @@ class _CreatePollState extends State<CreatePoll> {
           ),
           onPressed: () {
             createPollRest();
-
+        
             Navigator.of(context).pushNamed(HomePage.route);
           },
         ),
