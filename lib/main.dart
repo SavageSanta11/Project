@@ -3,7 +3,6 @@
 // found in the LICENSE file.
 
 import 'package:flutter/material.dart';
-import 'package:project/pages/comment_page.dart';
 import 'package:project/pages/create_poll.dart';
 import 'pages/index_page.dart';
 import 'package:url_strategy/url_strategy.dart';
@@ -29,7 +28,7 @@ class MyApp extends StatelessWidget {
         Home.route: (context) => Home(),
         CreatePoll.route: (context) => CreatePoll(),
         HomePage.route: (context) => HomePage(),
-        CommentPage.route: (context) =>CommentPage()
+       
       },
     );
   }
