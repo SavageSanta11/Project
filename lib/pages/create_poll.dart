@@ -154,6 +154,7 @@ class _CreatePollState extends State<CreatePoll> {
     Container _createQuestionField(double width, double height) {
       double _questionWidth = width * 0.8;
       return (Container(
+        
         child: Column(
           children: [
             Container(

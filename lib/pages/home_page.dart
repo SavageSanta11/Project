@@ -1,8 +1,5 @@
 import 'dart:convert';
-
-import 'package:project/widgets/WaitlistCardWidget.dart';
 import 'package:project/widgets/commentWidget.dart';
-
 import '../widgets/carousel/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import '../widgets/polldata_widget.dart';
@@ -81,6 +78,7 @@ Future<void> publishPoll(String poll_id) async {
   print(convertDataToJson);
 }
 
+// ignore: non_constant_identifier_names
 Future<void> showComments(String poll_id, int skip, int pageSize) async {
   String uri = 'http://164.52.212.151:3012/api/access/show/comments?poll_id=' +
       poll_id +
@@ -97,6 +95,7 @@ Future<void> showComments(String poll_id, int skip, int pageSize) async {
   print(convertDataToJson);
 }
 
+// ignore: non_constant_identifier_names
 Future<void> showUserComments(String poll_id, String email) async {
   String uri = 'http://164.52.212.151:3012/api/access/show/comments?poll_id=' +
       poll_id +
@@ -111,6 +110,7 @@ Future<void> showUserComments(String poll_id, String email) async {
   print(convertDataToJson);
 }
 
+// ignore: non_constant_identifier_names
 Future<void> getPollResult(String poll_id) async {
   String uri =
       'http://164.52.212.151:3012/api/access/poll/result?poll_id=' + poll_id;
@@ -133,12 +133,14 @@ class HomePage extends StatefulWidget {
 // ignore: camel_case_types
 class _HomePageState extends State<HomePage> {
   final CarouselController _controller = CarouselController();
+  // ignore: unused_field
   int _currentIndex = 0;
   bool center = false;
   bool pollsLoaded = false;
 
   bool onViewcomment = false;
 
+  // ignore: non_constant_identifier_names
   void updateViewcomment(bool Viewcomment) {
     setState(() {
       onViewcomment = Viewcomment;
@@ -146,6 +148,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> getPollRecommendations(
+      // ignore: non_constant_identifier_names
       String poll_id, int count, int skip) async {
     String uri =
         'http://164.52.212.151:3012/api/access/poll/recommendations?poll_id=' +
@@ -390,12 +393,12 @@ class _HomePageState extends State<HomePage> {
                             InkWell(
                           child: polldata_widget(
                             username: polls[itemIndex]['poll_user'],
-                            question: polls[itemIndex]['poll_data']['question'],
+                            question: "polls[itemIndex]['poll_data']['question']asdddddddddddddddddsadsadasd",
                             votes: 13,
                             time: 13,
                             previewUrl: polls[itemIndex]['poll_data']
                                 ['previewUrl'],
-                            pollTitle: 'first',
+                            pollTitle: 'This is the poll title',
                             onViewcomment: (bool viewComment) {
                               setState(() {
                                 onViewcomment = viewComment;
@@ -426,7 +429,9 @@ class _HomePageState extends State<HomePage> {
     }
 
     Widget _buildMobileView(double width, double height) {
-      return Scaffold(
+      if (onViewcomment) {
+        //return card + comment section
+        return Scaffold(
           appBar: AppBar(
             title: Text(
               'QONWAY',
@@ -441,90 +446,90 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ),
-          body: Builder(
-            builder: (context) {
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.max,
-                children: <Widget>[
-                  CarouselSlider.builder(
-                    carouselController: _controller,
-                    options: CarouselOptions(
-                      height: height * 0.85,
-                      enableInfiniteScroll: false,
-                      viewportFraction: 0.85,
-                      autoPlayCurve: Curves.fastOutSlowIn,
-                      enlargeCenterPage: false,
-                      onPageChanged: (index, reason) {
-                        setState(() {
-                          _currentIndex = index;
-                        });
-                      },
+          body: ListView(
+            children: [
+              Container(
+                  width: width * 0.94,
+                  height: height * 0.8,
+                  child: selectedCard),
+              Container(
+                  width: width * 0.94, height: height * 0.8, child: Comments())
+            ],
+          ),
+        );
+      } else {
+        return pollsLoaded
+            ? Scaffold(
+                appBar: AppBar(
+                  title: Text(
+                    'QONWAY',
+                    style: GoogleFonts.lato(color: Colors.black),
+                  ),
+                  backgroundColor: Color(0xfffafafa),
+                  leading: GestureDetector(
+                    onTap: () {/* Write listener code here */},
+                    child: Icon(
+                      Icons.menu,
+                      color: Color(0xff092836), // add custom icons also
                     ),
-                    itemCount: polls.length,
-                    itemBuilder: (BuildContext context, int itemIndex,
-                            int pageViewIndex) =>
-                        InkWell(
-                      child: polldata_widget(
-                        username: polls[itemIndex]['poll_user'],
-                        question: polls[itemIndex]['poll_data']['question'],
-                        votes: 13,
-                        time: 13,
-                        previewUrl:
-                            'http://qonway.com:8089/api/v1/media/content/unym4ir.png',
-                        pollTitle: 'first',
-                        onViewcomment: (bool viewComment) {
+                  ),
+                ),
+                body: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.max,
+                  children: <Widget>[
+                    CarouselSlider.builder(
+                      carouselController: _controller,
+                      options: CarouselOptions(
+                        height: height * 0.85,
+                        enableInfiniteScroll: false,
+                        viewportFraction: 0.85,
+                        autoPlayCurve: Curves.fastOutSlowIn,
+                        enlargeCenterPage: false,
+                        onPageChanged: (index, reason) {
                           setState(() {
-                            onViewcomment = viewComment;
-                            selectedCard = polldata_widget(
-                                username: polls[itemIndex]['poll_user'],
-                                question: polls[itemIndex]['poll_data']
-                                    ['question'],
-                                votes: 13,
-                                time: 13,
-                                previewUrl: polls[itemIndex]['poll_data']
-                                    ['previewUrl'],
-                                pollTitle: 'pollTitle',
-                                onViewcomment: (bool comment) {
-                                  print("comment");
-                                  updateViewcomment(comment);
-                                  showModalBottomSheet(
-                                      context: context,
-                                      builder: (context) {
-                                        return Wrap(
-                                          children: [
-                                            ListTile(
-                                              leading: Icon(Icons.share),
-                                              title: Text('Share'),
-                                            ),
-                                            ListTile(
-                                              leading: Icon(Icons.link),
-                                              title: Text('Get link'),
-                                            ),
-                                            ListTile(
-                                              leading: Icon(Icons.edit),
-                                              title: Text('Edit name'),
-                                            ),
-                                            ListTile(
-                                              leading: Icon(Icons.delete),
-                                              title: Text('Delete collection'),
-                                            ),
-                                          ],
-                                        );
-                                      });
-                                });
+                            _currentIndex = index;
                           });
                         },
                       ),
-                      onTap: () {
-                        _controller.nextPage();
-                      },
+                      itemCount: polls.length,
+                      itemBuilder: (BuildContext context, int itemIndex,
+                              int pageViewIndex) =>
+                          InkWell(
+                        child: polldata_widget(
+                          username: polls[itemIndex]['poll_user'],
+                          question: polls[itemIndex]['poll_data']['question'],
+                          votes: 13,
+                          time: 13,
+                          previewUrl:
+                              'http://qonway.com:8089/api/v1/media/content/unym4ir.png',
+                          pollTitle: 'This is the poll title',
+                          onViewcomment: (bool viewComment) {
+                            setState(() {
+                              onViewcomment = viewComment;
+                              selectedCard = polldata_widget(
+                                  username: polls[itemIndex]['poll_user'],
+                                  question: polls[itemIndex]['poll_data']
+                                      ['question'],
+                                  votes: 13,
+                                  time: 13,
+                                  previewUrl: polls[itemIndex]['poll_data']
+                                      ['previewUrl'],
+                                  pollTitle: 'pollTitle',
+                                  onViewcomment: updateViewcomment);
+                            });
+                          },
+                        ),
+                        onTap: () {
+                          _controller.nextPage();
+                        },
+                      ),
                     ),
-                  ),
-                ],
-              );
-            },
-          ));
+                  ],
+                ))
+            : Material();
+      }
+      
     }
 
     Widget carousel;

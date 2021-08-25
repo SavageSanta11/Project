@@ -24,6 +24,7 @@ class _CommentsState extends State<Comments> {
 
   bool isLoaded = true;
 
+  // ignore: non_constant_identifier_names
   List<String> _CommentList = [];
 
   void _addComment(String comment) {
@@ -32,10 +33,12 @@ class _CommentsState extends State<Comments> {
     }
   }
 
+  // ignore: unused_element
   void _removeComment(int index) {
     setState(() => _CommentList.removeAt(index));
   }
 
+  // ignore: non_constant_identifier_names
   Future<void> recordComment(String poll_id, String text) async {
     var headers = {
       'Authorization':
@@ -72,7 +75,10 @@ class _CommentsState extends State<Comments> {
     });
   }
 
-  Widget _buildComment(String comment, int index, ) {
+  Widget _buildComment(
+    String comment,
+    int index,
+  ) {
     return new Container(
       width: 300.0,
       height: 106.0,
@@ -132,6 +138,7 @@ class _CommentsState extends State<Comments> {
   List comments = [];
   String enteredText = "";
 
+  // ignore: non_constant_identifier_names
   Future<void> showComments(String poll_id, int skip, int pageSize) async {
     String uri =
         'http://164.52.212.151:3012/api/access/show/comments?poll_id=' +
@@ -176,11 +183,13 @@ class _CommentsState extends State<Comments> {
                   child: TextField(
                     inputFormatters: [LengthLimitingTextInputFormatter(100)],
                     controller: _textFieldController,
+                    autofocus: true,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
+                      hintText: 'Add a comment'
                     ),
                     maxLines: 3,
-
+                    
                     onChanged: (value) {
                       setState(() {
                         enteredText = value;
@@ -188,9 +197,7 @@ class _CommentsState extends State<Comments> {
                     },
 
                     //autofocus: true,
-                    onSubmitted: (val) {
-                      
-                    },
+                    onSubmitted: (val) {},
                   ),
                 ),
                 Row(
@@ -207,7 +214,7 @@ class _CommentsState extends State<Comments> {
                           ),
                         )),
                     Container(
-                      width: width * 0.245,
+                      width: width * 0.243,
                       height: height * 0.04,
                       decoration: BoxDecoration(color: Colors.black),
                       child: TextButton(
@@ -217,8 +224,8 @@ class _CommentsState extends State<Comments> {
                         ),
                         onPressed: () {
                           _addComment(enteredText);
-                      recordComment('yjhhonw', enteredText);
-                      _textFieldController.clear();
+                          recordComment('yjhhonw', enteredText);
+                          _textFieldController.clear();
                         },
                       ),
                     )
@@ -241,7 +248,6 @@ class _CommentsState extends State<Comments> {
 
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
-    bool isWeb = false;
 
     double aspectRatio =
         MediaQuery.of(context).size.width / MediaQuery.of(context).size.height;
@@ -250,7 +256,6 @@ class _CommentsState extends State<Comments> {
       commentcard = commentSection(height * 0.8, width * 0.40);
     } else {
       commentcard = commentSection(height, width);
-      isWeb = false;
     }
 
     return commentcard;

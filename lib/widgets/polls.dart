@@ -11,6 +11,8 @@ typedef void PollTotal(int total);
 late int userPollChoice;
 
 class Polls extends StatefulWidget {
+
+  final bool isWeb;
   /// this takes the question on the poll
   final Text question;
 
@@ -70,7 +72,7 @@ class Polls extends StatefulWidget {
     this.backgroundColor = Colors.white,
     this.onVoteBackgroundColor = Colors.blue,
     this.iconColor = Colors.black,
-    this.leadingBackgroundColor = Colors.white,
+    this.leadingBackgroundColor = Colors.white, required this.isWeb,
   })  : highest = null,
         getHighest = null,
         getTotal = null,
@@ -102,7 +104,7 @@ class Polls extends StatefulWidget {
       this.backgroundColor = Colors.blue,
       this.leadingBackgroundColor = Colors.blueAccent,
       this.onVoteBackgroundColor,
-      this.iconColor = Colors.black})
+      this.iconColor = Colors.black, required this.isWeb})
       : allowCreatorVote = false,
         getTotal = null,
         highest = null,
@@ -125,7 +127,7 @@ class Polls extends StatefulWidget {
       this.backgroundColor = Colors.blue,
       this.leadingBackgroundColor = Colors.blueAccent,
       this.onVoteBackgroundColor = Colors.white,
-      this.allowCreatorVote = false})
+      this.allowCreatorVote = false, required this.isWeb})
       : viewType = PollsType.creator,
         onVote = null,
         userChoice = null,
@@ -149,7 +151,7 @@ class Polls extends StatefulWidget {
     required this.onVote,
     this.allowCreatorVote = false,
     this.outlineColor = Colors.blue,
-    this.backgroundColor = Colors.white,
+    this.backgroundColor = Colors.white, required this.isWeb,
   })  : viewType = PollsType.voter,
         userChoice = null,
         highest = null,
@@ -189,20 +191,7 @@ class _PollsState extends State<Polls> {
   String? c4;
 
   /// c3 stands for choice 5
-  @protected
-  String? c5;
-
-  /// c4 stands for choice 6
-  @protected
-  String? c6;
-
-  /// c3 stands for choice 7
-  @protected
-  String? c7;
-
-  /// c4 stands for choice 8
-  @protected
-  String? c8;
+ 
 
   /// v1 stands for value 1
   @protected
@@ -218,18 +207,7 @@ class _PollsState extends State<Polls> {
   @protected
   double? v4;
 
-  @protected
-  double? v5;
-
-  @protected
-  double? v6;
-
-  @protected
-  double? v7;
-
-  @protected
-  double? v8;
-
+ 
   /// user choices
   String choice1Title = '';
 
@@ -239,14 +217,7 @@ class _PollsState extends State<Polls> {
 
   String choice4Title = '';
 
-  String choice5Title = '';
-
-  String choice6Title = '';
-
-  String choice7Title = '';
-
-  String choice8Title = '';
-
+  
   double choice1Value = 0.0;
 
   double choice2Value = 0.0;
@@ -255,13 +226,7 @@ class _PollsState extends State<Polls> {
 
   double choice4Value = 0.0;
 
-  double choice5Value = 0.0;
-
-  double choice6Value = 0.0;
-
-  double choice7Value = 0.0;
-
-  double choice8Value = 0.0;
+  
 
   /// style
   late TextStyle pollStyle;
@@ -309,33 +274,7 @@ class _PollsState extends State<Polls> {
       this.c4 = widget.children[3][0];
     }
 
-    if (widget.children.length > 4) {
-      this.choice5Value = widget.children[4][1];
-      this.choice5Title = widget.children[4][0];
-      this.v5 = widget.children[4][1];
-      this.c5 = widget.children[4][0];
-    }
-
-    if (widget.children.length > 5) {
-      this.choice6Value = widget.children[5][1];
-      this.choice6Title = widget.children[5][0];
-      this.v6 = widget.children[5][1];
-      this.c6 = widget.children[5][0];
-    }
-
-    if (widget.children.length > 6) {
-      this.choice7Value = widget.children[6][1];
-      this.choice7Title = widget.children[6][0];
-      this.v7 = widget.children[6][1];
-      this.c7 = widget.children[6][0];
-    }
-
-    if (widget.children.length > 7) {
-      this.choice8Value = widget.children[7][1];
-      this.choice8Title = widget.children[7][0];
-      this.v8 = widget.children[7][1];
-      this.c8 = widget.children[7][0];
-    }
+    
   }
 
   @override
@@ -393,21 +332,21 @@ class _PollsState extends State<Polls> {
         Row(
               children: [
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 16, 0, 8),
+                  padding: const EdgeInsets.fromLTRB(0, 8, 0, 0),
                   child: Text(
                      "14 votes",
                     style: GoogleFonts.lato(
-                      fontSize:16.0,
+                      fontSize:widget.isWeb? 14.0 : 12.0,
                       color: Colors.blueGrey,
                     ),
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 16, 0, 8),
+                  padding: const EdgeInsets.fromLTRB(16, 8, 0, 0),
                   child: Text(
                    "3 hours left",
                     style: GoogleFonts.lato(
-                      fontSize: 16.0,
+                      fontSize: widget.isWeb ? 14.0 : 12.0,
                       color: Colors.blueGrey,
                     ),
                   ),
@@ -421,7 +360,7 @@ class _PollsState extends State<Polls> {
           children: [
             Container(
               width: double.infinity,
-              padding: EdgeInsets.only(bottom: 17),
+              padding: EdgeInsets.only(bottom: 10),
               child: Container(
                 margin: EdgeInsets.all(0),
                 width: MediaQuery.of(context).size.width,
@@ -447,7 +386,7 @@ class _PollsState extends State<Polls> {
                       padding: EdgeInsets.fromLTRB(16, 0, 0, 0),
                       child: Text(this.c1,
                           style: GoogleFonts.lato(
-                            fontSize: 16.0,
+                            fontSize: widget.isWeb ? 16.0 : 14.0,
                             color: Colors.black,
                             fontWeight: FontWeight.bold,
                           )),
@@ -464,7 +403,7 @@ class _PollsState extends State<Polls> {
             ),
             Container(
               width: double.infinity,
-              padding: EdgeInsets.only(bottom: 17),
+              padding: EdgeInsets.only(bottom: 10),
               child: Container(
                 margin: EdgeInsets.all(0),
                 padding: EdgeInsets.all(0),
@@ -490,7 +429,7 @@ class _PollsState extends State<Polls> {
                       padding: EdgeInsets.fromLTRB(16, 0, 0, 0),
                       child: Text(this.c2,
                           style: GoogleFonts.lato(
-                              fontSize: 16.0,
+                              fontSize: widget.isWeb ? 16.0 : 14.0,
                               color: Colors.black,
                               fontWeight: FontWeight.bold)),
                     ),
@@ -507,7 +446,7 @@ class _PollsState extends State<Polls> {
             this.c3 != null
                 ? Container(
                     width: double.infinity,
-                    padding: EdgeInsets.only(bottom: 17),
+                    padding: EdgeInsets.only(bottom: 10),
                     child: Container(
                       margin: EdgeInsets.all(0),
                       padding: EdgeInsets.all(0),
@@ -533,7 +472,7 @@ class _PollsState extends State<Polls> {
                             padding: EdgeInsets.fromLTRB(16, 0, 0, 0),
                             child: Text(this.c3 ?? '',
                                 style: GoogleFonts.lato(
-                                    fontSize: 16.0,
+                                    fontSize: widget.isWeb ? 16.0 : 14.0,
                                     color: Colors.black,
                                     fontWeight: FontWeight.bold)),
                           ),
@@ -551,7 +490,7 @@ class _PollsState extends State<Polls> {
             this.c4 != null
                 ? Container(
                     width: double.infinity,
-                    padding: EdgeInsets.only(bottom: 17),
+                    padding: EdgeInsets.only(bottom: 10),
                     child: Container(
                       margin: EdgeInsets.all(0),
                       padding: EdgeInsets.all(0),
@@ -577,7 +516,7 @@ class _PollsState extends State<Polls> {
                             padding: EdgeInsets.fromLTRB(16, 0, 0, 0),
                             child: Text(this.c4 ?? '',
                                 style: GoogleFonts.lato(
-                                    fontSize: 16.0,
+                                    fontSize: widget.isWeb ? 16.0 : 14.0,
                                     color: Colors.black,
                                     fontWeight: FontWeight.bold)),
                           ),
@@ -592,182 +531,7 @@ class _PollsState extends State<Polls> {
                     ),
                   )
                 : Offstage(),
-            this.c5 != null
-                ? Container(
-                    width: double.infinity,
-                    padding: EdgeInsets.only(bottom: 17),
-                    child: Container(
-                      margin: EdgeInsets.all(0),
-                      padding: EdgeInsets.all(0),
-                      height: 45,
-                      width: MediaQuery.of(context).size.width,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(2),
-                        color: widget.backgroundColor,
-                      ),
-                      // ignore: deprecated_member_use
-                      child: OutlineButton(
-                        onPressed: () {
-                          setState(() {
-                            userPollChoice = 5;
-                          });
-                          widget.onVote!(userPollChoice);
-                        },
-                        color: Colors.green,
-                        padding: EdgeInsets.all(5.0),
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Padding(
-                            padding: EdgeInsets.fromLTRB(16, 0, 0, 0),
-                            child: Text(this.c5 ?? '',
-                                style: GoogleFonts.lato(
-                                    fontSize: 16.0,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold)),
-                          ),
-                        ),
-                        borderSide: BorderSide(
-                          color: widget.outlineColor,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: new BorderRadius.circular(6.0),
-                        ),
-                      ),
-                    ),
-                  )
-                : Offstage(),
-            this.c6 != null
-                ? Container(
-                    width: double.infinity,
-                    padding: EdgeInsets.only(bottom: 17),
-                    child: Container(
-                      margin: EdgeInsets.all(0),
-                      padding: EdgeInsets.all(0),
-                      height: 45,
-                      width: MediaQuery.of(context).size.width,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(2),
-                        color: widget.backgroundColor,
-                      ),
-                      // ignore: deprecated_member_use
-                      child: OutlineButton(
-                        onPressed: () {
-                          setState(() {
-                            userPollChoice = 6;
-                          });
-                          widget.onVote!(userPollChoice);
-                        },
-                        color: Colors.green,
-                        padding: EdgeInsets.all(5.0),
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Padding(
-                            padding: EdgeInsets.fromLTRB(16, 0, 0, 0),
-                            child: Text(this.c6 ?? '',
-                                style: GoogleFonts.lato(
-                                    fontSize: 16.0,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold)),
-                          ),
-                        ),
-                        borderSide: BorderSide(
-                          color: widget.outlineColor,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: new BorderRadius.circular(6.0),
-                        ),
-                      ),
-                    ),
-                  )
-                : Offstage(),
-            this.c7 != null
-                ? Container(
-                    width: double.infinity,
-                    padding: EdgeInsets.only(bottom: 17),
-                    child: Container(
-                      margin: EdgeInsets.all(0),
-                      padding: EdgeInsets.all(0),
-                      height: 45,
-                      width: MediaQuery.of(context).size.width,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(2),
-                        color: widget.backgroundColor,
-                      ),
-                      // ignore: deprecated_member_use
-                      child: OutlineButton(
-                        onPressed: () {
-                          setState(() {
-                            userPollChoice = 7;
-                          });
-                          widget.onVote!(userPollChoice);
-                        },
-                        color: Colors.green,
-                        padding: EdgeInsets.all(5.0),
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Padding(
-                            padding: EdgeInsets.fromLTRB(16, 0, 0, 0),
-                            child: Text(this.c7 ?? '',
-                                style: GoogleFonts.lato(
-                                    fontSize: 16.0,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold)),
-                          ),
-                        ),
-                        borderSide: BorderSide(
-                          color: widget.outlineColor,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: new BorderRadius.circular(6.0),
-                        ),
-                      ),
-                    ),
-                  )
-                : Offstage(),
-            this.c8 != null
-                ? Container(
-                    width: double.infinity,
-                    padding: EdgeInsets.only(bottom: 17),
-                    child: Container(
-                      margin: EdgeInsets.all(0),
-                      padding: EdgeInsets.all(0),
-                      height: 45,
-                      width: MediaQuery.of(context).size.width,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(2),
-                        color: widget.backgroundColor,
-                      ),
-                      // ignore: deprecated_member_use
-                      child: OutlineButton(
-                        onPressed: () {
-                          setState(() {
-                            userPollChoice = 8;
-                          });
-                          widget.onVote!(userPollChoice);
-                        },
-                        color: Colors.green,
-                        padding: EdgeInsets.all(5.0),
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Padding(
-                            padding: EdgeInsets.fromLTRB(16, 0, 0, 0),
-                            child: Text(this.c8 ?? '',
-                                style: GoogleFonts.lato(
-                                    fontSize: 16.0,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold)),
-                          ),
-                        ),
-                        borderSide: BorderSide(
-                          color: widget.outlineColor,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: new BorderRadius.circular(6.0),
-                        ),
-                      ),
-                    ),
-                  )
-                : Offstage(),
+            
           ],
         )
       ],
@@ -782,10 +546,7 @@ class _PollsState extends State<Polls> {
       this.v2,
       this.v3,
       this.v4,
-      this.v5,
-      this.v6,
-      this.v7,
-      this.v8
+      
     ];
 
     double current = 0;
@@ -818,7 +579,7 @@ class _PollsState extends State<Polls> {
               lineHeight: 45.0,
               animationDuration: 500,
               percent: PollMath.getPerc(this.v1, this.v2, this.v3, this.v4,
-                  this.v5, this.v6, this.v7, this.v8, 1)[0],
+                  1)[0],
               center: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
@@ -829,7 +590,7 @@ class _PollsState extends State<Polls> {
                         padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
                         child: Text(this.c1,
                             style: GoogleFonts.lato(
-                                fontSize: 16.0,
+                                fontSize: widget.isWeb ? 16.0 : 14.0,
                                 color: Colors.black,
                                 fontWeight: FontWeight.bold)),
                       ),
@@ -842,11 +603,11 @@ class _PollsState extends State<Polls> {
                     padding: const EdgeInsets.fromLTRB(0, 0, 8, 0),
                     child: Text(
                         PollMath.getMainPerc(this.v1, this.v2, this.v3, this.v4,
-                                    this.v5, this.v6, this.v7, this.v8, 1)
+                                    1)
                                 .toString() +
                             "%",
                         style: GoogleFonts.lato(
-                            fontSize: 16.0,
+                            fontSize: widget.isWeb ? 16.0 : 14.0,
                             color: Colors.black,
                             fontWeight: FontWeight.bold)),
                   )
@@ -867,7 +628,7 @@ class _PollsState extends State<Polls> {
               lineHeight: 45.0,
               animationDuration: 500,
               percent: PollMath.getPerc(this.v1, this.v2, this.v3, this.v4,
-                  this.v5, this.v6, this.v7, this.v8, 2)[0],
+                 2)[0],
               center: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
@@ -878,7 +639,7 @@ class _PollsState extends State<Polls> {
                         padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
                         child: Text(this.c2,
                             style: GoogleFonts.lato(
-                                fontSize: 16.0,
+                                fontSize: widget.isWeb ? 16.0 : 14.0,
                                 color: Colors.black,
                                 fontWeight: FontWeight.bold)),
                       ),
@@ -891,11 +652,11 @@ class _PollsState extends State<Polls> {
                     padding: const EdgeInsets.fromLTRB(0, 0, 8, 0),
                     child: Text(
                         PollMath.getMainPerc(this.v1, this.v2, this.v3, this.v4,
-                                    this.v5, this.v6, this.v7, this.v8, 2)
+                                    2)
                                 .toString() +
                             "%",
                         style: GoogleFonts.lato(
-                            fontSize: 16.0,
+                            fontSize: widget.isWeb ? 16.0 : 14.0,
                             color: Colors.black,
                             fontWeight: FontWeight.bold)),
                   )
@@ -918,7 +679,7 @@ class _PollsState extends State<Polls> {
                     lineHeight: 45.0,
                     animationDuration: 500,
                     percent: PollMath.getPerc(this.v1, this.v2, this.v3,
-                        this.v4, this.v5, this.v6, this.v7, this.v8, 3)[0],
+                        this.v4, 3)[0],
                     center: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
@@ -929,7 +690,7 @@ class _PollsState extends State<Polls> {
                               padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
                               child: Text(this.c3 ?? '',
                                   style: GoogleFonts.lato(
-                                      fontSize: 16.0,
+                                      fontSize: widget.isWeb ? 16.0 : 14.0,
                                       color: Colors.black,
                                       fontWeight: FontWeight.bold)),
                             ),
@@ -946,15 +707,12 @@ class _PollsState extends State<Polls> {
                                           this.v2,
                                           this.v3,
                                           this.v4,
-                                          this.v5,
-                                          this.v6,
-                                          this.v7,
-                                          this.v8,
+                                         
                                           3)
                                       .toString() +
                                   "%",
                               style: GoogleFonts.lato(
-                                  fontSize: 16.0,
+                                  fontSize: widget.isWeb ? 16.0 : 14.0,
                                   color: Colors.black,
                                   fontWeight: FontWeight.bold)),
                         )
@@ -975,8 +733,8 @@ class _PollsState extends State<Polls> {
                     animation: true,
                     lineHeight: 45.0,
                     animationDuration: 500,
-                    percent: PollMath.getPerc(this.v1, this.v2, this.v3,
-                        this.v4, this.v5, this.v6, this.v7, this.v8, 4)[0],
+                    percent: PollMath.getPerc(this.v1, this.v2, this.v3, this.v4,
+                        4)[0],
                     center: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
@@ -987,7 +745,7 @@ class _PollsState extends State<Polls> {
                               padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
                               child: Text(this.c4.toString(),
                                   style: GoogleFonts.lato(
-                                      fontSize: 16.0,
+                                      fontSize: widget.isWeb ? 16.0 : 14.0,
                                       color: Colors.black,
                                       fontWeight: FontWeight.bold)),
                             ),
@@ -1004,15 +762,12 @@ class _PollsState extends State<Polls> {
                                           this.v2,
                                           this.v3,
                                           this.v4,
-                                          this.v5,
-                                          this.v6,
-                                          this.v7,
-                                          this.v8,
+                                          
                                           4)
                                       .toString() +
                                   "%",
                               style: GoogleFonts.lato(
-                                  fontSize: 16.0,
+                                  fontSize: widget.isWeb ? 16.0 : 14.0,
                                   color: Colors.black,
                                   fontWeight: FontWeight.bold)),
                         )
@@ -1024,238 +779,7 @@ class _PollsState extends State<Polls> {
                         : widget.onVoteBackgroundColor),
               )
             : Offstage(),
-        this.c5 != null
-            ? Container(
-                margin: EdgeInsets.all(0),
-                width: double.infinity,
-                child: LinearPercentIndicator(
-                    backgroundColor: Color(0xffedf0f3),
-                    animation: true,
-                    lineHeight: 45.0,
-                    animationDuration: 500,
-                    percent: PollMath.getPerc(this.v1, this.v2, this.v3,
-                        this.v4, this.v5, this.v6, this.v7, this.v8, 5)[0],
-                    center: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
-                              child: Text(this.c5.toString(),
-                                  style: GoogleFonts.lato(
-                                      fontSize: 16.0,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold)),
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                          ],
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 0, 8, 0),
-                          child: Text(
-                              PollMath.getMainPerc(
-                                          this.v1,
-                                          this.v2,
-                                          this.v3,
-                                          this.v4,
-                                          this.v5,
-                                          this.v6,
-                                          this.v7,
-                                          this.v8,
-                                          5)
-                                      .toString() +
-                                  "%",
-                              style: GoogleFonts.lato(
-                                  fontSize: 16.0,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold)),
-                        )
-                      ],
-                    ),
-                    linearStrokeCap: LinearStrokeCap.butt,
-                    progressColor: this.highest == this.v5
-                        ? widget.leadingBackgroundColor
-                        : widget.onVoteBackgroundColor),
-              )
-            : Offstage(),
-        this.c6 != null
-            ? Container(
-                margin: EdgeInsets.all(0),
-                width: double.infinity,
-                child: LinearPercentIndicator(
-                    backgroundColor: Color(0xffedf0f3),
-                    animation: true,
-                    lineHeight: 45.0,
-                    animationDuration: 500,
-                    percent: PollMath.getPerc(this.v1, this.v2, this.v3,
-                        this.v4, this.v5, this.v6, this.v7, this.v8, 6)[0],
-                    center: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
-                              child: Text(this.c6.toString(),
-                                  style: GoogleFonts.lato(
-                                      fontSize: 16.0,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold)),
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                          ],
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 0, 8, 0),
-                          child: Text(
-                              PollMath.getMainPerc(
-                                          this.v1,
-                                          this.v2,
-                                          this.v3,
-                                          this.v4,
-                                          this.v5,
-                                          this.v6,
-                                          this.v7,
-                                          this.v8,
-                                          6)
-                                      .toString() +
-                                  "%",
-                              style: GoogleFonts.lato(
-                                  fontSize: 16.0,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold)),
-                        )
-                      ],
-                    ),
-                    linearStrokeCap: LinearStrokeCap.butt,
-                    progressColor: this.highest == this.v6
-                        ? widget.leadingBackgroundColor
-                        : widget.onVoteBackgroundColor),
-              )
-            : Offstage(),
-        this.c7 != null
-            ? Container(
-                margin: EdgeInsets.all(0),
-                width: double.infinity,
-                child: LinearPercentIndicator(
-                    backgroundColor: Color(0xffedf0f3),
-                    animation: true,
-                    lineHeight: 45.0,
-                    animationDuration: 500,
-                    percent: PollMath.getPerc(this.v1, this.v2, this.v3,
-                        this.v4, this.v5, this.v6, this.v7, this.v8, 7)[0],
-                    center: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
-                              child: Text(this.c7.toString(),
-                                  style: GoogleFonts.lato(
-                                      fontSize: 16.0,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold)),
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                          ],
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 0, 8, 0),
-                          child: Text(
-                              PollMath.getMainPerc(
-                                          this.v1,
-                                          this.v2,
-                                          this.v3,
-                                          this.v4,
-                                          this.v5,
-                                          this.v6,
-                                          this.v7,
-                                          this.v8,
-                                          7)
-                                      .toString() +
-                                  "%",
-                              style: GoogleFonts.lato(
-                                  fontSize: 16.0,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold)),
-                        )
-                      ],
-                    ),
-                    linearStrokeCap: LinearStrokeCap.butt,
-                    progressColor: this.highest == this.v7
-                        ? widget.leadingBackgroundColor
-                        : widget.onVoteBackgroundColor),
-              )
-            : Offstage(),
-        this.c8 != null
-            ? Container(
-                margin: EdgeInsets.all(0),
-                width: double.infinity,
-                child: LinearPercentIndicator(
-                    backgroundColor: Color(0xffedf0f3),
-                    animation: true,
-                    lineHeight: 45.0,
-                    animationDuration: 500,
-                    percent: PollMath.getPerc(this.v1, this.v2, this.v3,
-                        this.v4, this.v5, this.v6, this.v7, this.v8, 8)[0],
-                    center: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
-                              child: Text(this.c8.toString(),
-                                  style: GoogleFonts.lato(
-                                      fontSize: 16.0,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold)),
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                          ],
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 0, 8, 0),
-                          child: Text(
-                              PollMath.getMainPerc(
-                                          this.v1,
-                                          this.v2,
-                                          this.v3,
-                                          this.v4,
-                                          this.v5,
-                                          this.v6,
-                                          this.v7,
-                                          this.v8,
-                                          8)
-                                      .toString() +
-                                  "%",
-                              style: GoogleFonts.lato(
-                                  fontSize: 16.0,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold)),
-                        )
-                      ],
-                    ),
-                    linearStrokeCap: LinearStrokeCap.butt,
-                    progressColor: this.highest == this.v8
-                        ? widget.leadingBackgroundColor
-                        : widget.onVoteBackgroundColor),
-              )
-            : Offstage(),
+        
       ],
     );
   }
@@ -1267,20 +791,14 @@ class _PollsState extends State<Polls> {
     this.v2 = widget.children[1][1];
     if (this.c3 != null) this.v3 = widget.children[2][1];
     if (this.c4 != null) this.v4 = widget.children[3][1];
-    if (this.c5 != null) this.v5 = widget.children[4][1];
-    if (this.c6 != null) this.v6 = widget.children[5][1];
-    if (this.c7 != null) this.v7 = widget.children[6][1];
-    if (this.c8 != null) this.v8 = widget.children[7][1];
+    
 
     var sortedKeys = [
       this.v1,
       this.v2,
       this.v3,
       this.v4,
-      this.v5,
-      this.v6,
-      this.v7,
-      this.v8
+      
     ];
     double current = 0;
     for (var i = 0; i < sortedKeys.length; i++) {
@@ -1309,8 +827,7 @@ class _PollsState extends State<Polls> {
             animation: true,
             lineHeight: 45.0,
             animationDuration: 500,
-            percent: PollMath.getPerc(this.v1, this.v2, this.v3, this.v4,
-                this.v5, this.v6, this.v7, this.v8, 1)[0],
+            percent: PollMath.getPerc(this.v1, this.v2, this.v3, this.v4, 1)[0],
             center: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
@@ -1321,7 +838,7 @@ class _PollsState extends State<Polls> {
                       padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
                       child: Text(this.c1.toString(),
                           style: GoogleFonts.lato(
-                              fontSize: 16.0,
+                              fontSize: widget.isWeb ? 16.0 : 14.0,
                               color: Colors.black,
                               fontWeight: FontWeight.bold)),
                     ),
@@ -1335,11 +852,11 @@ class _PollsState extends State<Polls> {
                   padding: const EdgeInsets.fromLTRB(0, 0, 8, 0),
                   child: Text(
                       PollMath.getMainPerc(this.v1, this.v2, this.v3, this.v4,
-                                  this.v5, this.v6, this.v7, this.v8, 1)
+                                   1)
                               .toString() +
                           "%",
                       style: GoogleFonts.lato(
-                          fontSize: 16.0,
+                          fontSize: widget.isWeb ? 16.0 : 14.0,
                           color: Colors.black,
                           fontWeight: FontWeight.bold)),
                 )
@@ -1361,7 +878,7 @@ class _PollsState extends State<Polls> {
             lineHeight: 45.0,
             animationDuration: 500,
             percent: PollMath.getPerc(this.v1, this.v2, this.v3, this.v4,
-                this.v5, this.v6, this.v7, this.v8, 2)[0],
+                 2)[0],
             center: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
@@ -1372,7 +889,7 @@ class _PollsState extends State<Polls> {
                       padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
                       child: Text(this.c2.toString(),
                           style: GoogleFonts.lato(
-                              fontSize: 16.0,
+                              fontSize: widget.isWeb ? 16.0 : 14.0,
                               color: Colors.black,
                               fontWeight: FontWeight.bold)),
                     ),
@@ -1386,11 +903,11 @@ class _PollsState extends State<Polls> {
                   padding: const EdgeInsets.fromLTRB(0, 0, 8, 0),
                   child: Text(
                       PollMath.getMainPerc(this.v1, this.v2, this.v3, this.v4,
-                                  this.v5, this.v6, this.v7, this.v8, 2)
+                                   2)
                               .toString() +
                           "%",
                       style: GoogleFonts.lato(
-                          fontSize: 16.0,
+                          fontSize: widget.isWeb ? 16.0 : 14.0,
                           color: Colors.black,
                           fontWeight: FontWeight.bold)),
                 )
@@ -1414,7 +931,7 @@ class _PollsState extends State<Polls> {
                   lineHeight: 45.0,
                   animationDuration: 500,
                   percent: PollMath.getPerc(this.v1, this.v2, this.v3, this.v4,
-                      this.v5, this.v6, this.v7, this.v8, 3)[0],
+                       3)[0],
                   center: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
@@ -1425,7 +942,7 @@ class _PollsState extends State<Polls> {
                             padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
                             child: Text(this.c3.toString(),
                                 style: GoogleFonts.lato(
-                                    fontSize: 16.0,
+                                    fontSize: widget.isWeb ? 16.0 : 14.0,
                                     color: Colors.black,
                                     fontWeight: FontWeight.bold)),
                           ),
@@ -1443,15 +960,12 @@ class _PollsState extends State<Polls> {
                                         this.v2,
                                         this.v3,
                                         this.v4,
-                                        this.v5,
-                                        this.v6,
-                                        this.v7,
-                                        this.v8,
+                                        
                                         3)
                                     .toString() +
                                 "%",
                             style: GoogleFonts.lato(
-                                fontSize: 16.0,
+                                fontSize: widget.isWeb ? 16.0 : 14.0,
                                 color: Colors.black,
                                 fontWeight: FontWeight.bold)),
                       )
@@ -1475,7 +989,7 @@ class _PollsState extends State<Polls> {
                   lineHeight: 45.0,
                   animationDuration: 500,
                   percent: PollMath.getPerc(this.v1, this.v2, this.v3, this.v4,
-                      this.v5, this.v6, this.v7, this.v8, 4)[0],
+                      4)[0],
                   center: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
@@ -1486,7 +1000,7 @@ class _PollsState extends State<Polls> {
                             padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
                             child: Text(this.c4.toString(),
                                 style: GoogleFonts.lato(
-                                    fontSize: 16.0,
+                                    fontSize: widget.isWeb ? 16.0 : 14.0,
                                     color: Colors.black,
                                     fontWeight: FontWeight.bold)),
                           ),
@@ -1504,15 +1018,12 @@ class _PollsState extends State<Polls> {
                                         this.v2,
                                         this.v3,
                                         this.v4,
-                                        this.v5,
-                                        this.v6,
-                                        this.v7,
-                                        this.v8,
+                                       
                                         4)
                                     .toString() +
                                 "%",
                             style: GoogleFonts.lato(
-                                fontSize: 16.0,
+                                fontSize: widget.isWeb ? 16.0 : 14.0,
                                 color: Colors.black,
                                 fontWeight: FontWeight.bold)),
                       )
@@ -1524,251 +1035,7 @@ class _PollsState extends State<Polls> {
                       : widget.onVoteBackgroundColor,
                 ),
               ),
-        this.c5 == null
-            ? Offstage()
-            : Container(
-                margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
-                width: double.infinity,
-                child: LinearPercentIndicator(
-                  backgroundColor: Color(0xffedf0f3),
-//              width: MediaQuery.of(context).size.width,
-                  animation: true,
-                 lineHeight: 45.0,
-                  animationDuration: 500,
-                  percent: PollMath.getPerc(this.v1, this.v2, this.v3, this.v4,
-                      this.v5, this.v6, this.v7, this.v8, 5)[0],
-                  center: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
-                            child: Text(this.c5.toString(),
-                                style: GoogleFonts.lato(
-                                    fontSize: 16.0,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold)),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          myOwnChoice(widget.userChoice == 5)
-                        ],
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 0, 8, 0),
-                        child: Text(
-                            PollMath.getMainPerc(
-                                        this.v1,
-                                        this.v2,
-                                        this.v3,
-                                        this.v4,
-                                        this.v5,
-                                        this.v6,
-                                        this.v7,
-                                        this.v8,
-                                        5)
-                                    .toString() +
-                                "%",
-                            style: GoogleFonts.lato(
-                                fontSize: 16.0,
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold)),
-                      )
-                    ],
-                  ),
-                  linearStrokeCap: LinearStrokeCap.butt,
-                  progressColor: this.highest == this.v5
-                      ? widget.leadingBackgroundColor
-                      : widget.onVoteBackgroundColor,
-                ),
-              ),
-        this.c6 == null
-            ? Offstage()
-            : Container(
-                margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
-                width: double.infinity,
-                child: LinearPercentIndicator(
-                  backgroundColor: Color(0xffedf0f3),
-//              width: MediaQuery.of(context).size.width,
-                  animation: true,
-                  lineHeight: 45.0,
-                  animationDuration: 500,
-                  percent: PollMath.getPerc(this.v1, this.v2, this.v3, this.v4,
-                      this.v5, this.v6, this.v7, this.v8, 6)[0],
-                  center: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
-                            child: Text(this.c6.toString(),
-                                style: GoogleFonts.lato(
-                                    fontSize: 16.0,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold)),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          myOwnChoice(widget.userChoice == 6)
-                        ],
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 0, 8, 0),
-                        child: Text(
-                            PollMath.getMainPerc(
-                                        this.v1,
-                                        this.v2,
-                                        this.v3,
-                                        this.v4,
-                                        this.v5,
-                                        this.v6,
-                                        this.v7,
-                                        this.v8,
-                                        6)
-                                    .toString() +
-                                "%",
-                            style: GoogleFonts.lato(
-                                fontSize: 16.0,
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold)),
-                      )
-                    ],
-                  ),
-                  linearStrokeCap: LinearStrokeCap.butt,
-                  progressColor: this.highest == this.v6
-                      ? widget.leadingBackgroundColor
-                      : widget.onVoteBackgroundColor,
-                ),
-              ),
-        this.c7 == null
-            ? Offstage()
-            : Container(
-                margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
-                width: double.infinity,
-                child: LinearPercentIndicator(
-                  backgroundColor: Color(0xffedf0f3),
-//              width: MediaQuery.of(context).size.width,
-                  animation: true,
-                  
-                 lineHeight: 45.0,
-                  animationDuration: 500,
-                  percent: PollMath.getPerc(this.v1, this.v2, this.v3, this.v4,
-                      this.v5, this.v6, this.v7, this.v8, 7)[0],
-                  center: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
-                            child: Text(this.c7.toString(),
-                                style: GoogleFonts.lato(
-                                    fontSize: 16.0,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold)),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          myOwnChoice(widget.userChoice == 7)
-                        ],
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 0, 8, 0),
-                        child: Text(
-                            PollMath.getMainPerc(
-                                        this.v1,
-                                        this.v2,
-                                        this.v3,
-                                        this.v4,
-                                        this.v5,
-                                        this.v6,
-                                        this.v7,
-                                        this.v8,
-                                        7)
-                                    .toString() +
-                                "%",
-                            style: GoogleFonts.lato(
-                                fontSize: 16.0,
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold)),
-                      )
-                    ],
-                  ),
-                  linearStrokeCap: LinearStrokeCap.butt,
-                  progressColor: this.highest == this.v7
-                      ? widget.leadingBackgroundColor
-                      : widget.onVoteBackgroundColor,
-                ),
-              ),
-        this.c8 == null
-            ? Offstage()
-            : Container(
-                margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
-                width: double.infinity,
-                child: LinearPercentIndicator(
-                  backgroundColor: Color(0xffedf0f3),
-//              width: MediaQuery.of(context).size.width,
-                  animation: true,
-                  lineHeight: 45.0,
-                  animationDuration: 500,
-                  percent: PollMath.getPerc(this.v1, this.v2, this.v3, this.v4,
-                      this.v5, this.v6, this.v7, this.v8, 8)[0],
-                  center: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
-                            child: Text(this.c8.toString(),
-                                style: GoogleFonts.lato(
-                                    fontSize: 16.0,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold)),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          myOwnChoice(widget.userChoice == 8)
-                        ],
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 0, 8, 0),
-                        child: Text(
-                            PollMath.getMainPerc(
-                                        this.v1,
-                                        this.v2,
-                                        this.v3,
-                                        this.v4,
-                                        this.v5,
-                                        this.v6,
-                                        this.v7,
-                                        this.v8,
-                                        8)
-                                    .toString() +
-                                "%",
-                            style: GoogleFonts.lato(
-                                fontSize: 16.0,
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold)),
-                      )
-                    ],
-                  ),
-                  linearStrokeCap: LinearStrokeCap.butt,
-                  progressColor: this.highest == this.v8
-                      ? widget.leadingBackgroundColor
-                      : widget.onVoteBackgroundColor,
-                ),
-              ),
+       
       ],
     );
   }
@@ -1792,132 +1059,59 @@ enum PollsType {
 
 /// does the maths for Polls
 class PollMath {
-  static getMainPerc(v1, v2, v3, v4, v5, v6, v7, v8, choice) {
+  static getMainPerc(v1, v2, v3, v4, choice) {
     var div;
     var slot1res = v1;
     var slot2res = v2;
     var slot3res = v3 == null ? 0.0 : v3;
     var slot4res = v4 == null ? 0.0 : v4;
-    var slot5res = v5 == null ? 0.0 : v5;
-    var slot6res = v6 == null ? 0.0 : v6;
-    var slot7res = v7 == null ? 0.0 : v7;
-    var slot8res = v8 == null ? 0.0 : v8;
+   
 
     if (choice == 1) {
       var sum = slot1res +
           slot2res +
           slot3res +
-          slot4res +
-          slot5res +
-          slot6res +
-          slot7res +
-          slot8res;
+          slot4res ;
       div = div = sum == 0 ? 0 : (100 / sum) * slot1res;
     }
     if (choice == 2) {
       var sum = slot1res +
           slot2res +
           slot3res +
-          slot4res +
-          slot5res +
-          slot6res +
-          slot7res +
-          slot8res;
+          slot4res ;
       div = div = sum == 0 ? 0 : (100 / sum) * slot2res;
     }
     if (choice == 3) {
       var sum = slot1res +
           slot2res +
           slot3res +
-          slot4res +
-          slot5res +
-          slot6res +
-          slot7res +
-          slot8res;
+          slot4res ;
       div = div = sum == 0 ? 0 : (100 / sum) * slot3res;
     }
     if (choice == 4) {
       var sum = slot1res +
           slot2res +
           slot3res +
-          slot4res +
-          slot5res +
-          slot6res +
-          slot7res +
-          slot8res;
+          slot4res ;
       div = div = sum == 0 ? 0 : (100 / sum) * slot4res;
     }
-    if (choice == 5) {
-      var sum = slot1res +
-          slot2res +
-          slot3res +
-          slot4res +
-          slot5res +
-          slot6res +
-          slot7res +
-          slot8res;
-      div = div = sum == 0 ? 0 : (100 / sum) * slot5res;
-    }
-
-    if (choice == 6) {
-      var sum = slot1res +
-          slot2res +
-          slot3res +
-          slot4res +
-          slot5res +
-          slot6res +
-          slot7res +
-          slot8res;
-      div = div = sum == 0 ? 0 : (100 / sum) * slot6res;
-    }
-
-    if (choice == 7) {
-      var sum = slot1res +
-          slot2res +
-          slot3res +
-          slot4res +
-          slot5res +
-          slot6res +
-          slot7res +
-          slot8res;
-      div = div = sum == 0 ? 0 : (100 / sum) * slot7res;
-    }
-
-    if (choice == 8) {
-      var sum = slot1res +
-          slot2res +
-          slot3res +
-          slot4res +
-          slot5res +
-          slot6res +
-          slot7res +
-          slot8res;
-      div = div = sum == 0 ? 0 : (100 / sum) * slot8res;
-    }
+    
 
     return div == 0 ? 0 : div.round();
   }
 
-  static List getPerc(v1, v2, v3, v4, v5, v6, v7, v8, choice) {
+  static List getPerc(v1, v2, v3, v4,  choice) {
     var div;
     var slot1res = v1;
     var slot2res = v2;
     var slot3res = v3 == null ? 0.0 : v3;
     var slot4res = v4 == null ? 0.0 : v4;
-    var slot5res = v5 == null ? 0.0 : v5;
-    var slot6res = v6 == null ? 0.0 : v6;
-    var slot7res = v7 == null ? 0.0 : v7;
-    var slot8res = v8 == null ? 0.0 : v8;
-
+    
     if (choice == 1) {
       var sum = slot1res +
           slot2res +
           slot3res +
-          slot4res +
-          slot5res +
-          slot6res +
-          slot7res +
-          slot8res;
+          slot4res ;
       // ignore: empty_statements
       ;
       div = sum == 0 ? 0 : (1 / sum) * slot1res;
@@ -1926,83 +1120,25 @@ class PollMath {
       var sum = slot1res +
           slot2res +
           slot3res +
-          slot4res +
-          slot5res +
-          slot6res +
-          slot7res +
-          slot8res;
+          slot4res ;
       div = sum == 0 ? 0 : (1 / sum) * slot2res;
     }
     if (choice == 3) {
       var sum = slot1res +
           slot2res +
           slot3res +
-          slot4res +
-          slot5res +
-          slot6res +
-          slot7res +
-          slot8res;
+          slot4res ;
       div = sum == 0 ? 0 : (1 / sum) * slot3res;
     }
     if (choice == 4) {
       var sum = slot1res +
           slot2res +
           slot3res +
-          slot4res +
-          slot5res +
-          slot6res +
-          slot7res +
-          slot8res;
+          slot4res ;
       div = sum == 0 ? 0 : (1 / sum) * slot4res;
     }
 
-    if (choice == 5) {
-      var sum = slot1res +
-          slot2res +
-          slot3res +
-          slot4res +
-          slot5res +
-          slot6res +
-          slot7res +
-          slot8res;
-      div = sum == 0 ? 0 : (1 / sum) * slot5res;
-    }
-
-    if (choice == 6) {
-      var sum = slot1res +
-          slot2res +
-          slot3res +
-          slot4res +
-          slot5res +
-          slot6res +
-          slot7res +
-          slot8res;
-      div = sum == 0 ? 0 : (1 / sum) * slot6res;
-    }
-
-    if (choice == 7) {
-      var sum = slot1res +
-          slot2res +
-          slot3res +
-          slot4res +
-          slot5res +
-          slot6res +
-          slot7res +
-          slot8res;
-      div = sum == 0 ? 0 : (1 / sum) * slot7res;
-    }
-
-    if (choice == 8) {
-      var sum = slot1res +
-          slot2res +
-          slot3res +
-          slot4res +
-          slot5res +
-          slot6res +
-          slot7res +
-          slot8res;
-      div = sum == 0 ? 0 : (1 / sum) * slot8res;
-    }
+    
     return [div == 0 ? 0.0 : div.toDouble(), div];
   }
 }

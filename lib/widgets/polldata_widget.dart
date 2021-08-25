@@ -41,6 +41,7 @@ class _polldata_widgetState extends State<polldata_widget> {
   double option1 = 1.0;
   double option2 = 0.0;
   double option3 = 1.0;
+  double option4 = 1.0;
 
   String previewImgUrl =
       "https://img.etimg.com/thumb/msid-75572296,width-640,resizemode-4,imgsize-507941/bmw-ninet.jpg";
@@ -66,10 +67,9 @@ class _polldata_widgetState extends State<polldata_widget> {
   Widget build(BuildContext context) {
     Container _createShareButton(double width, double height, bool isWeb) {
       return (Container(
-        width: width * 0.125, 
+        width: isWeb ? width * 0.4 : width * 0.4,
         height: height * 0.05,
         decoration: BoxDecoration(
-          color: Colors.transparent,
           borderRadius: BorderRadius.all(
             Radius.circular(6.0),
           ),
@@ -99,8 +99,9 @@ class _polldata_widgetState extends State<polldata_widget> {
       bool isWeb,
     ) {
       return Container(
-        width:  width * 0.25,
+        width: width,
         decoration: BoxDecoration(
+          
           boxShadow: [
             BoxShadow(
               color: Colors.grey,
@@ -116,14 +117,15 @@ class _polldata_widgetState extends State<polldata_widget> {
             children: [
               Container(
                   height: height * 0.25,
-                  width: isWeb ? width * 0.25 : width * 0.95,
+                  width: width,
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                        image: NetworkImage(widget.previewUrl),
+                        image: NetworkImage(
+                            'https://files.worldwildlife.org/wwfcmsprod/images/Tiger_resting_Bandhavgarh_National_Park_India/hero_small/6aofsvaglm_Medium_WW226365.jpg'),
                         fit: BoxFit.cover),
                   )),
               Padding(
-                padding: const EdgeInsets.fromLTRB(16.0, 20, 0, 8),
+                padding: const EdgeInsets.fromLTRB(16.0, 8, 0, 0),
                 child: Text(
                   widget.pollTitle,
                   textAlign: TextAlign.left,
@@ -154,18 +156,20 @@ class _polldata_widgetState extends State<polldata_widget> {
               Padding(
                 padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
                 child: Container(
-                  width: width * 0.25,
-                  height: height * 0.35,
+                  height: height * 0.5,
                   child: Polls(
+                    isWeb: isWeb,
                     children: [
                       // This cannot be less than 2, else will throw an exception
                       Polls.options(title: 'I agree', value: option1),
                       Polls.options(title: 'I disagree', value: option2),
+                      Polls.options(title: 'I do not care', value: option3),
+                      Polls.options(title: 'I want a new poll', value: option4),
                     ],
                     question: Text(
                       widget.question,
                       style: GoogleFonts.lato(
-                          fontSize: isWeb ? 24.0 : 18.0,
+                          fontSize: isWeb ? 22.0 : 18.0,
                           color: Colors.black,
                           fontWeight: FontWeight.bold),
                     ),
@@ -191,14 +195,22 @@ class _polldata_widgetState extends State<polldata_widget> {
                           option2 += 1.0;
                         });
                       }
+                      if (choice == 3) {
+                        setState(() {
+                          option3 += 1.0;
+                        });
+                      }
+                      if (choice == 4) {
+                        setState(() {
+                          option4 += 1.0;
+                        });
+                      }
                     },
                   ),
                 ),
               ),
               Padding(
-                padding: kIsWeb
-                    ? EdgeInsets.fromLTRB(16, 0, 20, 10)
-                    : EdgeInsets.fromLTRB(5, 100, 5, 10),
+                padding:  EdgeInsets.fromLTRB(16, 8, 0, 10) ,
                 child: Row(
                   children: [
                     TextButton.icon(
@@ -207,7 +219,6 @@ class _polldata_widgetState extends State<polldata_widget> {
                             viewComment = !viewComment;
                           });
                           widget.onViewcomment(viewComment);
-                          
                         },
                         icon: Icon(
                           Icons.comment,
@@ -232,6 +243,7 @@ class _polldata_widgetState extends State<polldata_widget> {
 
     // ignore: unused_local_variable
     Widget pollcard;
+
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     bool isWeb = false;
@@ -240,10 +252,11 @@ class _polldata_widgetState extends State<polldata_widget> {
         MediaQuery.of(context).size.width / MediaQuery.of(context).size.height;
 
     if (aspectRatio >= 1.5) {
-      pollcard = _getCardData(width, height, isWeb);
+      isWeb = true;
+      pollcard = _getCardData(width * 0.25, height * 0.8, isWeb);
     } else {
-      pollcard = _getCardData(width, height, isWeb);
       isWeb = false;
+      pollcard = _getCardData(width * 0.95, height * 0.85, isWeb);
     }
 
     return pollcard;
