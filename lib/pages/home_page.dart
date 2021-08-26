@@ -393,14 +393,17 @@ class _HomePageState extends State<HomePage> {
                             InkWell(
                           child: polldata_widget(
                             username: polls[itemIndex]['poll_user'],
-                            question: "polls[itemIndex]['poll_data']['question']asdddddddddddddddddsadsadasd",
+                            question: polls[itemIndex]['poll_data']['question'],
                             votes: 13,
                             time: 13,
+                            optionsLength: polls[itemIndex]['poll_data']['answers']['options'],
+                            options: polls[itemIndex]['poll_data']['answers'],
                             previewUrl: polls[itemIndex]['poll_data']
                                 ['previewUrl'],
                             pollTitle: 'This is the poll title',
                             onViewcomment: (bool viewComment) {
                               setState(() {
+                                print(polls[itemIndex]['poll_data']['answers']['option_1']);
                                 onViewcomment = viewComment;
                                 selectedCard = polldata_widget(
                                     username: polls[itemIndex]['poll_user'],
@@ -408,6 +411,8 @@ class _HomePageState extends State<HomePage> {
                                         ['question'],
                                     votes: 13,
                                     time: 13,
+                                    optionsLength: polls[itemIndex]['poll_data']['answers']['options'],
+                                    options: polls[itemIndex]['poll_data']['answers'],
                                     previewUrl: polls[itemIndex]['poll_data']
                                         ['previewUrl'],
                                     pollTitle: 'pollTitle',
@@ -501,11 +506,14 @@ class _HomePageState extends State<HomePage> {
                           question: polls[itemIndex]['poll_data']['question'],
                           votes: 13,
                           time: 13,
+                          optionsLength: polls[itemIndex]['poll_data']['answers']['options'],
+                          options: polls[itemIndex]['poll_data']['answers'],
                           previewUrl:
                               'http://qonway.com:8089/api/v1/media/content/unym4ir.png',
                           pollTitle: 'This is the poll title',
                           onViewcomment: (bool viewComment) {
                             setState(() {
+                              
                               onViewcomment = viewComment;
                               selectedCard = polldata_widget(
                                   username: polls[itemIndex]['poll_user'],
@@ -513,6 +521,8 @@ class _HomePageState extends State<HomePage> {
                                       ['question'],
                                   votes: 13,
                                   time: 13,
+                                  optionsLength: polls[itemIndex]['poll_data']['answers']['options'],
+                                  options: polls[itemIndex]['poll_data']['answers'],
                                   previewUrl: polls[itemIndex]['poll_data']
                                       ['previewUrl'],
                                   pollTitle: 'pollTitle',

@@ -3,6 +3,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+import 'dart:async';
+
+
 import '../widgets/duration_widget.dart';
 import '../model/file_DataModel.dart';
 import '../widgets/option_container.dart';
@@ -11,6 +14,7 @@ import '../widgets/uploadMedia.dart';
 import 'home_page.dart';
 
 bool isPreviewMode = false;
+bool previewFromUpload = true;
 
 String question = "";
 
@@ -114,15 +118,16 @@ class _CreatePollState extends State<CreatePoll> {
   }
 
   void updateValidUrl(String url) async {
-    previewImgUrl = await crawlUrl(url);
-
+    
+    previewImgUrl = url;
     setState(() {
       isPreviewMode = true;
     });
     print(previewImgUrl);
   }
 
-  var listDays = [for (var i = 0; i < 22; i += 1) i];
+
+  var listDays = [for (var i = 0; i < 8; i += 1) i];
   var listHours = [for (var i = 0; i < 24; i += 1) i];
   var listMinutes = [for (var i = 0; i < 60; i += 1) i];
 
@@ -154,7 +159,6 @@ class _CreatePollState extends State<CreatePoll> {
     Container _createQuestionField(double width, double height) {
       double _questionWidth = width * 0.8;
       return (Container(
-        
         child: Column(
           children: [
             Container(
@@ -207,7 +211,6 @@ class _CreatePollState extends State<CreatePoll> {
 
     Container _createPublishButton(double width, double height) {
       return (Container(
-        
         width: width,
         height: height,
         decoration: BoxDecoration(
@@ -216,7 +219,7 @@ class _CreatePollState extends State<CreatePoll> {
             Radius.circular(6.0),
           ),
         ),
-        child:ElevatedButton(
+        child: ElevatedButton(
           child: Text('Publish', style: TextStyle(fontFamily: 'Leto')),
           style: ElevatedButton.styleFrom(
             shape: new RoundedRectangleBorder(
@@ -225,7 +228,6 @@ class _CreatePollState extends State<CreatePoll> {
           ),
           onPressed: () {
             createPollRest();
-        
             Navigator.of(context).pushNamed(HomePage.route);
           },
         ),
@@ -256,7 +258,7 @@ class _CreatePollState extends State<CreatePoll> {
           physics: const AlwaysScrollableScrollPhysics(),
           children: [
             isPreviewMode
-                ? PreviewMode(width * 0.8, double.infinity , updatePreviewMode,
+                ? PreviewMode(width * 0.8, double.infinity, updatePreviewMode,
                     previewImgUrl)
                 : _createUploadMedia(width, height * 0.4),
 

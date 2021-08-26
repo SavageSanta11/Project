@@ -19,6 +19,8 @@ class polldata_widget extends StatefulWidget {
   final String question;
   final int votes;
   final int time;
+  final int optionsLength;
+  final Map<dynamic, dynamic> options;
   final BoolCallback onViewcomment;
 
   const polldata_widget(
@@ -29,7 +31,8 @@ class polldata_widget extends StatefulWidget {
       required this.time,
       required this.previewUrl,
       required this.pollTitle,
-      required this.onViewcomment})
+      required this.onViewcomment,
+      required this.optionsLength, required this.options})
       : super(key: key);
 
   @override
@@ -101,7 +104,6 @@ class _polldata_widgetState extends State<polldata_widget> {
       return Container(
         width: width,
         decoration: BoxDecoration(
-          
           boxShadow: [
             BoxShadow(
               color: Colors.grey,
@@ -116,12 +118,12 @@ class _polldata_widgetState extends State<polldata_widget> {
             physics: const AlwaysScrollableScrollPhysics(),
             children: [
               Container(
-                  height: height * 0.25,
+                  height: height * 0.5,
                   width: width,
                   decoration: BoxDecoration(
                     image: DecorationImage(
                         image: NetworkImage(
-                            'https://files.worldwildlife.org/wwfcmsprod/images/Tiger_resting_Bandhavgarh_National_Park_India/hero_small/6aofsvaglm_Medium_WW226365.jpg'),
+                            "https://files.worldwildlife.org/wwfcmsprod/images/Tiger_resting_Bandhavgarh_National_Park_India/hero_small/6aofsvaglm_Medium_WW226365.jpg"),
                         fit: BoxFit.cover),
                   )),
               Padding(
@@ -161,10 +163,11 @@ class _polldata_widgetState extends State<polldata_widget> {
                     isWeb: isWeb,
                     children: [
                       // This cannot be less than 2, else will throw an exception
-                      Polls.options(title: 'I agree', value: option1),
-                      Polls.options(title: 'I disagree', value: option2),
-                      Polls.options(title: 'I do not care', value: option3),
-                      Polls.options(title: 'I want a new poll', value: option4),
+                      Polls.options(title: widget.options['option_1'], value: option1),
+                      Polls.options(title: widget.options['option_2'], value: option2),
+                      Polls.options(title: widget.options['option_3'], value: option3),
+                      Polls.options(title: widget.options['option_4'], value: option4),
+                      
                     ],
                     question: Text(
                       widget.question,
@@ -210,7 +213,7 @@ class _polldata_widgetState extends State<polldata_widget> {
                 ),
               ),
               Padding(
-                padding:  EdgeInsets.fromLTRB(16, 8, 0, 10) ,
+                padding: EdgeInsets.fromLTRB(16, 8, 0, 10),
                 child: Row(
                   children: [
                     TextButton.icon(

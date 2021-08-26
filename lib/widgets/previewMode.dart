@@ -34,10 +34,29 @@ class _PreviewModeState extends State<PreviewMode> {
             width: width,
             child: Stack(
               children: [
-                Image.network(
-                  widget.imageUrl,
+                Container(
                   width: width,
-                  fit: BoxFit.fitWidth,
+                  
+                  child: Image.network(
+                    widget.imageUrl,
+                    loadingBuilder: (BuildContext context, Widget child,
+                        ImageChunkEvent? loadingProgress) {
+                      if (loadingProgress == null) {
+                        return child;
+                      }
+                      return Center(
+                        child: CircularProgressIndicator(
+                          value: loadingProgress.expectedTotalBytes != null
+                              ? loadingProgress.cumulativeBytesLoaded /
+                                  loadingProgress.expectedTotalBytes!
+                              : null,
+                        ),
+                      );
+                    },
+                    width: width,
+                   
+                    fit: BoxFit.cover,
+                  ),
                 ),
                 Align(
                   alignment: Alignment.topRight,

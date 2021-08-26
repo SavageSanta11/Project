@@ -1,14 +1,21 @@
-import 'dart:io';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_dropzone/flutter_dropzone.dart';
 import '../model/file_DataModel.dart';
 
-import 'package:image_picker/image_picker.dart';
 import 'DropZoneWidget.dart';
+import 'dart:typed_data';
+import 'dart:async';
+
+import 'package:http_parser/http_parser.dart';
+import 'package:http/http.dart' as http;
+import 'dart:html' as html;
 
 typedef void BoolCallback(bool flag);
 typedef void StringCallback(String url);
+
+String uploadUrl = "";
 
 // ignore: camel_case_types
 class uploadMode extends StatefulWidget {
@@ -29,23 +36,69 @@ class _uploadModeState extends State<uploadMode> {
   var imageFile;
   File_Data_Model? file;
 
-  final ImagePicker _picker = ImagePicker();
-  File? _imageFile;
-  
-  // Check this code working for image files or not
-  Future<void> _getImage(ImageSource source) async {
-    var image = await _picker.pickImage(source: source);
-    if (image != null) {
-      final tempImage = File(image.path);
-      print('---------------->'+image.path.toString()+'<----------------');
-      setState(() {
-        this._imageFile = tempImage;
-        //TODO: send file as _imageFile and path as image.path
+  late List<int> _selectedFile;
+  late Uint8List _bytesData;
+  GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
+
+  String previewImgUrl = "";
+
+  startWebFilePicker() async {
+    html.FileUploadInputElement uploadInput = html.FileUploadInputElement();
+    uploadInput.multiple = true;
+    uploadInput.draggable = true;
+    uploadInput.click();
+
+    uploadInput.onChange.listen((e) {
+      final files = uploadInput.files;
+      final file = files![0];
+      final reader = new html.FileReader();
+
+      reader.onLoadEnd.listen((e) {
+        _handleResult(reader.result);
       });
-    }
-    Navigator.pop(context);
+      reader.readAsDataUrl(file);
+    });
   }
 
+  void _handleResult(var result) {
+    setState(() {
+      _bytesData = Base64Decoder().convert(result.toString().split(",").last);
+      _selectedFile = _bytesData;
+      makeRequest();
+    });
+  }
+
+  Future<void> makeRequest() async {
+    var url = Uri.parse("http://164.52.212.151:3012/api/access/upload/media");
+    var request = new http.MultipartRequest("POST", url);
+    request.files.add(await http.MultipartFile.fromBytes(
+        'input_file', _selectedFile,
+        contentType: new MediaType('image', 'png'), filename: "file_up"));
+
+    final response = await request.send();
+    final respStr = await response.stream.bytesToString();
+    var decode = jsonDecode(respStr);
+     uploadUrl = decode['data']['media_url'];
+    print(uploadUrl);
+    widget.setPreviewMode(true);
+    widget.onSubmitted(uploadUrl);
+  }
+
+  Future<String> crawlUrl(String url) async {
+  var headers = {
+    'Authorization':
+        'Bearer  eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTYyOTI4MjQyMiwianRpIjoiNWMyZmNkYTQtZjgyZS00ODhlLWFmZGEtNTFiZmEyYmZlMzJkIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6Imthbm9AcW9ud2F5LmNvbSIsIm5iZiI6MTYyOTI4MjQyMiwiZXhwIjoxNjI5MjgzMzIyfQ.L6O-rXKbo8vtcyT0K071o108Lljpr_PjLmw14rDHVvI'
+  };
+
+  http.Response response = await http.get(
+    Uri.parse('http://164.52.212.151:7002/api/access/crawl/url?url=' + url),
+    headers: headers,
+  );
+
+  var convertDataToJson = json.decode(response.body);
+  previewImgUrl = convertDataToJson["data"]["preview_image_url"];
+  return previewImgUrl;
+}
 
   @override
   Widget build(BuildContext context) {
@@ -82,22 +135,15 @@ class _uploadModeState extends State<uploadMode> {
                   return null;
                 }
               },
-              onFieldSubmitted: (value) {
-                widget.onSubmitted(value);
+              onFieldSubmitted: (value) async {
+                 previewImgUrl = await crawlUrl(value);
+                
+                widget.onSubmitted(previewImgUrl);
               },
             ),
           ],
         ),
       ));
-    }
-
-    Future<void> openGallery() async {
-      final picker = ImagePicker();
-      var pickedFile = await picker.pickImage(source: ImageSource.gallery);
-      setState(() {
-        imageFile = File(pickedFile!.path);
-      });
-      print(imageFile);
     }
 
     Container _createUploadButton(double width, double height) {
@@ -107,16 +153,16 @@ class _uploadModeState extends State<uploadMode> {
         decoration: BoxDecoration(border: Border.all(color: Colors.white)),
         child: ElevatedButton(
           child: Text('Upload', style: TextStyle(fontFamily: 'Leto')),
-                style: ElevatedButton.styleFrom(
-                  onPrimary: Colors.white,
-                  primary: Colors.white,
-                ),
-          onPressed: () async {
+          style: ElevatedButton.styleFrom(
+            onPrimary: Colors.white,
+            primary: Colors.white,
+          ),
+          onPressed: ()  {
+            startWebFilePicker();
             /*openGallery();
              final events = await controller.pickFiles();
                   if (events.isEmpty) return;
                   widgetKey.currentState!.UploadedFile(events.first);*/
-                  _getImage(ImageSource.gallery);
           },
         ),
       ));
