@@ -15,7 +15,7 @@ Future<void> pushUserToWaitlist() async {
       <String, dynamic>{"user": "kano@qonway.com", "location": "Seoul"});
 
   http.Response response = await http.post(
-      Uri.parse('http://164.52.212.151:3012/api/access/waitlist'),
+      Uri.parse('http://164.52.212.151:7002/api/access/waitlist'),
       headers: headers,
       body: body);
 

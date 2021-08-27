@@ -98,7 +98,7 @@ Future<String> createPollRest() async {
   };
 
   http.Response response = await http.post(
-      Uri.parse('http://164.52.212.151:3012/api/access/poll/create'),
+      Uri.parse('http://164.52.212.151:7002/api/access/poll/create'),
       headers: headers,
       body: writeBody());
 
@@ -115,7 +115,7 @@ Future<String> crawlUrl(String url) async {
   };
 
   http.Response response = await http.get(
-    Uri.parse('http://164.52.212.151:3012/api/access/crawl/url?url=' + url),
+    Uri.parse('http://164.52.212.151:7002/api/access/crawl/url?url=' + url),
     headers: headers,
   );
 
@@ -126,7 +126,7 @@ Future<String> crawlUrl(String url) async {
 
 Future<void> publishPoll(String poll_id) async {
   String uri =
-      'http://164.52.212.151:3012/api/access/poll/publish?poll_id=' + poll_id;
+      'http://164.52.212.151:7002/api/access/poll/publish?poll_id=' + poll_id;
 
   http.Response response = await http.get(
     Uri.parse(uri),

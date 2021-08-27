@@ -47,9 +47,9 @@ class polldata_widget extends StatefulWidget {
 
 // ignore: camel_case_types
 class _polldata_widgetState extends State<polldata_widget> {
-  double option1 = 0.0;
+  double option1 = 1.0;
   double option2 = 0.0;
-  double option3 = 0.0;
+  double option3 = 1.0;
   double option4 = 0.0;
 
   String user = "king@mail.com";
@@ -63,7 +63,7 @@ class _polldata_widgetState extends State<polldata_widget> {
 
   Future<void> getPollResult(String poll_id) async {
     String uri =
-        'http://164.52.212.151:7002/api/access/poll/result?poll_id=' + poll_id;
+        'http://164.52.212.151:7002/api/access/poll/result?poll_id=yjhhonw';
 
     http.Response response = await http.get(
       Uri.parse(uri),
@@ -71,19 +71,22 @@ class _polldata_widgetState extends State<polldata_widget> {
 
     var convertDataToJson = json.decode(response.body);
 
-    option1 = convertDataToJson['data']['option_1']['voteCount'];
-    option2 = convertDataToJson['data']['option_2']['voteCount'];
-    option3 = convertDataToJson['data']['option_3']['voteCount'];
-    option4 = convertDataToJson['data']['option_4']['voteCount'];
+    setState(() {
+      option1 = convertDataToJson['data']['option_1']['voteCount'].toDouble();
+      option2 = convertDataToJson['data']['option_2']['voteCount'];
+      option3 = convertDataToJson['data']['option_3']['voteCount'];
+      option4 = convertDataToJson['data']['option_4']['voteCount'];
+    });
+    
   }
 
   List<dynamic> buildList() {
     getPollResult(widget.pollId);
-    print(widget.pollId);
 
     if (widget.optionsLength == 2) {
       choices.add(
           Polls.options(title: widget.options['option_1'], value: option1));
+          
       choices.add(
           Polls.options(title: widget.options['option_2'], value: option2));
     } else if (widget.optionsLength == 3) {
@@ -102,6 +105,7 @@ class _polldata_widgetState extends State<polldata_widget> {
           Polls.options(title: widget.options['option_3'], value: option3));
       choices.add(
           Polls.options(title: widget.options['option_4'], value: option4));
+          print(option1);
     }
     return choices;
   }
@@ -165,7 +169,7 @@ class _polldata_widgetState extends State<polldata_widget> {
                         image: NetworkImage(widget.previewUrl),
                         fit: BoxFit.cover),
                   )),
-              Padding(
+              /*Padding(
                 padding: const EdgeInsets.fromLTRB(16.0, 8, 0, 0),
                 child: Text(
                   widget.pollTitle,
@@ -182,9 +186,9 @@ class _polldata_widgetState extends State<polldata_widget> {
                   color: Colors.black,
                   thickness: 3.0,
                 ),
-              ),
+              ),*/
               Padding(
-                padding: const EdgeInsets.fromLTRB(16.0, 8, 0, 0),
+                padding: const EdgeInsets.fromLTRB(16.0, 0, 16, 0),
                 child: Text(
                   widget.username,
                   textAlign: TextAlign.left,
@@ -195,9 +199,9 @@ class _polldata_widgetState extends State<polldata_widget> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
+                padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 0),
                 child: Container(
-                  height: height * 0.5,
+                  height: height * 0.4,
                   child: Polls(
                     isWeb: isWeb,
                     children: buildList(),
@@ -245,7 +249,7 @@ class _polldata_widgetState extends State<polldata_widget> {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.fromLTRB(16, 8, 0, 10),
+                padding: EdgeInsets.fromLTRB(16, 4, 0, 4),
                 child: Row(
                   children: [
                     TextButton.icon(
@@ -288,7 +292,7 @@ class _polldata_widgetState extends State<polldata_widget> {
 
     if (aspectRatio >= 1.5) {
       isWeb = true;
-      pollcard = _getCardData(width * 0.25, height * 0.8, isWeb);
+      pollcard = _getCardData(width * 0.25, height * 0.85, isWeb);
     } else {
       isWeb = false;
       pollcard = _getCardData(width * 0.95, height * 0.85, isWeb);

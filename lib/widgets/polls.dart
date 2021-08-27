@@ -386,12 +386,12 @@ class _PollsState extends State<Polls> {
           children: [
             Container(
               width: double.infinity,
-              padding: EdgeInsets.only(bottom: 10),
+              padding: EdgeInsets.only(bottom: 0.009*MediaQuery.of(context).size.height),
               child: Container(
                 margin: EdgeInsets.all(0),
                 width: MediaQuery.of(context).size.width,
                 padding: EdgeInsets.all(0),
-                height: widget.isWeb? 40 : 35,
+                height: widget.isWeb? 0.05*MediaQuery.of(context).size.height : 0.042*MediaQuery.of(context).size.height,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(2),
                   color: widget.backgroundColor,
@@ -430,11 +430,11 @@ class _PollsState extends State<Polls> {
             ),
             Container(
               width: double.infinity,
-              padding: EdgeInsets.only(bottom: 10),
+              padding: EdgeInsets.only(bottom: 0.009*MediaQuery.of(context).size.height),
               child: Container(
                 margin: EdgeInsets.all(0),
                 padding: EdgeInsets.all(0),
-               height: widget.isWeb? 40 : 35,
+               height: widget.isWeb? 0.05*MediaQuery.of(context).size.height : 0.042*MediaQuery.of(context).size.height,
                 width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(2),
@@ -475,11 +475,11 @@ class _PollsState extends State<Polls> {
             this.c3 != null
                 ? Container(
                     width: double.infinity,
-                    padding: EdgeInsets.only(bottom: 10),
+                    padding: EdgeInsets.only(bottom: 0.009*MediaQuery.of(context).size.height),
                     child: Container(
                       margin: EdgeInsets.all(0),
                       padding: EdgeInsets.all(0),
-                      height: widget.isWeb? 40 : 35,
+                      height: widget.isWeb? 0.05*MediaQuery.of(context).size.height : 0.042*MediaQuery.of(context).size.height,
                       width: MediaQuery.of(context).size.width,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(2),
@@ -521,11 +521,11 @@ class _PollsState extends State<Polls> {
             this.c4 != null
                 ? Container(
                     width: double.infinity,
-                    padding: EdgeInsets.only(bottom: 10),
+                    padding: EdgeInsets.only(bottom: 0.009*MediaQuery.of(context).size.height),
                     child: Container(
                       margin: EdgeInsets.all(0),
                       padding: EdgeInsets.all(0),
-                      height: widget.isWeb? 40 : 35,
+                      height: widget.isWeb? 0.05*MediaQuery.of(context).size.height : 0.042*MediaQuery.of(context).size.height,
                       width: MediaQuery.of(context).size.width,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(2),
@@ -608,7 +608,8 @@ class _PollsState extends State<Polls> {
           child: LinearPercentIndicator(
               backgroundColor: Color(0xffedf0f3),
               animation: true,
-              lineHeight: widget.isWeb? 40 : 35.0,
+              lineHeight: widget.isWeb? 0.05*MediaQuery.of(context).size.height : 0.042*MediaQuery.of(context).size.height,
+              
               animationDuration: 500,
               percent: PollMath.getPerc(this.v1, this.v2, this.v3, this.v4,
                   1)[0],
@@ -657,7 +658,7 @@ class _PollsState extends State<Polls> {
 //              width: MediaQuery.of(context).size.width,
               backgroundColor: Color(0xffedf0f3),
               animation: true,
-              lineHeight: widget.isWeb? 40 : 35.0,
+              lineHeight: widget.isWeb? 0.05*MediaQuery.of(context).size.height : 0.042*MediaQuery.of(context).size.height,
               animationDuration: 500,
               percent: PollMath.getPerc(this.v1, this.v2, this.v3, this.v4,
                  2)[0],
@@ -709,7 +710,7 @@ class _PollsState extends State<Polls> {
 //              width: MediaQuery.of(context).size.width,
 
                     animation: true,
-                    lineHeight: widget.isWeb? 40 : 35.0,
+                    lineHeight: widget.isWeb? 0.05*MediaQuery.of(context).size.height : 0.042*MediaQuery.of(context).size.height,
                     animationDuration: 500,
                     percent: PollMath.getPerc(this.v1, this.v2, this.v3,
                         this.v4, 3)[0],
@@ -765,7 +766,7 @@ class _PollsState extends State<Polls> {
                 child: LinearPercentIndicator(
                     backgroundColor: Color(0xffedf0f3),
                     animation: true,
-                    lineHeight: widget.isWeb? 40 : 35.0,
+                    lineHeight: widget.isWeb? 0.05*MediaQuery.of(context).size.height : 0.042*MediaQuery.of(context).size.height,
                     animationDuration: 500,
                     percent: PollMath.getPerc(this.v1, this.v2, this.v3, this.v4,
                         4)[0],
@@ -861,7 +862,7 @@ class _PollsState extends State<Polls> {
             
             backgroundColor: Color(0xffedf0f3),
             animation: true,
-            lineHeight: widget.isWeb? 40 : 35.0,
+            lineHeight: widget.isWeb? 0.05*MediaQuery.of(context).size.height : 0.042*MediaQuery.of(context).size.height,
             animationDuration: 500,
             percent: PollMath.getPerc(this.v1, this.v2, this.v3, this.v4, 1)[0],
             center: Row(
@@ -911,7 +912,7 @@ class _PollsState extends State<Polls> {
             backgroundColor: Color(0xffedf0f3),
 //              width: MediaQuery.of(context).size.width,
             animation: true,
-            lineHeight: widget.isWeb? 40 : 35.0,
+            lineHeight: widget.isWeb? 0.05*MediaQuery.of(context).size.height : 0.042*MediaQuery.of(context).size.height,
             animationDuration: 500,
             percent: PollMath.getPerc(this.v1, this.v2, this.v3, this.v4,
                  2)[0],
@@ -965,7 +966,7 @@ class _PollsState extends State<Polls> {
                   backgroundColor: Color(0xffedf0f3),
 //              width: MediaQuery.of(context).size.width,
                   animation: true,
-                  lineHeight: widget.isWeb? 40 : 35.0,
+                  lineHeight: widget.isWeb? 0.05*MediaQuery.of(context).size.height : 0.042*MediaQuery.of(context).size.height,
                   animationDuration: 500,
                   percent: PollMath.getPerc(this.v1, this.v2, this.v3, this.v4,
                        3)[0],
@@ -1024,7 +1025,7 @@ class _PollsState extends State<Polls> {
                   backgroundColor: Color(0xffedf0f3),
 //              width: MediaQuery.of(context).size.width,
                   animation: true,
-                  lineHeight: widget.isWeb? 40 : 35.0,
+                  lineHeight: widget.isWeb? 0.05*MediaQuery.of(context).size.height : 0.042*MediaQuery.of(context).size.height,
                   animationDuration: 500,
                   percent: PollMath.getPerc(this.v1, this.v2, this.v3, this.v4,
                       4)[0],

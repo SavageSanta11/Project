@@ -17,7 +17,7 @@ Future<String> registerUser(String emailId) async {
   });
 
   http.Response response = await http.post(
-      Uri.parse('http://164.52.212.151:3012/api/access/account/register'),
+      Uri.parse('http://164.52.212.151:7002/api/access/account/register'),
       headers: headers,
       body: email);
 
@@ -183,8 +183,11 @@ class Home extends StatelessWidget {
 
     if (aspectRatio >= 1.5) {
       homePage = _buildDesktopView();
+    
+      
     } else {
       homePage = _buildMobileView();
+  
     }
 
     return Scaffold(

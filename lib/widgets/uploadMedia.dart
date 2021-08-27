@@ -69,7 +69,7 @@ class _uploadModeState extends State<uploadMode> {
   }
 
   Future<void> makeRequest() async {
-    var url = Uri.parse("http://164.52.212.151:3012/api/access/upload/media");
+    var url = Uri.parse("http://164.52.212.151:7002/api/access/upload/media");
     var request = new http.MultipartRequest("POST", url);
     request.files.add(http.MultipartFile.fromBytes(
         'input_file', _selectedFile,

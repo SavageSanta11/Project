@@ -13,7 +13,7 @@ int count = 1;
 
 // ignore: non_constant_identifier_names
 Future<void> showUserComments(String poll_id, String email) async {
-  String uri = 'http://164.52.212.151:3012/api/access/show/comments?poll_id=' +
+  String uri = 'http://164.52.212.151:7002/api/access/show/comments?poll_id=' +
       poll_id +
       '&email=' +
       email;
@@ -25,7 +25,6 @@ Future<void> showUserComments(String poll_id, String email) async {
   var convertDataToJson = json.decode(response.body);
   print(convertDataToJson);
 }
-
 
 // ignore: camel_case_types
 class HomePage extends StatefulWidget {
@@ -43,7 +42,7 @@ class _HomePageState extends State<HomePage> {
   bool pollsLoaded = false;
 
   bool onViewcomment = false;
-  
+
   // ignore: non_constant_identifier_names
   void updateViewcomment(bool Viewcomment, String poll_id) {
     setState(() {
@@ -54,9 +53,11 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> getPollRecommendations(
       // ignore: non_constant_identifier_names
-      String poll_id, int count, int skip) async {
+      String poll_id,
+      int count,
+      int skip) async {
     String uri =
-        'http://164.52.212.151:3012/api/access/poll/recommendations?poll_id=' +
+        'http://164.52.212.151:7002/api/access/poll/recommendations?poll_id=' +
             poll_id +
             '&count=' +
             count.toString() +
@@ -68,11 +69,13 @@ class _HomePageState extends State<HomePage> {
     );
 
     var convertDataToJson = json.decode(response.body);
+
     polls = convertDataToJson['data'];
     setState(() {
       pollsLoaded = true;
     });
-    
+
+    print(uri);
   }
 
   List<T> map<T>(List list, Function handler) {
@@ -86,7 +89,8 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    this.getPollRecommendations('awyluvw', 5, 5);
+    //this.getPollRecommendations('awyluvw', 5, 5);
+    this.getPollRecommendations('sa7myom', 5, 5);
   }
 
   Widget selectedCard = Text("data");
@@ -96,8 +100,7 @@ class _HomePageState extends State<HomePage> {
       if (onViewcomment) {
         // return the card + comment view
         return Material(
-            child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+            child: ListView(
           children: [
             Padding(
               padding: const EdgeInsets.fromLTRB(0, 30, 0, 0),
@@ -105,7 +108,7 @@ class _HomePageState extends State<HomePage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   SizedBox(
-                    width: 60.0,
+                    width: 0.03 * width,
                   ),
                   IconButton(
                     icon: Icon(
@@ -116,7 +119,7 @@ class _HomePageState extends State<HomePage> {
                     onPressed: () {},
                   ),
                   SizedBox(
-                    width: 20.0,
+                    width: 0.01 * width,
                   ),
                   Text(
                     'Q O N W A Y',
@@ -126,11 +129,11 @@ class _HomePageState extends State<HomePage> {
                         fontWeight: FontWeight.bold),
                   ),
                   SizedBox(
-                    width: 60.0,
+                    width: 0.03 * width,
                   ),
                   Container(
-                    width: 900.0,
-                    height: 40.0,
+                    width: 0.58 * width,
+                    height: 0.055 * height,
                     child: TextField(
                       decoration: InputDecoration(
                           suffixIcon: Icon(
@@ -145,24 +148,24 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   SizedBox(
-                    width: 60.0,
+                    width: 0.03 * width,
                   ),
                   GestureDetector(
                       onTap: () {/* Write listener code here */},
                       child: Text('About Us',
                           style: GoogleFonts.lato(
-                              color: Color(0xff092836), fontSize: 20.0))),
+                              color: Color(0xff092836), fontSize: 18.0))),
                   SizedBox(
-                    width: 20.0,
+                    width: 0.01 * width,
                   ),
                   SizedBox(
-                      height: 40.0,
-                      width: 120.0,
+                      height: 0.055 * height,
+                      width: 0.06 * width,
                       child: TextButton(
                         child: Text(
                           'SIGN UP',
                           style: GoogleFonts.lato(
-                              color: Color(0xffedf0f3), fontSize: 20.0),
+                              color: Color(0xffedf0f3), fontSize: 18.0),
                         ),
                         style: ElevatedButton.styleFrom(
                           shape: new RoundedRectangleBorder(
@@ -186,7 +189,9 @@ class _HomePageState extends State<HomePage> {
                   Container(
                       width: width * 0.40,
                       height: height * 0.8,
-                      child: Comments(pollId: pollId,))
+                      child: Comments(
+                        pollId: pollId,
+                      ))
                 ],
               ),
             ),
@@ -196,15 +201,15 @@ class _HomePageState extends State<HomePage> {
         // return the carousel view
         return pollsLoaded
             ? Material(
-                child: (Column(
+                child: (ListView(
                   children: <Widget>[
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 30, 0, 0),
+                      padding: EdgeInsets.fromLTRB(0, 0.042 * height, 0, 0),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           SizedBox(
-                            width: 60.0,
+                            width: 0.03 * width,
                           ),
                           IconButton(
                             icon: Icon(
@@ -215,7 +220,7 @@ class _HomePageState extends State<HomePage> {
                             onPressed: () {},
                           ),
                           SizedBox(
-                            width: 20.0,
+                            width: 0.01 * width,
                           ),
                           Text(
                             'Q O N W A Y',
@@ -225,11 +230,11 @@ class _HomePageState extends State<HomePage> {
                                 fontWeight: FontWeight.bold),
                           ),
                           SizedBox(
-                            width: 60.0,
+                            width: 0.03 * width,
                           ),
                           Container(
-                            width: 900.0,
-                            height: 40.0,
+                            width: 0.58 * width,
+                            height: 0.055 * height,
                             child: TextField(
                               decoration: InputDecoration(
                                   suffixIcon: Icon(
@@ -244,7 +249,7 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ),
                           SizedBox(
-                            width: 60.0,
+                            width: 0.03 * width,
                           ),
                           GestureDetector(
                               onTap: () {/* Write listener code here */},
@@ -253,11 +258,11 @@ class _HomePageState extends State<HomePage> {
                                       color: Color(0xff092836),
                                       fontSize: 20.0))),
                           SizedBox(
-                            width: 20.0,
+                            width: 0.01 * width,
                           ),
                           SizedBox(
-                              height: 40.0,
-                              width: 120.0,
+                              height: 0.055 * height,
+                              width: 0.06 * width,
                               child: TextButton(
                                 child: Text(
                                   'SIGN UP',
@@ -276,11 +281,11 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(32.0),
+                      padding: EdgeInsets.fromLTRB(10, 0.014 * height, 10, 0),
                       child: CarouselSlider.builder(
                         carouselController: _controller,
                         options: CarouselOptions(
-                          height: height * 0.8,
+                          height: height * 0.85,
                           enlargeStrategy: CenterPageEnlargeStrategy.scale,
                           viewportFraction: 0.35,
                           enableInfiniteScroll: true,
@@ -297,41 +302,52 @@ class _HomePageState extends State<HomePage> {
                         itemBuilder: (BuildContext context, int itemIndex,
                                 int pageViewIndex) =>
                             InkWell(
-                          child:  (3>0)?  polldata_widget(
-                            pollId: polls[itemIndex]['poll_id'],
-                            username: polls[itemIndex]['poll_user'],
-                            question: polls[itemIndex]['poll_data']['question'],
-                            votes: 13,
-                            time: 13,
-                            optionsLength: polls[itemIndex]['poll_data']['answers']['options'],
-                            options: polls[itemIndex]['poll_data']['answers'],
-                            previewUrl: polls[itemIndex]['poll_data']
-                                ['previewUrl'],
-                            pollTitle: 'This is the poll title',
-                            onViewcomment: (bool viewComment, String poll_id) {
-                              setState(() {
-                                onViewcomment = viewComment;
-                                pollId = poll_id;
-                                selectedCard = polldata_widget(
+                          child: (3 > 0)
+                              ? polldata_widget(
                                   pollId: polls[itemIndex]['poll_id'],
-                                    username: polls[itemIndex]['poll_user'],
-                                    question: polls[itemIndex]['poll_data']
-                                        ['question'],
-                                    votes: 13,
-                                    time: 13,
-                                    optionsLength: polls[itemIndex]['poll_data']['answers']['options'],
-                                    options: polls[itemIndex]['poll_data']['answers'],
-                                    previewUrl: polls[itemIndex]['poll_data']
-                                        ['previewUrl'],
-                                    pollTitle: 'pollTitle',
-                                    onViewcomment: updateViewcomment);
-                              });
-                            },
-                          ) : WaitlistCardWidget(),
+                                  username: polls[itemIndex]['poll_user'],
+                                  question: polls[itemIndex]['poll_data']
+                                      ['question'],
+                                  votes: 13,
+                                  time: 13,
+                                  optionsLength: polls[itemIndex]['poll_data']
+                                      ['answers']['options'],
+                                  options: polls[itemIndex]['poll_data']
+                                      ['answers'],
+                                  previewUrl: polls[itemIndex]['poll_data']
+                                      ['previewUrls']['previewUrl_1'],
+                                  pollTitle: 'This is the poll title',
+                                  onViewcomment:
+                                      (bool viewComment, String poll_id) {
+                                    setState(() {
+                                      onViewcomment = viewComment;
+                                      pollId = poll_id;
+                                      selectedCard = polldata_widget(
+                                          pollId: polls[itemIndex]['poll_id'],
+                                          username: polls[itemIndex]
+                                              ['poll_user'],
+                                          question: polls[itemIndex]
+                                              ['poll_data']['question'],
+                                          votes: 13,
+                                          time: 13,
+                                          optionsLength: polls[itemIndex]
+                                                  ['poll_data']['answers']
+                                              ['options'],
+                                          options: polls[itemIndex]['poll_data']
+                                              ['answers'],
+                                          previewUrl: polls[itemIndex]
+                                                  ['poll_data']['previewUrls']
+                                              ['previewUrl_1'],
+                                          pollTitle: 'pollTitle',
+                                          onViewcomment: updateViewcomment);
+                                    });
+                                  },
+                                )
+                              : WaitlistCardWidget(),
                           onTap: () {
                             _controller.nextPage();
                             setState(() {
-                              count+=1;
+                              count += 1;
                             });
                           },
                         ),
@@ -369,7 +385,11 @@ class _HomePageState extends State<HomePage> {
                   height: height * 0.8,
                   child: selectedCard),
               Container(
-                  width: width * 0.94, height: height * 0.8, child: Comments(pollId: pollId,))
+                  width: width * 0.94,
+                  height: height * 0.8,
+                  child: Comments(
+                    pollId: pollId,
+                  ))
             ],
           ),
         );
@@ -418,27 +438,29 @@ class _HomePageState extends State<HomePage> {
                           question: polls[itemIndex]['poll_data']['question'],
                           votes: 13,
                           time: 13,
-                          optionsLength: polls[itemIndex]['poll_data']['answers']['options'],
+                          optionsLength: polls[itemIndex]['poll_data']
+                              ['answers']['options'],
                           options: polls[itemIndex]['poll_data']['answers'],
-                          previewUrl:
-                              'http://qonway.com:8089/api/v1/media/content/unym4ir.png',
+                          previewUrl: polls[itemIndex]['poll_data']
+                              ['previewUrls']['previewUrl_1'],
                           pollTitle: 'This is the poll title',
                           onViewcomment: (bool viewComment, String poll_id) {
                             setState(() {
-                              
                               onViewcomment = viewComment;
                               pollId = poll_id;
                               selectedCard = polldata_widget(
-                                pollId: polls[itemIndex]['poll_id'],
+                                  pollId: polls[itemIndex]['poll_id'],
                                   username: polls[itemIndex]['poll_user'],
                                   question: polls[itemIndex]['poll_data']
                                       ['question'],
                                   votes: 13,
                                   time: 13,
-                                  optionsLength: polls[itemIndex]['poll_data']['answers']['options'],
-                                  options: polls[itemIndex]['poll_data']['answers'],
+                                  optionsLength: polls[itemIndex]['poll_data']
+                                      ['answers']['options'],
+                                  options: polls[itemIndex]['poll_data']
+                                      ['answers'],
                                   previewUrl: polls[itemIndex]['poll_data']
-                                      ['previewUrl'],
+                                      ['previewUrls']['previewUrl_1'],
                                   pollTitle: 'pollTitle',
                                   onViewcomment: updateViewcomment);
                             });
@@ -453,7 +475,6 @@ class _HomePageState extends State<HomePage> {
                 ))
             : Material();
       }
-      
     }
 
     Widget carousel;
