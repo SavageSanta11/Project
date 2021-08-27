@@ -8,7 +8,7 @@ import 'polls.dart';
 
 GlobalKey key = GlobalKey();
 
-typedef void BoolCallback(bool viewComment);
+typedef void BoolCallback(bool viewComment, String pollId);
 
 Widget selectedCard = SizedBox();
 
@@ -16,6 +16,7 @@ class polldata_widget extends StatefulWidget {
   final String previewUrl;
   final String pollTitle;
   final String username;
+  final String pollId;
   final String question;
   final int votes;
   final int time;
@@ -32,7 +33,8 @@ class polldata_widget extends StatefulWidget {
       required this.previewUrl,
       required this.pollTitle,
       required this.onViewcomment,
-      required this.optionsLength, required this.options})
+      required this.optionsLength,
+      required this.options, required this.pollId})
       : super(key: key);
 
   @override
@@ -123,7 +125,7 @@ class _polldata_widgetState extends State<polldata_widget> {
                   decoration: BoxDecoration(
                     image: DecorationImage(
                         image: NetworkImage(
-                            "https://files.worldwildlife.org/wwfcmsprod/images/Tiger_resting_Bandhavgarh_National_Park_India/hero_small/6aofsvaglm_Medium_WW226365.jpg"),
+                            "http://qonway.com:8089/api/v1/media/content/jrutnzx.png"),
                         fit: BoxFit.cover),
                   )),
               Padding(
@@ -163,11 +165,20 @@ class _polldata_widgetState extends State<polldata_widget> {
                     isWeb: isWeb,
                     children: [
                       // This cannot be less than 2, else will throw an exception
-                      Polls.options(title: widget.options['option_1'], value: option1),
-                      Polls.options(title: widget.options['option_2'], value: option2),
-                      Polls.options(title: widget.options['option_3'], value: option3),
-                      Polls.options(title: widget.options['option_4'], value: option4),
                       
+                          Polls.options(
+                              title: widget.options['option_1']!,
+                              value: option1),
+                          Polls.options(
+                              title: widget.options['option_2']!,
+                              value: option2),
+                          Polls.options(
+                              title: widget.options['option_3']!,
+                              value: option3),
+                          Polls.options(
+                              title: widget.options['option_4']!,
+                              value: option4),
+                        
                     ],
                     question: Text(
                       widget.question,
@@ -221,7 +232,7 @@ class _polldata_widgetState extends State<polldata_widget> {
                           setState(() {
                             viewComment = !viewComment;
                           });
-                          widget.onViewcomment(viewComment);
+                          widget.onViewcomment(viewComment, widget.pollId);
                         },
                         icon: Icon(
                           Icons.comment,

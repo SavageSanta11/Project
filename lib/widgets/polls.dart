@@ -1,8 +1,33 @@
 library polls;
 
+import 'dart:convert';
+
 import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+
+Future<void> recordVote(String poll_id, int optionNo, String optionText) async {
+  var headers = {
+    'Authorization':
+        'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTYyOTQzMjgwMSwianRpIjoiNjhlNmU0OGUtNmFmNS00ZDhlLTgzMTItMDdiODgzMjRhM2Y1IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6Imthbm9AcW9ud2F5LmNvbSIsIm5iZiI6MTYyOTQzMjgwMSwiZXhwIjoxNjI5NDMzNzAxfQ.9-RgnOEkhbA28A22h_tu_6J_syc2YqHYR9rQ1M1NVYE',
+    'Content-Type': 'application/json'
+  };
+  
+  String body = json.encode(<String, dynamic>{
+    "poll_id": poll_id,
+    "opt_num": optionNo,
+    "opt_text": optionText
+  });
+
+  http.Response response = await http.post(
+      Uri.parse('http://164.52.212.151:3012/api/access/record/vote'),
+      headers: headers,
+      body: body);
+
+  var convertDataToJson = json.decode(response.body);
+  print(convertDataToJson);
+}
 
 typedef void PollCallBack(int choice);
 
@@ -184,11 +209,11 @@ class _PollsState extends State<Polls> {
 
   /// c3 stands for choice 3
   @protected
-  String? c3;
+  late String c3;
 
   /// c4 stands for choice 4
   @protected
-  String? c4;
+  late String c4;
 
   /// c3 stands for choice 5
  
@@ -376,6 +401,7 @@ class _PollsState extends State<Polls> {
                     setState(() {
                       userPollChoice = 1;
                     });
+                    recordVote('yjhhonw', userPollChoice, this.c1);
                     widget.onVote!(userPollChoice);
                   },
                   color: Colors.green,
@@ -419,6 +445,7 @@ class _PollsState extends State<Polls> {
                     setState(() {
                       userPollChoice = 2;
                     });
+                    recordVote('yjhhonw', userPollChoice, this.c2);
                     widget.onVote!(userPollChoice);
                   },
                   color: Colors.green,
@@ -462,6 +489,7 @@ class _PollsState extends State<Polls> {
                           setState(() {
                             userPollChoice = 3;
                           });
+                          recordVote('yjhhonw', userPollChoice, this.c3);
                           widget.onVote!(userPollChoice);
                         },
                         color: Colors.green,
@@ -470,7 +498,7 @@ class _PollsState extends State<Polls> {
                           alignment: Alignment.centerLeft,
                           child: Padding(
                             padding: EdgeInsets.fromLTRB(16, 0, 0, 0),
-                            child: Text(this.c3 ?? '',
+                            child: Text(this.c3 ,
                                 style: GoogleFonts.lato(
                                     fontSize: widget.isWeb ? 16.0 : 14.0,
                                     color: Colors.black,
@@ -506,6 +534,7 @@ class _PollsState extends State<Polls> {
                           setState(() {
                             userPollChoice = 4;
                           });
+                          recordVote('yjhhonw', userPollChoice, this.c4);
                           widget.onVote!(userPollChoice);
                         },
                         color: Colors.green,
@@ -514,7 +543,7 @@ class _PollsState extends State<Polls> {
                           alignment: Alignment.centerLeft,
                           child: Padding(
                             padding: EdgeInsets.fromLTRB(16, 0, 0, 0),
-                            child: Text(this.c4 ?? '',
+                            child: Text(this.c4 ,
                                 style: GoogleFonts.lato(
                                     fontSize: widget.isWeb ? 16.0 : 14.0,
                                     color: Colors.black,
@@ -688,7 +717,7 @@ class _PollsState extends State<Polls> {
                           children: <Widget>[
                             Padding(
                               padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
-                              child: Text(this.c3 ?? '',
+                              child: Text(this.c3 ,
                                   style: GoogleFonts.lato(
                                       fontSize: widget.isWeb ? 16.0 : 14.0,
                                       color: Colors.black,

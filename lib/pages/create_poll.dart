@@ -24,6 +24,7 @@ int minutes = 0;
 int options = 2;
 String option = "";
 String previewImgUrl = "";
+String pollId = "";
 
 String body = json.encode(<String, dynamic>{
   "contentUrl": "http://164.52.212.151:8089/api/v1/media/content/ypannx5.png",
@@ -44,7 +45,7 @@ String body = json.encode(<String, dynamic>{
   "tags": ["delhi", "metro", "mumbai", "rail"]
 });
 
-Future<void> createPollRest() async {
+Future<String> createPollRest() async {
   var headers = {
     'Authorization':
         'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTYyOTI4MjQyMiwianRpIjoiNWMyZmNkYTQtZjgyZS00ODhlLWFmZGEtNTFiZmEyYmZlMzJkIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6Imthbm9AcW9ud2F5LmNvbSIsIm5iZiI6MTYyOTI4MjQyMiwiZXhwIjoxNjI5MjgzMzIyfQ.L6O-rXKbo8vtcyT0K071o108Lljpr_PjLmw14rDHVvI',
@@ -57,7 +58,8 @@ Future<void> createPollRest() async {
       body: body);
 
   var convertDataToJson = json.decode(response.body);
-  print(convertDataToJson);
+  String pollId = convertDataToJson['data']['pollId'];
+  return pollId;
 }
 
 Future<String> crawlUrl(String url) async {
@@ -76,6 +78,17 @@ Future<String> crawlUrl(String url) async {
   return (previewImgUrl);
 }
 
+Future<void> publishPoll(String poll_id) async {
+  String uri =
+      'http://164.52.212.151:3012/api/access/poll/publish?poll_id=' + poll_id;
+
+  http.Response response = await http.get(
+    Uri.parse(uri),
+  );
+
+  var convertDataToJson = json.decode(response.body);
+  print(convertDataToJson);
+}
 class CreatePoll extends StatefulWidget {
   static const String route = 'CreatePoll';
   @override
@@ -226,8 +239,9 @@ class _CreatePollState extends State<CreatePoll> {
                 borderRadius: new BorderRadius.circular(20.0)),
             primary: Color(0xff092836),
           ),
-          onPressed: () {
-            createPollRest();
+          onPressed: () async {
+            pollId = await createPollRest();
+            publishPoll(pollId);
             Navigator.of(context).pushNamed(HomePage.route);
           },
         ),

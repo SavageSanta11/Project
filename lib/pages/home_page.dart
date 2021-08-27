@@ -7,93 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 
 List<dynamic> polls = [];
-
-Future<void> recordComment() async {
-  var headers = {
-    'Authorization':
-        'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTYyOTQzMjE5MSwianRpIjoiZTQzYjMyYmQtOGNlNS00ODU4LWFjNjQtOGJlNzBjMGI0MTY5IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6Imthbm9AcW9ud2F5LmNvbSIsIm5iZiI6MTYyOTQzMjE5MSwiZXhwIjoxNjI5NDMzMDkxfQ.mMHDB_oBSxnjGK8MYXRGrVw9yV-pajJ8YOi5LLbxdII',
-    'Content-Type': 'application/json'
-  };
-  String body = json.encode(
-      <String, String>{"poll_id": "yjhhonw", "text": "Hi, what's your name?"});
-
-  http.Response response = await http.post(
-      Uri.parse('http://164.52.212.151:3012/api/access/record/comment'),
-      headers: headers,
-      body: body);
-
-  var convertDataToJson = json.decode(response.body);
-  print(convertDataToJson);
-}
-
-Future<void> recordVote() async {
-  var headers = {
-    'Authorization':
-        'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTYyOTQzMjgwMSwianRpIjoiNjhlNmU0OGUtNmFmNS00ZDhlLTgzMTItMDdiODgzMjRhM2Y1IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6Imthbm9AcW9ud2F5LmNvbSIsIm5iZiI6MTYyOTQzMjgwMSwiZXhwIjoxNjI5NDMzNzAxfQ.9-RgnOEkhbA28A22h_tu_6J_syc2YqHYR9rQ1M1NVYE',
-    'Content-Type': 'application/json'
-  };
-  String body = json.encode(<String, dynamic>{
-    "poll_id": "yjhhonw",
-    "opt_num": 1,
-    "opt_text": "Delhi Metro"
-  });
-
-  http.Response response = await http.post(
-      Uri.parse('http://164.52.212.151:3012/api/access/record/vote'),
-      headers: headers,
-      body: body);
-
-  var convertDataToJson = json.decode(response.body);
-  print(convertDataToJson);
-}
-
-Future<void> pushUserToWaitlist() async {
-  var headers = {
-    'Authorization':
-        'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTYyOTQzMjgwMSwianRpIjoiNjhlNmU0OGUtNmFmNS00ZDhlLTgzMTItMDdiODgzMjRhM2Y1IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6Imthbm9AcW9ud2F5LmNvbSIsIm5iZiI6MTYyOTQzMjgwMSwiZXhwIjoxNjI5NDMzNzAxfQ.9-RgnOEkhbA28A22h_tu_6J_syc2YqHYR9rQ1M1NVYE',
-    'Content-Type': 'application/json'
-  };
-  String body = json.encode(
-      <String, dynamic>{"user": "jellyboom@gmail.com", "location": "Seoul"});
-
-  http.Response response = await http.post(
-      Uri.parse('http://164.52.212.151:3012/api/access/waitlist'),
-      headers: headers,
-      body: body);
-
-  var convertDataToJson = json.decode(response.body);
-  print(convertDataToJson);
-}
-
-// ignore: non_constant_identifier_names
-Future<void> publishPoll(String poll_id) async {
-  String uri =
-      'http://164.52.212.151:3012/api/access/poll/publish?poll_id=' + poll_id;
-
-  http.Response response = await http.get(
-    Uri.parse(uri),
-  );
-
-  var convertDataToJson = json.decode(response.body);
-  print(convertDataToJson);
-}
-
-// ignore: non_constant_identifier_names
-Future<void> showComments(String poll_id, int skip, int pageSize) async {
-  String uri = 'http://164.52.212.151:3012/api/access/show/comments?poll_id=' +
-      poll_id +
-      '&skip=' +
-      skip.toString() +
-      '&pageSize=' +
-      pageSize.toString();
-
-  http.Response response = await http.get(
-    Uri.parse(uri),
-  );
-
-  var convertDataToJson = json.decode(response.body);
-  print(convertDataToJson);
-}
+String pollId = "";
 
 // ignore: non_constant_identifier_names
 Future<void> showUserComments(String poll_id, String email) async {
@@ -139,11 +53,12 @@ class _HomePageState extends State<HomePage> {
   bool pollsLoaded = false;
 
   bool onViewcomment = false;
-
+  
   // ignore: non_constant_identifier_names
-  void updateViewcomment(bool Viewcomment) {
+  void updateViewcomment(bool Viewcomment, String poll_id) {
     setState(() {
       onViewcomment = Viewcomment;
+      pollId = poll_id;
     });
   }
 
@@ -167,6 +82,7 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       pollsLoaded = true;
     });
+    
   }
 
   List<T> map<T>(List list, Function handler) {
@@ -280,7 +196,7 @@ class _HomePageState extends State<HomePage> {
                   Container(
                       width: width * 0.40,
                       height: height * 0.8,
-                      child: Comments())
+                      child: Comments(pollId: pollId,))
                 ],
               ),
             ),
@@ -392,6 +308,7 @@ class _HomePageState extends State<HomePage> {
                                 int pageViewIndex) =>
                             InkWell(
                           child: polldata_widget(
+                            pollId: polls[itemIndex]['poll_id'],
                             username: polls[itemIndex]['poll_user'],
                             question: polls[itemIndex]['poll_data']['question'],
                             votes: 13,
@@ -401,11 +318,13 @@ class _HomePageState extends State<HomePage> {
                             previewUrl: polls[itemIndex]['poll_data']
                                 ['previewUrl'],
                             pollTitle: 'This is the poll title',
-                            onViewcomment: (bool viewComment) {
+                            onViewcomment: (bool viewComment, String poll_id) {
                               setState(() {
                                 print(polls[itemIndex]['poll_data']['answers']['option_1']);
                                 onViewcomment = viewComment;
+                                pollId = poll_id;
                                 selectedCard = polldata_widget(
+                                  pollId: polls[itemIndex]['poll_id'],
                                     username: polls[itemIndex]['poll_user'],
                                     question: polls[itemIndex]['poll_data']
                                         ['question'],
@@ -458,7 +377,7 @@ class _HomePageState extends State<HomePage> {
                   height: height * 0.8,
                   child: selectedCard),
               Container(
-                  width: width * 0.94, height: height * 0.8, child: Comments())
+                  width: width * 0.94, height: height * 0.8, child: Comments(pollId: pollId,))
             ],
           ),
         );
@@ -502,6 +421,7 @@ class _HomePageState extends State<HomePage> {
                               int pageViewIndex) =>
                           InkWell(
                         child: polldata_widget(
+                          pollId: polls[itemIndex]['poll_id'],
                           username: polls[itemIndex]['poll_user'],
                           question: polls[itemIndex]['poll_data']['question'],
                           votes: 13,
@@ -511,11 +431,13 @@ class _HomePageState extends State<HomePage> {
                           previewUrl:
                               'http://qonway.com:8089/api/v1/media/content/unym4ir.png',
                           pollTitle: 'This is the poll title',
-                          onViewcomment: (bool viewComment) {
+                          onViewcomment: (bool viewComment, String poll_id) {
                             setState(() {
                               
                               onViewcomment = viewComment;
+                              pollId = poll_id;
                               selectedCard = polldata_widget(
+                                pollId: polls[itemIndex]['poll_id'],
                                   username: polls[itemIndex]['poll_user'],
                                   question: polls[itemIndex]['poll_data']
                                       ['question'],

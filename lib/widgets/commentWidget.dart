@@ -4,12 +4,9 @@ import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(MaterialApp(home: Comments()));
-}
-
 class Comments extends StatefulWidget {
-  const Comments({Key? key}) : super(key: key);
+  final String pollId;
+  const Comments({Key? key, required this.pollId}) : super(key: key);
 
   @override
   _CommentsState createState() => _CommentsState();
@@ -132,7 +129,7 @@ class _CommentsState extends State<Comments> {
   @override
   void initState() {
     super.initState();
-    this.showComments('yjhhonw', 5, 1);
+    this.showComments(widget.pollId, 5, 1);
   }
 
   List comments = [];
@@ -141,7 +138,7 @@ class _CommentsState extends State<Comments> {
   // ignore: non_constant_identifier_names
   Future<void> showComments(String poll_id, int skip, int pageSize) async {
     String uri =
-        'http://164.52.212.151:3012/api/access/show/comments?poll_id=' +
+        'http://164.52.212.151:7002/api/access/show/comments?poll_id=' +
             poll_id +
             '&skip=' +
             skip.toString() +
@@ -156,14 +153,14 @@ class _CommentsState extends State<Comments> {
     comments = convertDataToJson['data'];
 
     for (var i = 0; i < comments.length; i++) {
-      _addComment(comments[i]['data']);
+      _addComment(comments[i]['text']);
     }
 
     setState(() {
       isLoaded = true;
     });
 
-    print(comments[0]['data']);
+    print(comments[0]['text']);
     print(convertDataToJson);
   }
 
@@ -224,7 +221,7 @@ class _CommentsState extends State<Comments> {
                         ),
                         onPressed: () {
                           _addComment(enteredText);
-                          recordComment('yjhhonw', enteredText);
+                          recordComment(widget.pollId, enteredText);
                           _textFieldController.clear();
                         },
                       ),
