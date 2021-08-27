@@ -18,6 +18,7 @@ class _CommentsState extends State<Comments> {
   String valueText = "";
   String codeDialog = "";
   String value = "";
+  String success = "";
 
   bool isLoaded = true;
 
@@ -36,21 +37,23 @@ class _CommentsState extends State<Comments> {
   }
 
   // ignore: non_constant_identifier_names
-  Future<void> recordComment(String poll_id, String text) async {
+  Future<String> recordComment(String poll_id, String text) async {
     var headers = {
       'Authorization':
           'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTYyOTQzMjE5MSwianRpIjoiZTQzYjMyYmQtOGNlNS00ODU4LWFjNjQtOGJlNzBjMGI0MTY5IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6Imthbm9AcW9ud2F5LmNvbSIsIm5iZiI6MTYyOTQzMjE5MSwiZXhwIjoxNjI5NDMzMDkxfQ.mMHDB_oBSxnjGK8MYXRGrVw9yV-pajJ8YOi5LLbxdII',
       'Content-Type': 'application/json'
     };
     String body =
-        json.encode(<String, String>{"poll_id": poll_id, "text": text});
+        json.encode(<String, String>{"poll_id": poll_id, "text": text, "email": "kano@qonway.com"});
 
     http.Response response = await http.post(
-        Uri.parse('http://164.52.212.151:3012/api/access/record/comment'),
+        Uri.parse('http://164.52.212.151:7002/api/access/record/comment'),
         headers: headers,
         body: body);
 
     var convertDataToJson = json.decode(response.body);
+    String success = convertDataToJson["success"];
+    return success;
     print(convertDataToJson);
   }
 
@@ -219,9 +222,9 @@ class _CommentsState extends State<Comments> {
                           'Comment',
                           style: TextStyle(color: Colors.white),
                         ),
-                        onPressed: () {
-                          _addComment(enteredText);
-                          recordComment(widget.pollId, enteredText);
+                        onPressed: () async {
+                          success =  await recordComment(widget.pollId, enteredText);
+                          if(success == "true")_addComment(enteredText);
                           _textFieldController.clear();
                         },
                       ),

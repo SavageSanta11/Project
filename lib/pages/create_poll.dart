@@ -5,7 +5,6 @@ import 'package:http/http.dart' as http;
 
 import 'dart:async';
 
-
 import '../widgets/duration_widget.dart';
 import '../model/file_DataModel.dart';
 import '../widgets/option_container.dart';
@@ -26,24 +25,70 @@ String option = "";
 String previewImgUrl = "";
 String pollId = "";
 
-String body = json.encode(<String, dynamic>{
-  "contentUrl": "http://164.52.212.151:8089/api/v1/media/content/ypannx5.png",
-  "previewUrls": [
-    "http://164.52.212.151:8089/api/v1/media/preview/ypannx5.png",
-    "http://164.52.212.151:8089/api/v1/media/preview/ypannx5.png"
-  ],
-  "email": "kano@qonway.com",
-  "question": question,
-  "answers": {
-    "options": options,
-    "option_1": optionList[0],
-    "option_2": optionList[1],
-    "option_3": optionList[2],
-    "option_4": optionList[3],
-  },
-  "duration": {"days": days, "hours": hours, "minutes": minutes},
-  "tags": ["delhi", "metro", "mumbai", "rail"]
-});
+String writeBody() {
+  String body;
+  if (optionList.length == 2) {
+     body = json.encode(<String, dynamic>{
+      "contentUrl":
+          "http://164.52.212.151:8089/api/v1/media/content/ypannx5.png",
+      "previewUrls": [
+        "http://164.52.212.151:8089/api/v1/media/preview/ypannx5.png",
+        "http://164.52.212.151:8089/api/v1/media/preview/ypannx5.png"
+      ],
+      "email": "kano@qonway.com",
+      "question": question,
+      "answers": {
+        "options": options,
+        "option_1": optionList[0],
+        "option_2": optionList[1],
+        
+      },
+      "duration": {"days": days, "hours": hours, "minutes": minutes},
+      "tags": ["delhi", "metro", "mumbai", "rail"]
+    });
+  } else if (optionList.length == 3) {
+     body = json.encode(<String, dynamic>{
+      "contentUrl":
+          "http://164.52.212.151:8089/api/v1/media/content/ypannx5.png",
+      "previewUrls": [
+        "http://164.52.212.151:8089/api/v1/media/preview/ypannx5.png",
+        "http://164.52.212.151:8089/api/v1/media/preview/ypannx5.png"
+      ],
+      "email": "kano@qonway.com",
+      "question": question,
+      "answers": {
+        "options": options,
+        "option_1": optionList[0],
+        "option_2": optionList[1],
+        "option_3": optionList[2],
+        
+      },
+      "duration": {"days": days, "hours": hours, "minutes": minutes},
+      "tags": ["delhi", "metro", "mumbai", "rail"]
+    });
+  } else {
+     body = json.encode(<String, dynamic>{
+      "contentUrl":
+          "http://164.52.212.151:8089/api/v1/media/content/ypannx5.png",
+      "previewUrls": [
+        "http://164.52.212.151:8089/api/v1/media/preview/ypannx5.png",
+        "http://164.52.212.151:8089/api/v1/media/preview/ypannx5.png"
+      ],
+      "email": "kano@qonway.com",
+      "question": question,
+      "answers": {
+        "options": options,
+        "option_1": optionList[0],
+        "option_2": optionList[1],
+        "option_3": optionList[2],
+        "option_4": optionList[3],
+      },
+      "duration": {"days": days, "hours": hours, "minutes": minutes},
+      "tags": ["delhi", "metro", "mumbai", "rail"]
+    });
+  }
+  return body;
+}
 
 Future<String> createPollRest() async {
   var headers = {
@@ -55,9 +100,10 @@ Future<String> createPollRest() async {
   http.Response response = await http.post(
       Uri.parse('http://164.52.212.151:3012/api/access/poll/create'),
       headers: headers,
-      body: body);
+      body: writeBody());
 
   var convertDataToJson = json.decode(response.body);
+  print(convertDataToJson);
   String pollId = convertDataToJson['data']['pollId'];
   return pollId;
 }
@@ -89,6 +135,7 @@ Future<void> publishPoll(String poll_id) async {
   var convertDataToJson = json.decode(response.body);
   print(convertDataToJson);
 }
+
 class CreatePoll extends StatefulWidget {
   static const String route = 'CreatePoll';
   @override
@@ -131,14 +178,12 @@ class _CreatePollState extends State<CreatePoll> {
   }
 
   void updateValidUrl(String url) async {
-    
     previewImgUrl = url;
     setState(() {
       isPreviewMode = true;
     });
     print(previewImgUrl);
   }
-
 
   var listDays = [for (var i = 0; i < 8; i += 1) i];
   var listHours = [for (var i = 0; i < 24; i += 1) i];
@@ -241,7 +286,7 @@ class _CreatePollState extends State<CreatePoll> {
           ),
           onPressed: () async {
             pollId = await createPollRest();
-            publishPoll(pollId);
+            //publishPoll(pollId);
             Navigator.of(context).pushNamed(HomePage.route);
           },
         ),

@@ -3,11 +3,13 @@ import 'package:project/widgets/commentWidget.dart';
 import '../widgets/carousel/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import '../widgets/polldata_widget.dart';
+import '../widgets/WaitlistCardWidget.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 
 List<dynamic> polls = [];
 String pollId = "";
+int count = 1;
 
 // ignore: non_constant_identifier_names
 Future<void> showUserComments(String poll_id, String email) async {
@@ -24,18 +26,6 @@ Future<void> showUserComments(String poll_id, String email) async {
   print(convertDataToJson);
 }
 
-// ignore: non_constant_identifier_names
-Future<void> getPollResult(String poll_id) async {
-  String uri =
-      'http://164.52.212.151:3012/api/access/poll/result?poll_id=' + poll_id;
-
-  http.Response response = await http.get(
-    Uri.parse(uri),
-  );
-
-  var convertDataToJson = json.decode(response.body);
-  print(convertDataToJson);
-}
 
 // ignore: camel_case_types
 class HomePage extends StatefulWidget {
@@ -307,7 +297,7 @@ class _HomePageState extends State<HomePage> {
                         itemBuilder: (BuildContext context, int itemIndex,
                                 int pageViewIndex) =>
                             InkWell(
-                          child: polldata_widget(
+                          child:  (3>0)?  polldata_widget(
                             pollId: polls[itemIndex]['poll_id'],
                             username: polls[itemIndex]['poll_user'],
                             question: polls[itemIndex]['poll_data']['question'],
@@ -320,7 +310,6 @@ class _HomePageState extends State<HomePage> {
                             pollTitle: 'This is the poll title',
                             onViewcomment: (bool viewComment, String poll_id) {
                               setState(() {
-                                print(polls[itemIndex]['poll_data']['answers']['option_1']);
                                 onViewcomment = viewComment;
                                 pollId = poll_id;
                                 selectedCard = polldata_widget(
@@ -338,9 +327,12 @@ class _HomePageState extends State<HomePage> {
                                     onViewcomment: updateViewcomment);
                               });
                             },
-                          ),
+                          ) : WaitlistCardWidget(),
                           onTap: () {
                             _controller.nextPage();
+                            setState(() {
+                              count+=1;
+                            });
                           },
                         ),
                       ),

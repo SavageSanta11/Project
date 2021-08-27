@@ -17,11 +17,12 @@ Future<void> recordVote(String poll_id, int optionNo, String optionText) async {
   String body = json.encode(<String, dynamic>{
     "poll_id": poll_id,
     "opt_num": optionNo,
-    "opt_text": optionText
+    "opt_text": optionText,
+    "email": "kano@qonway.com"
   });
 
   http.Response response = await http.post(
-      Uri.parse('http://164.52.212.151:3012/api/access/record/vote'),
+      Uri.parse('http://164.52.212.151:7002/api/access/record/vote'),
       headers: headers,
       body: body);
 
@@ -209,11 +210,11 @@ class _PollsState extends State<Polls> {
 
   /// c3 stands for choice 3
   @protected
-  late String c3;
+   String? c3;
 
   /// c4 stands for choice 4
   @protected
-  late String c4;
+   String? c4;
 
   /// c3 stands for choice 5
  
@@ -470,6 +471,7 @@ class _PollsState extends State<Polls> {
                 ),
               ),
             ),
+            // ignore: unnecessary_null_comparison
             this.c3 != null
                 ? Container(
                     width: double.infinity,
@@ -489,7 +491,7 @@ class _PollsState extends State<Polls> {
                           setState(() {
                             userPollChoice = 3;
                           });
-                          recordVote('yjhhonw', userPollChoice, this.c3);
+                          recordVote('yjhhonw', userPollChoice, this.c3!);
                           widget.onVote!(userPollChoice);
                         },
                         color: Colors.green,
@@ -498,7 +500,7 @@ class _PollsState extends State<Polls> {
                           alignment: Alignment.centerLeft,
                           child: Padding(
                             padding: EdgeInsets.fromLTRB(16, 0, 0, 0),
-                            child: Text(this.c3 ,
+                            child: Text(this.c3! ,
                                 style: GoogleFonts.lato(
                                     fontSize: widget.isWeb ? 16.0 : 14.0,
                                     color: Colors.black,
@@ -515,6 +517,7 @@ class _PollsState extends State<Polls> {
                     ),
                   )
                 : Offstage(),
+            // ignore: unnecessary_null_comparison
             this.c4 != null
                 ? Container(
                     width: double.infinity,
@@ -534,7 +537,7 @@ class _PollsState extends State<Polls> {
                           setState(() {
                             userPollChoice = 4;
                           });
-                          recordVote('yjhhonw', userPollChoice, this.c4);
+                          recordVote('yjhhonw', userPollChoice, this.c4!);
                           widget.onVote!(userPollChoice);
                         },
                         color: Colors.green,
@@ -543,7 +546,7 @@ class _PollsState extends State<Polls> {
                           alignment: Alignment.centerLeft,
                           child: Padding(
                             padding: EdgeInsets.fromLTRB(16, 0, 0, 0),
-                            child: Text(this.c4 ,
+                            child: Text(this.c4! ,
                                 style: GoogleFonts.lato(
                                     fontSize: widget.isWeb ? 16.0 : 14.0,
                                     color: Colors.black,
@@ -696,6 +699,7 @@ class _PollsState extends State<Polls> {
                   ? widget.leadingBackgroundColor
                   : widget.onVoteBackgroundColor),
         ),
+        // ignore: unnecessary_null_comparison
         this.c3 != null
             ? Container(
                 margin: EdgeInsets.all(0),
@@ -717,7 +721,7 @@ class _PollsState extends State<Polls> {
                           children: <Widget>[
                             Padding(
                               padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
-                              child: Text(this.c3 ,
+                              child: Text(this.c3! ,
                                   style: GoogleFonts.lato(
                                       fontSize: widget.isWeb ? 16.0 : 14.0,
                                       color: Colors.black,
@@ -753,6 +757,7 @@ class _PollsState extends State<Polls> {
                         : widget.onVoteBackgroundColor),
               )
             : Offstage(),
+        // ignore: unnecessary_null_comparison
         this.c4 != null
             ? Container(
                 margin: EdgeInsets.all(0),
@@ -818,7 +823,9 @@ class _PollsState extends State<Polls> {
     /// Fix by AksharPrasanna
     this.v1 = widget.children[0][1];
     this.v2 = widget.children[1][1];
+    // ignore: unnecessary_null_comparison
     if (this.c3 != null) this.v3 = widget.children[2][1];
+    // ignore: unnecessary_null_comparison
     if (this.c4 != null) this.v4 = widget.children[3][1];
     
 
@@ -948,6 +955,7 @@ class _PollsState extends State<Polls> {
                 : widget.onVoteBackgroundColor,
           ),
         ),
+        // ignore: unnecessary_null_comparison
         this.c3 == null
             ? Offstage()
             : Container(
@@ -1006,6 +1014,7 @@ class _PollsState extends State<Polls> {
                       : widget.onVoteBackgroundColor,
                 ),
               ),
+        // ignore: unnecessary_null_comparison
         this.c4 == null
             ? Offstage()
             : Container(

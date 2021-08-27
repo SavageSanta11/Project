@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'polls.dart';
+import 'package:http/http.dart' as http;
 
 // ignore: camel_case_types
 
@@ -34,7 +37,8 @@ class polldata_widget extends StatefulWidget {
       required this.pollTitle,
       required this.onViewcomment,
       required this.optionsLength,
-      required this.options, required this.pollId})
+      required this.options,
+      required this.pollId})
       : super(key: key);
 
   @override
@@ -43,31 +47,65 @@ class polldata_widget extends StatefulWidget {
 
 // ignore: camel_case_types
 class _polldata_widgetState extends State<polldata_widget> {
-  double option1 = 1.0;
+  double option1 = 0.0;
   double option2 = 0.0;
-  double option3 = 1.0;
-  double option4 = 1.0;
-
-  String previewImgUrl =
-      "https://img.etimg.com/thumb/msid-75572296,width-640,resizemode-4,imgsize-507941/bmw-ninet.jpg";
-
-  String username = "SURESH GOPI";
-  int votes = 13;
-  String questionText = "Bangalore's metro is quite useless";
-  int time = 3;
+  double option3 = 0.0;
+  double option4 = 0.0;
 
   String user = "king@mail.com";
-  Map usersWhoVoted = {
-    'sam@mail.com': 3,
-    'mike@mail.com': 4,
-    'john@mail.com': 1,
-    'kenny@mail.com': 1
-  };
+  Map usersWhoVoted = {};
   String creator = "eddy@mail.com";
 
-  List<String> pollOptions = ["Option1", "Option2", "Option3"];
+  List<dynamic> choices = [];
+  List<dynamic> results = [];
 
   bool viewComment = false;
+
+  Future<void> getPollResult(String poll_id) async {
+    String uri =
+        'http://164.52.212.151:7002/api/access/poll/result?poll_id=' + poll_id;
+
+    http.Response response = await http.get(
+      Uri.parse(uri),
+    );
+
+    var convertDataToJson = json.decode(response.body);
+
+    option1 = convertDataToJson['data']['option_1']['voteCount'];
+    option2 = convertDataToJson['data']['option_2']['voteCount'];
+    option3 = convertDataToJson['data']['option_3']['voteCount'];
+    option4 = convertDataToJson['data']['option_4']['voteCount'];
+  }
+
+  List<dynamic> buildList() {
+    getPollResult(widget.pollId);
+    print(widget.pollId);
+
+    if (widget.optionsLength == 2) {
+      choices.add(
+          Polls.options(title: widget.options['option_1'], value: option1));
+      choices.add(
+          Polls.options(title: widget.options['option_2'], value: option2));
+    } else if (widget.optionsLength == 3) {
+      choices.add(
+          Polls.options(title: widget.options['option_1'], value: option1));
+      choices.add(
+          Polls.options(title: widget.options['option_2'], value: option2));
+      choices.add(
+          Polls.options(title: widget.options['option_3'], value: option3));
+    } else {
+      choices.add(
+          Polls.options(title: widget.options['option_1'], value: option1));
+      choices.add(
+          Polls.options(title: widget.options['option_2'], value: option2));
+      choices.add(
+          Polls.options(title: widget.options['option_3'], value: option3));
+      choices.add(
+          Polls.options(title: widget.options['option_4'], value: option4));
+    }
+    return choices;
+  }
+
   @override
   Widget build(BuildContext context) {
     Container _createShareButton(double width, double height, bool isWeb) {
@@ -124,8 +162,7 @@ class _polldata_widgetState extends State<polldata_widget> {
                   width: width,
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                        image: NetworkImage(
-                            "http://qonway.com:8089/api/v1/media/content/jrutnzx.png"),
+                        image: NetworkImage(widget.previewUrl),
                         fit: BoxFit.cover),
                   )),
               Padding(
@@ -163,23 +200,7 @@ class _polldata_widgetState extends State<polldata_widget> {
                   height: height * 0.5,
                   child: Polls(
                     isWeb: isWeb,
-                    children: [
-                      // This cannot be less than 2, else will throw an exception
-                      
-                          Polls.options(
-                              title: widget.options['option_1']!,
-                              value: option1),
-                          Polls.options(
-                              title: widget.options['option_2']!,
-                              value: option2),
-                          Polls.options(
-                              title: widget.options['option_3']!,
-                              value: option3),
-                          Polls.options(
-                              title: widget.options['option_4']!,
-                              value: option4),
-                        
-                    ],
+                    children: buildList(),
                     question: Text(
                       widget.question,
                       style: GoogleFonts.lato(

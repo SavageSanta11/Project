@@ -38,7 +38,7 @@ class _uploadModeState extends State<uploadMode> {
 
   late List<int> _selectedFile;
   late Uint8List _bytesData;
-  GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
+
 
   String previewImgUrl = "";
 
@@ -71,7 +71,7 @@ class _uploadModeState extends State<uploadMode> {
   Future<void> makeRequest() async {
     var url = Uri.parse("http://164.52.212.151:3012/api/access/upload/media");
     var request = new http.MultipartRequest("POST", url);
-    request.files.add(await http.MultipartFile.fromBytes(
+    request.files.add(http.MultipartFile.fromBytes(
         'input_file', _selectedFile,
         contentType: new MediaType('image', 'png'), filename: "file_up"));
 
