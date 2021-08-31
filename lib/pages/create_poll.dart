@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 
 import 'dart:async';
@@ -232,10 +233,14 @@ class _CreatePollState extends State<CreatePoll> {
                   question = val;
                 },
                 decoration: InputDecoration(
-                    contentPadding: EdgeInsets.all(10.0),
+                    contentPadding: EdgeInsets.fromLTRB(10, 0, 10, 0),
                     hintText: opText,
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(6.0))),
+                     border: InputBorder.none,
+                      focusedBorder: InputBorder.none,
+                      enabledBorder: InputBorder.none,
+                      errorBorder: InputBorder.none,
+                      disabledBorder: InputBorder.none,
+                    ),
               ),
             ),
           ],
@@ -246,10 +251,11 @@ class _CreatePollState extends State<CreatePoll> {
     Container _createDurationContainer(double width, double height) {
       double _durationWidth = width * 0.9;
       return (Container(
+       
         child: Center(
           child: Container(
             width: _durationWidth,
-            height: height * 0.2,
+            height: height * 0.1,
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -278,7 +284,12 @@ class _CreatePollState extends State<CreatePoll> {
           ),
         ),
         child: ElevatedButton(
-          child: Text('Publish', style: TextStyle(fontFamily: 'Leto')),
+          child: Text('PUBLISH', style:  GoogleFonts.lato(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w300,
+                  fontSize: 16,
+                  ),
+            ),
           style: ElevatedButton.styleFrom(
             shape: new RoundedRectangleBorder(
                 borderRadius: new BorderRadius.circular(20.0)),

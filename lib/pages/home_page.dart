@@ -1,11 +1,14 @@
 import 'dart:convert';
 import 'package:project/widgets/commentWidget.dart';
-import '../widgets/carousel/carousel_slider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+//import '../widgets/carousel/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import '../widgets/polldata_widget.dart';
 import '../widgets/WaitlistCardWidget.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
+import '../widgets/sampleWidget.dart';
+import '../widgets/carousel/carousel_slider.dart';
 
 List<dynamic> polls = [];
 String pollId = "";
@@ -96,87 +99,150 @@ class _HomePageState extends State<HomePage> {
   Widget selectedCard = Text("data");
 
   Widget build(BuildContext context) {
+    Container navBarDesktop(double width, double height) {
+      return Container(
+        height: height * 0.1,
+        width: width,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox(
+              width: 0.03 * width,
+            ),
+            IconButton(
+              icon: Icon(
+                Icons.menu,
+                size: 30,
+              ),
+              color: Color(0xff092836),
+              onPressed: () {},
+            ),
+            SizedBox(
+              width: 0.01 * width,
+            ),
+            Text(
+              'Q O N W A Y',
+              style: GoogleFonts.lato(
+                  color: Color(0xff092836),
+                  fontSize: 0.1 * 0.281 * height,
+                  fontWeight: FontWeight.bold),
+            ),
+            SizedBox(
+              width: 0.03 * width,
+            ),
+            Container(
+              width: 0.58 * width,
+              height: 0.055 * height,
+              child: TextField(
+                decoration: InputDecoration(
+                    suffixIcon: Icon(
+                      Icons.search,
+                      size: 30.0,
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(0.1 * 0.281 * height),
+                    ),
+                    filled: true,
+                    fillColor: Colors.white70),
+              ),
+            ),
+            SizedBox(
+              width: 0.03 * width,
+            ),
+            GestureDetector(
+                onTap: () {/* Write listener code here */},
+                child: Text('About Us',
+                    style: GoogleFonts.lato(
+                        color: Color(0xff092836),
+                        fontSize: 0.1 * 0.281 * height))),
+            SizedBox(
+              width: 0.01 * width,
+            ),
+            SizedBox(
+                height: 0.055 * height,
+                width: 0.07 * width,
+                child: TextButton(
+                  child: Text(
+                    'SIGN UP',
+                    style: GoogleFonts.lato(
+                        color: Color(0xffedf0f3),
+                        fontSize: 0.1 * 0.261 * height),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    shape: new RoundedRectangleBorder(
+                        borderRadius: new BorderRadius.circular(20.0)),
+                    primary: Color(0xff092836),
+                  ),
+                  onPressed: () {},
+                )),
+          ],
+        ),
+      );
+    }
+
+    AppBar navBarMobile() {
+      return AppBar(
+        title: Text(
+          'QONWAY',
+          style: GoogleFonts.lato(color: Colors.black),
+        ),
+        backgroundColor: Color(0xfffafafa),
+        leading: GestureDetector(
+          onTap: () {/* Write listener code here */},
+          child: Icon(
+            Icons.menu,
+            color: Color(0xff092836), // add custom icons also
+          ),
+        ),
+      );
+    }
+
+    Widget carouselslider(double width, double height, bool isWeb){
+      return Padding(
+                      padding: EdgeInsets.fromLTRB(10,0, 10, 0),
+                      child: Container(
+                        height: height*0.9,
+                        width: width,
+                        child: CarouselSlider.builder(
+                          carouselController: _controller,
+                          options: CarouselOptions(
+                            height: height*0.85,
+                            viewportFraction: isWeb ? 0.35 : 0.85,
+                            enableInfiniteScroll: false,
+                            autoPlayCurve: Curves.fastOutSlowIn,
+                            enlargeCenterPage: isWeb ? true : false,
+                            onPageChanged: (index, reason) {
+                              setState(() {
+                                _currentIndex = index;
+                                center = true;
+                              });
+                            },
+                          ),
+                          itemCount: polls.length,
+                          itemBuilder: (BuildContext context, int itemIndex,
+                                  int pageViewIndex) =>
+                              InkWell(
+                            child: SampleWidget() ,
+                            onTap: () {
+                              print(pageViewIndex);
+                              _controller.nextPage();
+                              setState(() {
+                                count += 1;
+                              });
+                            },
+                          ),
+                        ),
+                      ),
+                    );
+    }
+    
     Material _buildDesktopView(double width, double height) {
       if (onViewcomment) {
         // return the card + comment view
         return Material(
             child: ListView(
           children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0, 30, 0, 0),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    width: 0.03 * width,
-                  ),
-                  IconButton(
-                    icon: Icon(
-                      Icons.menu,
-                      size: 30,
-                    ),
-                    color: Color(0xff092836),
-                    onPressed: () {},
-                  ),
-                  SizedBox(
-                    width: 0.01 * width,
-                  ),
-                  Text(
-                    'Q O N W A Y',
-                    style: GoogleFonts.lato(
-                        color: Color(0xff092836),
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(
-                    width: 0.03 * width,
-                  ),
-                  Container(
-                    width: 0.58 * width,
-                    height: 0.055 * height,
-                    child: TextField(
-                      decoration: InputDecoration(
-                          suffixIcon: Icon(
-                            Icons.search,
-                            size: 30.0,
-                          ),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20.0),
-                          ),
-                          filled: true,
-                          fillColor: Colors.white70),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 0.03 * width,
-                  ),
-                  GestureDetector(
-                      onTap: () {/* Write listener code here */},
-                      child: Text('About Us',
-                          style: GoogleFonts.lato(
-                              color: Color(0xff092836), fontSize: 18.0))),
-                  SizedBox(
-                    width: 0.01 * width,
-                  ),
-                  SizedBox(
-                      height: 0.055 * height,
-                      width: 0.06 * width,
-                      child: TextButton(
-                        child: Text(
-                          'SIGN UP',
-                          style: GoogleFonts.lato(
-                              color: Color(0xffedf0f3), fontSize: 18.0),
-                        ),
-                        style: ElevatedButton.styleFrom(
-                          shape: new RoundedRectangleBorder(
-                              borderRadius: new BorderRadius.circular(20.0)),
-                          primary: Color(0xff092836),
-                        ),
-                        onPressed: () {},
-                      )),
-                ],
-              ),
-            ),
+            navBarDesktop(width, height),
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Row(
@@ -203,156 +269,8 @@ class _HomePageState extends State<HomePage> {
             ? Material(
                 child: (ListView(
                   children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(0, 0.042 * height, 0, 0),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          SizedBox(
-                            width: 0.03 * width,
-                          ),
-                          IconButton(
-                            icon: Icon(
-                              Icons.menu,
-                              size: 30,
-                            ),
-                            color: Color(0xff092836),
-                            onPressed: () {},
-                          ),
-                          SizedBox(
-                            width: 0.01 * width,
-                          ),
-                          Text(
-                            'Q O N W A Y',
-                            style: GoogleFonts.lato(
-                                color: Color(0xff092836),
-                                fontSize: 20.0,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          SizedBox(
-                            width: 0.03 * width,
-                          ),
-                          Container(
-                            width: 0.58 * width,
-                            height: 0.055 * height,
-                            child: TextField(
-                              decoration: InputDecoration(
-                                  suffixIcon: Icon(
-                                    Icons.search,
-                                    size: 30.0,
-                                  ),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(20.0),
-                                  ),
-                                  filled: true,
-                                  fillColor: Colors.white70),
-                            ),
-                          ),
-                          SizedBox(
-                            width: 0.03 * width,
-                          ),
-                          GestureDetector(
-                              onTap: () {/* Write listener code here */},
-                              child: Text('About Us',
-                                  style: GoogleFonts.lato(
-                                      color: Color(0xff092836),
-                                      fontSize: 20.0))),
-                          SizedBox(
-                            width: 0.01 * width,
-                          ),
-                          SizedBox(
-                              height: 0.055 * height,
-                              width: 0.06 * width,
-                              child: TextButton(
-                                child: Text(
-                                  'SIGN UP',
-                                  style: GoogleFonts.lato(
-                                      color: Color(0xffedf0f3), fontSize: 20.0),
-                                ),
-                                style: ElevatedButton.styleFrom(
-                                  shape: new RoundedRectangleBorder(
-                                      borderRadius:
-                                          new BorderRadius.circular(20.0)),
-                                  primary: Color(0xff092836),
-                                ),
-                                onPressed: () {},
-                              )),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(10, 0.014 * height, 10, 0),
-                      child: CarouselSlider.builder(
-                        carouselController: _controller,
-                        options: CarouselOptions(
-                          height: height * 0.85,
-                          enlargeStrategy: CenterPageEnlargeStrategy.scale,
-                          viewportFraction: 0.35,
-                          enableInfiniteScroll: true,
-                          autoPlayCurve: Curves.fastOutSlowIn,
-                          enlargeCenterPage: true,
-                          onPageChanged: (index, reason) {
-                            setState(() {
-                              _currentIndex = index;
-                              center = true;
-                            });
-                          },
-                        ),
-                        itemCount: polls.length,
-                        itemBuilder: (BuildContext context, int itemIndex,
-                                int pageViewIndex) =>
-                            InkWell(
-                          child: (3 > 0)
-                              ? polldata_widget(
-                                  pollId: polls[itemIndex]['poll_id'],
-                                  username: polls[itemIndex]['poll_user'],
-                                  question: polls[itemIndex]['poll_data']
-                                      ['question'],
-                                  votes: 13,
-                                  time: 13,
-                                  optionsLength: polls[itemIndex]['poll_data']
-                                      ['answers']['options'],
-                                  options: polls[itemIndex]['poll_data']
-                                      ['answers'],
-                                  previewUrl: polls[itemIndex]['poll_data']
-                                      ['previewUrls']['previewUrl_1'],
-                                  pollTitle: 'This is the poll title',
-                                  onViewcomment:
-                                      (bool viewComment, String poll_id) {
-                                    setState(() {
-                                      onViewcomment = viewComment;
-                                      pollId = poll_id;
-                                      selectedCard = polldata_widget(
-                                          pollId: polls[itemIndex]['poll_id'],
-                                          username: polls[itemIndex]
-                                              ['poll_user'],
-                                          question: polls[itemIndex]
-                                              ['poll_data']['question'],
-                                          votes: 13,
-                                          time: 13,
-                                          optionsLength: polls[itemIndex]
-                                                  ['poll_data']['answers']
-                                              ['options'],
-                                          options: polls[itemIndex]['poll_data']
-                                              ['answers'],
-                                          previewUrl: polls[itemIndex]
-                                                  ['poll_data']['previewUrls']
-                                              ['previewUrl_1'],
-                                          pollTitle: 'pollTitle',
-                                          onViewcomment: updateViewcomment);
-                                    });
-                                  },
-                                )
-                              : WaitlistCardWidget(),
-                          onTap: () {
-                            _controller.nextPage();
-                            setState(() {
-                              count += 1;
-                            });
-                          },
-                        ),
-                      ),
-                    ),
+                    navBarDesktop(width, height),
+                   carouselslider(width, height, true)
                   ],
                 )),
               )
@@ -364,20 +282,7 @@ class _HomePageState extends State<HomePage> {
       if (onViewcomment) {
         //return card + comment section
         return Scaffold(
-          appBar: AppBar(
-            title: Text(
-              'QONWAY',
-              style: GoogleFonts.lato(color: Colors.black),
-            ),
-            backgroundColor: Color(0xfffafafa),
-            leading: GestureDetector(
-              onTap: () {/* Write listener code here */},
-              child: Icon(
-                Icons.menu,
-                color: Color(0xff092836), // add custom icons also
-              ),
-            ),
-          ),
+          appBar: navBarMobile(),
           body: ListView(
             children: [
               Container(
@@ -396,83 +301,8 @@ class _HomePageState extends State<HomePage> {
       } else {
         return pollsLoaded
             ? Scaffold(
-                appBar: AppBar(
-                  title: Text(
-                    'QONWAY',
-                    style: GoogleFonts.lato(color: Colors.black),
-                  ),
-                  backgroundColor: Color(0xfffafafa),
-                  leading: GestureDetector(
-                    onTap: () {/* Write listener code here */},
-                    child: Icon(
-                      Icons.menu,
-                      color: Color(0xff092836), // add custom icons also
-                    ),
-                  ),
-                ),
-                body: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.max,
-                  children: <Widget>[
-                    CarouselSlider.builder(
-                      carouselController: _controller,
-                      options: CarouselOptions(
-                        height: height * 0.85,
-                        enableInfiniteScroll: false,
-                        viewportFraction: 0.85,
-                        autoPlayCurve: Curves.fastOutSlowIn,
-                        enlargeCenterPage: false,
-                        onPageChanged: (index, reason) {
-                          setState(() {
-                            _currentIndex = index;
-                          });
-                        },
-                      ),
-                      itemCount: polls.length,
-                      itemBuilder: (BuildContext context, int itemIndex,
-                              int pageViewIndex) =>
-                          InkWell(
-                        child: polldata_widget(
-                          pollId: polls[itemIndex]['poll_id'],
-                          username: polls[itemIndex]['poll_user'],
-                          question: polls[itemIndex]['poll_data']['question'],
-                          votes: 13,
-                          time: 13,
-                          optionsLength: polls[itemIndex]['poll_data']
-                              ['answers']['options'],
-                          options: polls[itemIndex]['poll_data']['answers'],
-                          previewUrl: polls[itemIndex]['poll_data']
-                              ['previewUrls']['previewUrl_1'],
-                          pollTitle: 'This is the poll title',
-                          onViewcomment: (bool viewComment, String poll_id) {
-                            setState(() {
-                              onViewcomment = viewComment;
-                              pollId = poll_id;
-                              selectedCard = polldata_widget(
-                                  pollId: polls[itemIndex]['poll_id'],
-                                  username: polls[itemIndex]['poll_user'],
-                                  question: polls[itemIndex]['poll_data']
-                                      ['question'],
-                                  votes: 13,
-                                  time: 13,
-                                  optionsLength: polls[itemIndex]['poll_data']
-                                      ['answers']['options'],
-                                  options: polls[itemIndex]['poll_data']
-                                      ['answers'],
-                                  previewUrl: polls[itemIndex]['poll_data']
-                                      ['previewUrls']['previewUrl_1'],
-                                  pollTitle: 'pollTitle',
-                                  onViewcomment: updateViewcomment);
-                            });
-                          },
-                        ),
-                        onTap: () {
-                          _controller.nextPage();
-                        },
-                      ),
-                    ),
-                  ],
-                ))
+                appBar: navBarMobile(),
+                body: carouselslider(width, height, false))
             : Material();
       }
     }
@@ -485,10 +315,14 @@ class _HomePageState extends State<HomePage> {
     double aspectRatio =
         MediaQuery.of(context).size.width / MediaQuery.of(context).size.height;
 
+        bool isWeb = true;
+
     if (aspectRatio >= 1.5) {
       carousel = _buildDesktopView(width, height);
+      isWeb = true;
     } else {
       carousel = _buildMobileView(width, height);
+      isWeb = false;
     }
 
     return Container(

@@ -413,7 +413,7 @@ class _PollsState extends State<Polls> {
                       padding: EdgeInsets.fromLTRB(16, 0, 0, 0),
                       child: Text(this.c1,
                           style: GoogleFonts.lato(
-                            fontSize: widget.isWeb ? 16.0 : 14.0,
+                            fontSize: widget.isWeb ? 0.022 * MediaQuery.of(context).size.height : 0.0197*MediaQuery.of(context).size.height,
                             color: Colors.black,
                             fontWeight: FontWeight.bold,
                           )),
@@ -457,7 +457,7 @@ class _PollsState extends State<Polls> {
                       padding: EdgeInsets.fromLTRB(16, 0, 0, 0),
                       child: Text(this.c2,
                           style: GoogleFonts.lato(
-                              fontSize: widget.isWeb ? 16.0 : 14.0,
+                              fontSize: widget.isWeb ? 0.022 * MediaQuery.of(context).size.height : 0.0197*MediaQuery.of(context).size.height,
                               color: Colors.black,
                               fontWeight: FontWeight.bold)),
                     ),
@@ -502,7 +502,7 @@ class _PollsState extends State<Polls> {
                             padding: EdgeInsets.fromLTRB(16, 0, 0, 0),
                             child: Text(this.c3! ,
                                 style: GoogleFonts.lato(
-                                    fontSize: widget.isWeb ? 16.0 : 14.0,
+                                    fontSize: widget.isWeb ? 0.022 * MediaQuery.of(context).size.height : 0.0197*MediaQuery.of(context).size.height,
                                     color: Colors.black,
                                     fontWeight: FontWeight.bold)),
                           ),
@@ -548,7 +548,7 @@ class _PollsState extends State<Polls> {
                             padding: EdgeInsets.fromLTRB(16, 0, 0, 0),
                             child: Text(this.c4! ,
                                 style: GoogleFonts.lato(
-                                    fontSize: widget.isWeb ? 16.0 : 14.0,
+                                    fontSize: widget.isWeb ? 0.022 * MediaQuery.of(context).size.height : 0.0197*MediaQuery.of(context).size.height,
                                     color: Colors.black,
                                     fontWeight: FontWeight.bold)),
                           ),
@@ -623,7 +623,7 @@ class _PollsState extends State<Polls> {
                         padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
                         child: Text(this.c1,
                             style: GoogleFonts.lato(
-                                fontSize: widget.isWeb ? 16.0 : 14.0,
+                                fontSize: widget.isWeb ? 0.022 * MediaQuery.of(context).size.height : 0.0197*MediaQuery.of(context).size.height,
                                 color: Colors.black,
                                 fontWeight: FontWeight.bold)),
                       ),
@@ -640,7 +640,7 @@ class _PollsState extends State<Polls> {
                                 .toString() +
                             "%",
                         style: GoogleFonts.lato(
-                            fontSize: widget.isWeb ? 16.0 : 14.0,
+                            fontSize: widget.isWeb ? 0.022 * MediaQuery.of(context).size.height : 0.0197*MediaQuery.of(context).size.height,
                             color: Colors.black,
                             fontWeight: FontWeight.bold)),
                   )
@@ -672,7 +672,7 @@ class _PollsState extends State<Polls> {
                         padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
                         child: Text(this.c2,
                             style: GoogleFonts.lato(
-                                fontSize: widget.isWeb ? 16.0 : 14.0,
+                                fontSize: widget.isWeb ? 0.022 * MediaQuery.of(context).size.height : 0.0197*MediaQuery.of(context).size.height,
                                 color: Colors.black,
                                 fontWeight: FontWeight.bold)),
                       ),
@@ -689,7 +689,7 @@ class _PollsState extends State<Polls> {
                                 .toString() +
                             "%",
                         style: GoogleFonts.lato(
-                            fontSize: widget.isWeb ? 16.0 : 14.0,
+                            fontSize: widget.isWeb ? 0.022 * MediaQuery.of(context).size.height : 0.0197*MediaQuery.of(context).size.height,
                             color: Colors.black,
                             fontWeight: FontWeight.bold)),
                   )
@@ -724,7 +724,7 @@ class _PollsState extends State<Polls> {
                               padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
                               child: Text(this.c3! ,
                                   style: GoogleFonts.lato(
-                                      fontSize: widget.isWeb ? 16.0 : 14.0,
+                                      fontSize: widget.isWeb ? 0.022 * MediaQuery.of(context).size.height : 0.0197*MediaQuery.of(context).size.height,
                                       color: Colors.black,
                                       fontWeight: FontWeight.bold)),
                             ),
@@ -746,7 +746,7 @@ class _PollsState extends State<Polls> {
                                       .toString() +
                                   "%",
                               style: GoogleFonts.lato(
-                                  fontSize: widget.isWeb ? 16.0 : 14.0,
+                                  fontSize: widget.isWeb ? 0.022 * MediaQuery.of(context).size.height : 0.0197*MediaQuery.of(context).size.height,
                                   color: Colors.black,
                                   fontWeight: FontWeight.bold)),
                         )
@@ -780,7 +780,7 @@ class _PollsState extends State<Polls> {
                               padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
                               child: Text(this.c4.toString(),
                                   style: GoogleFonts.lato(
-                                      fontSize: widget.isWeb ? 16.0 : 14.0,
+                                      fontSize: widget.isWeb ? 0.022 * MediaQuery.of(context).size.height : 0.0197*MediaQuery.of(context).size.height,
                                       color: Colors.black,
                                       fontWeight: FontWeight.bold)),
                             ),
@@ -802,7 +802,7 @@ class _PollsState extends State<Polls> {
                                       .toString() +
                                   "%",
                               style: GoogleFonts.lato(
-                                  fontSize: widget.isWeb ? 16.0 : 14.0,
+                                  fontSize: widget.isWeb ? 0.022 * MediaQuery.of(context).size.height : 0.0197*MediaQuery.of(context).size.height,
                                   color: Colors.black,
                                   fontWeight: FontWeight.bold)),
                         )
@@ -875,7 +875,7 @@ class _PollsState extends State<Polls> {
                       padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
                       child: Text(this.c1.toString(),
                           style: GoogleFonts.lato(
-                              fontSize: widget.isWeb ? 16.0 : 14.0,
+                              fontSize: widget.isWeb ? 0.022 * MediaQuery.of(context).size.height : 0.0197*MediaQuery.of(context).size.height,
                               color: Colors.black,
                               fontWeight: FontWeight.bold)),
                     ),
@@ -893,7 +893,7 @@ class _PollsState extends State<Polls> {
                               .toString() +
                           "%",
                       style: GoogleFonts.lato(
-                          fontSize: widget.isWeb ? 16.0 : 14.0,
+                          fontSize: widget.isWeb ? 0.022 * MediaQuery.of(context).size.height : 0.0197*MediaQuery.of(context).size.height,
                           color: Colors.black,
                           fontWeight: FontWeight.bold)),
                 )
@@ -926,7 +926,7 @@ class _PollsState extends State<Polls> {
                       padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
                       child: Text(this.c2.toString(),
                           style: GoogleFonts.lato(
-                              fontSize: widget.isWeb ? 16.0 : 14.0,
+                              fontSize: widget.isWeb ? 0.022 * MediaQuery.of(context).size.height : 0.0197*MediaQuery.of(context).size.height,
                               color: Colors.black,
                               fontWeight: FontWeight.bold)),
                     ),
@@ -944,7 +944,7 @@ class _PollsState extends State<Polls> {
                               .toString() +
                           "%",
                       style: GoogleFonts.lato(
-                          fontSize: widget.isWeb ? 16.0 : 14.0,
+                          fontSize: widget.isWeb ? 0.022 * MediaQuery.of(context).size.height : 0.0197*MediaQuery.of(context).size.height,
                           color: Colors.black,
                           fontWeight: FontWeight.bold)),
                 )
@@ -980,7 +980,7 @@ class _PollsState extends State<Polls> {
                             padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
                             child: Text(this.c3.toString(),
                                 style: GoogleFonts.lato(
-                                    fontSize: widget.isWeb ? 16.0 : 14.0,
+                                    fontSize: widget.isWeb ? 0.022 * MediaQuery.of(context).size.height : 0.0197*MediaQuery.of(context).size.height,
                                     color: Colors.black,
                                     fontWeight: FontWeight.bold)),
                           ),
@@ -1003,7 +1003,7 @@ class _PollsState extends State<Polls> {
                                     .toString() +
                                 "%",
                             style: GoogleFonts.lato(
-                                fontSize: widget.isWeb ? 16.0 : 14.0,
+                                fontSize: widget.isWeb ? 0.022 * MediaQuery.of(context).size.height : 0.0197*MediaQuery.of(context).size.height,
                                 color: Colors.black,
                                 fontWeight: FontWeight.bold)),
                       )
@@ -1039,7 +1039,7 @@ class _PollsState extends State<Polls> {
                             padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
                             child: Text(this.c4.toString(),
                                 style: GoogleFonts.lato(
-                                    fontSize: widget.isWeb ? 16.0 : 14.0,
+                                    fontSize: widget.isWeb ? 0.022 * MediaQuery.of(context).size.height : 0.0197*MediaQuery.of(context).size.height,
                                     color: Colors.black,
                                     fontWeight: FontWeight.bold)),
                           ),
@@ -1062,7 +1062,7 @@ class _PollsState extends State<Polls> {
                                     .toString() +
                                 "%",
                             style: GoogleFonts.lato(
-                                fontSize: widget.isWeb ? 16.0 : 14.0,
+                                fontSize: widget.isWeb ? 0.022 * MediaQuery.of(context).size.height : 0.0197*MediaQuery.of(context).size.height,
                                 color: Colors.black,
                                 fontWeight: FontWeight.bold)),
                       )

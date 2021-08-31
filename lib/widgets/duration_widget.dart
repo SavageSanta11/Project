@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 typedef void IntCallback(int time);
 
-
 class DurationWidget extends StatefulWidget {
   final String text;
   final double width;
@@ -10,7 +9,8 @@ class DurationWidget extends StatefulWidget {
   final List<int> itemList;
   final IntCallback onTimeChanged;
 
-  DurationWidget(this.text, this.width, this.height, this.itemList, this.onTimeChanged);
+  DurationWidget(
+      this.text, this.width, this.height, this.itemList, this.onTimeChanged);
 
   @override
   _DurationWidgetState createState() => _DurationWidgetState();
@@ -19,7 +19,7 @@ class DurationWidget extends StatefulWidget {
 class _DurationWidgetState extends State<DurationWidget> {
   //bool _isDropdownOn = false;
   int dropdownvalue = -1;
-   int elementId = 3;
+  int elementId = 3;
   Container _createDurationButton() {
     return (Container(
       padding: EdgeInsets.fromLTRB(widget.width * 0.07, 0, 0, 0),
@@ -37,7 +37,7 @@ class _DurationWidgetState extends State<DurationWidget> {
               : Text(widget.text),
           onChanged: (int? newValue) {
             widget.onTimeChanged(newValue!);
-            
+
             setState(() {
               dropdownvalue = newValue;
             });
@@ -53,18 +53,9 @@ class _DurationWidgetState extends State<DurationWidget> {
     ));
   }
 
-  Container _createDropDownEntry() {
-    return (Container(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        mainAxisSize: MainAxisSize.max,
-        children: [_createDurationButton()],
-      ),
-    ));
-  }
 
   @override
   Widget build(BuildContext context) {
-    return _createDropDownEntry();
+    return _createDurationButton();
   }
 }

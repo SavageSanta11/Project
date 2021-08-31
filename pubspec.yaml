@@ -35,6 +35,11 @@ dependencies:
   url_strategy: ^0.2.0
   percent_indicator: ^3.0.1
   google_sign_in: ^5.0.7
+  social_share: ^2.1.1
+  url_launcher: 6.0.9
+  share: ^2.0.4
+  shared_preferences: ^2.0.7
+  
   
 
 dev_dependencies:

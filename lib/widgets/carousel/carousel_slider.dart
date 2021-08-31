@@ -230,11 +230,11 @@ class CarouselSliderState extends State<CarouselSlider>
   Widget getEnlargeWrapper(Widget? child,
       {double? width, double? height, double? scale}) {
     if (widget.options.enlargeStrategy == CenterPageEnlargeStrategy.height) {
-      return SizedBox(child: child, width: width, height: height);
+      return SizedBox(child: child, width: width, height: 0.5*height!, );
     }
     return Transform.scale(
         scale: scale!,
-        child: Container(child: child, width: width, height: height));
+        child: Container(child: child, width: width, height: height,));
   }
 
   void onStart() {
@@ -312,7 +312,7 @@ class CarouselSliderState extends State<CarouselSlider>
                 }
               }
               final num distortionRatio =
-                  (1 - (itemOffset.abs() * 0.2)).clamp(0.0, 1.0);
+                  (1 - (itemOffset.abs() * 0.25)).clamp(0.0, 1.0);
               distortionValue =
                   Curves.linear.transform(distortionRatio as double);
             }

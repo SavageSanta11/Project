@@ -1,13 +1,17 @@
 import 'dart:convert';
-
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
 import 'polls.dart';
 import 'package:http/http.dart' as http;
-
+import 'package:shared_preferences/shared_preferences.dart';
 // ignore: camel_case_types
+
+getToken() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  //Return String
+  String? stringValue = prefs.getString('token');
+  return stringValue;
+}
 
 GlobalKey key = GlobalKey();
 
@@ -77,16 +81,15 @@ class _polldata_widgetState extends State<polldata_widget> {
       option3 = convertDataToJson['data']['option_3']['voteCount'];
       option4 = convertDataToJson['data']['option_4']['voteCount'];
     });
-    
   }
 
   List<dynamic> buildList() {
-    getPollResult(widget.pollId);
+    //getPollResult(widget.pollId);
 
     if (widget.optionsLength == 2) {
       choices.add(
           Polls.options(title: widget.options['option_1'], value: option1));
-          
+
       choices.add(
           Polls.options(title: widget.options['option_2'], value: option2));
     } else if (widget.optionsLength == 3) {
@@ -105,7 +108,6 @@ class _polldata_widgetState extends State<polldata_widget> {
           Polls.options(title: widget.options['option_3'], value: option3));
       choices.add(
           Polls.options(title: widget.options['option_4'], value: option4));
-          print(option1);
     }
     return choices;
   }
@@ -114,7 +116,7 @@ class _polldata_widgetState extends State<polldata_widget> {
   Widget build(BuildContext context) {
     Container _createShareButton(double width, double height, bool isWeb) {
       return (Container(
-        width: isWeb ? width * 0.4 : width * 0.4,
+        width:  width * 0.4,
         height: height * 0.05,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(
@@ -122,21 +124,22 @@ class _polldata_widgetState extends State<polldata_widget> {
           ),
         ),
         child: OutlinedButton(
-          child: Text(
-            'SHARE',
-            style: GoogleFonts.lato(
-                fontSize: isWeb ? 16.0 : 14.0,
-                color: Colors.black,
-                fontWeight: FontWeight.bold),
-          ),
-          style: ElevatedButton.styleFrom(
-            shape: new RoundedRectangleBorder(
-                borderRadius: new BorderRadius.circular(20.0)),
-            primary: Colors.white,
-            side: BorderSide(color: Color(0xff092836), width: 1),
-          ),
-          onPressed: () {},
-        ),
+            child: Text(
+              'SHARE',
+              style: GoogleFonts.lato(
+                  fontSize: isWeb ? 16.0 : 14.0,
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold),
+            ),
+            style: ElevatedButton.styleFrom(
+              shape: new RoundedRectangleBorder(
+                  borderRadius: new BorderRadius.circular(20.0)),
+              primary: Colors.white,
+              side: BorderSide(color: Color(0xff092836), width: 1),
+            ),
+            onPressed: () async {
+      
+            }),
       ));
     }
 
@@ -187,28 +190,32 @@ class _polldata_widgetState extends State<polldata_widget> {
                   thickness: 3.0,
                 ),
               ),*/
-              Padding(
-                padding: const EdgeInsets.fromLTRB(16.0, 0, 16, 0),
-                child: Text(
-                  widget.username,
-                  textAlign: TextAlign.left,
-                  style: TextStyle(
-                    color: Colors.blueGrey,
-                    fontSize: isWeb ? 14.0 : 12.0,
+              Container(
+                height: height*0.03,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(16.0, 0, 16, 0),
+                  child: Text(
+                    widget.username,
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                      color: Colors.blueGrey,
+                      fontSize: isWeb ? 0.023*height : 0.0198*height,
+                    ),
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 0),
-                child: Container(
-                  height: height * 0.4,
+              Container(
+                height: height * 0.40,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 0),
                   child: Polls(
+                   
                     isWeb: isWeb,
                     children: buildList(),
                     question: Text(
                       widget.question,
                       style: GoogleFonts.lato(
-                          fontSize: isWeb ? 22.0 : 18.0,
+                          fontSize: isWeb ? 0.034*height : 0.0298*height ,
                           color: Colors.black,
                           fontWeight: FontWeight.bold),
                     ),
@@ -248,30 +255,33 @@ class _polldata_widgetState extends State<polldata_widget> {
                   ),
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(16, 4, 0, 4),
-                child: Row(
-                  children: [
-                    TextButton.icon(
-                        onPressed: () {
-                          setState(() {
-                            viewComment = !viewComment;
-                          });
-                          widget.onViewcomment(viewComment, widget.pollId);
-                        },
-                        icon: Icon(
-                          Icons.comment,
-                          color: Colors.black,
-                        ),
-                        label: Text(
-                          '13',
-                          style: TextStyle(color: Colors.black),
-                        )),
-                    SizedBox(
-                      width: width * 0.02,
-                    ),
-                    _createShareButton(width, height, isWeb)
-                  ],
+              Container(
+                height: height*0.05,
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(16, 4, 0, 4),
+                  child: Row(
+                    children: [
+                      TextButton.icon(
+                          onPressed: () {
+                            setState(() {
+                              viewComment = !viewComment;
+                            });
+                            widget.onViewcomment(viewComment, widget.pollId);
+                          },
+                          icon: Icon(
+                            Icons.comment,
+                            color: Colors.black,
+                          ),
+                          label: Text(
+                            '13',
+                            style: TextStyle(color: Colors.black),
+                          )),
+                      SizedBox(
+                        width: width * 0.02,
+                      ),
+                      _createShareButton(width, height, isWeb)
+                    ],
+                  ),
                 ),
               )
             ],
@@ -292,7 +302,7 @@ class _polldata_widgetState extends State<polldata_widget> {
 
     if (aspectRatio >= 1.5) {
       isWeb = true;
-      pollcard = _getCardData(width * 0.25, height * 0.85, isWeb);
+      pollcard = _getCardData(width * 0.26, height * 0.85, isWeb);
     } else {
       isWeb = false;
       pollcard = _getCardData(width * 0.95, height * 0.85, isWeb);

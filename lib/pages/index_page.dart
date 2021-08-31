@@ -2,12 +2,42 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:project/pages/home_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'create_poll.dart';
 import 'package:http/http.dart' as http;
+import 'package:google_sign_in/google_sign_in.dart';
 
 String accessToken = "";
 String refreshToken = "";
+
+setToken() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  prefs.setString('token', "abc");
+}
+getToken() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  //Return String
+  String? stringValue = prefs.getString('token');
+  return stringValue;
+}
+
+GoogleSignIn _googleSignIn = GoogleSignIn(
+  scopes: [
+    'email',
+    'https://www.googleapis.com/auth/contacts.readonly',
+  ],
+);
+
+Future<void> _handleSignIn() async {
+  try {
+    await _googleSignIn.signIn();
+  } catch (error) {
+    print(error);
+  }
+}
+
+Future<void> _handleSignOut() => _googleSignIn.disconnect();
 
 Future<String> registerUser(String emailId) async {
   var headers = {'Content-Type': 'application/json'};
@@ -25,20 +55,37 @@ Future<String> registerUser(String emailId) async {
 
   accessToken = convertDataToJson["data"]["access_token"];
   refreshToken = convertDataToJson["data"]["refresh_token"];
- 
+
   return convertDataToJson["data"]["type"];
 }
 
-
-
 // ignore: must_be_immutable
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
   static const String route = '/IndexPage';
+
+  @override
+  _HomeState createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  GoogleSignInAccount? _currentUser;
 
   String userType = "";
 
   @override
+  void initState() {
+    super.initState();
+    setToken();
+    _googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount? account) {
+      setState(() {
+        _currentUser = account;
+      });
+    });
+    _googleSignIn.signInSilently();
+  }
+
   Widget build(BuildContext context) {
+    GoogleSignInAccount? user = _currentUser;
     Container _buildImageSection(double width, double height) {
       return (Container(
           width: width,
@@ -110,16 +157,22 @@ class Home extends StatelessWidget {
                   fontFamily: 'Leto'),
             ),
             onPressed: () async {
+              
+              String token = await getToken();
+              
+              
+             /* _handleSignIn();
+              print(user!.email);
+              */
               userType = await registerUser("kano@qonway.com");
               print(userType);
               if (userType == "influencer") {
-                
                 Navigator.of(context).pushNamed(CreatePoll.route);
               } else {
                 Navigator.of(context).pushNamed(HomePage.route);
               }
               //Navigator.of(context).pushNamed(CreatePoll.route);
-
+              
             }),
       )));
     }
@@ -183,11 +236,8 @@ class Home extends StatelessWidget {
 
     if (aspectRatio >= 1.5) {
       homePage = _buildDesktopView();
-    
-      
     } else {
       homePage = _buildMobileView();
-  
     }
 
     return Scaffold(
