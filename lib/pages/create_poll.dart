@@ -114,11 +114,15 @@ Future<String> crawlUrl(String url) async {
     'Authorization':
         'Bearer  eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTYyOTI4MjQyMiwianRpIjoiNWMyZmNkYTQtZjgyZS00ODhlLWFmZGEtNTFiZmEyYmZlMzJkIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6Imthbm9AcW9ud2F5LmNvbSIsIm5iZiI6MTYyOTI4MjQyMiwiZXhwIjoxNjI5MjgzMzIyfQ.L6O-rXKbo8vtcyT0K071o108Lljpr_PjLmw14rDHVvI'
   };
-
+  String baseUri = 'http://164.52.212.151:7002/api/access/crawl/url?url=';
   http.Response response = await http.get(
-    Uri.parse('http://164.52.212.151:7002/api/access/crawl/url?url=' + url),
+    Uri.parse(baseUri + url),
     headers: headers,
   );
+
+  
+  print(baseUri+url);
+ 
 
   var convertDataToJson = json.decode(response.body);
   previewImgUrl = convertDataToJson["data"]["preview_image_url"];

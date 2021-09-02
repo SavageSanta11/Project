@@ -54,7 +54,7 @@ class _CommentsState extends State<Comments> {
     var convertDataToJson = json.decode(response.body);
     String success = convertDataToJson["success"];
     return success;
-    print(convertDataToJson);
+  
   }
 
   // ignore: unused_element
@@ -179,7 +179,7 @@ class _CommentsState extends State<Comments> {
               children: [
                 Container(
                   width: width,
-                  height: height * 0.15,
+                  height: height * 0.12,
                   child: TextField(
                     inputFormatters: [LengthLimitingTextInputFormatter(100)],
                     controller: _textFieldController,
@@ -204,7 +204,7 @@ class _CommentsState extends State<Comments> {
                   children: [
                     Container(
                         height: height * 0.04,
-                        width: width * 0.75,
+                        width: width * 0.7,
                         decoration: BoxDecoration(color: Color(0xffececec)),
                         child: Padding(
                           padding: const EdgeInsets.all(2.0),

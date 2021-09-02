@@ -39,6 +39,7 @@ dependencies:
   url_launcher: 6.0.9
   share: ^2.0.4
   shared_preferences: ^2.0.7
+  polls: ^1.0.1
   
   
 

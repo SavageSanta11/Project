@@ -1,40 +1,19 @@
 library polls;
 
-import 'dart:convert';
-
 import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 
-Future<void> recordVote(String poll_id, int optionNo, String optionText) async {
-  var headers = {
-    'Authorization':
-        'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTYyOTQzMjgwMSwianRpIjoiNjhlNmU0OGUtNmFmNS00ZDhlLTgzMTItMDdiODgzMjRhM2Y1IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6Imthbm9AcW9ud2F5LmNvbSIsIm5iZiI6MTYyOTQzMjgwMSwiZXhwIjoxNjI5NDMzNzAxfQ.9-RgnOEkhbA28A22h_tu_6J_syc2YqHYR9rQ1M1NVYE',
-    'Content-Type': 'application/json'
-  };
-  
-  String body = json.encode(<String, dynamic>{
-    "poll_id": poll_id,
-    "opt_num": optionNo,
-    "opt_text": optionText,
-    "email": "kano@qonway.com"
-  });
 
-  http.Response response = await http.post(
-      Uri.parse('http://164.52.212.151:7002/api/access/record/vote'),
-      headers: headers,
-      body: body);
+typedef void PollCallBack(int choice, String text);
 
-  var convertDataToJson = json.decode(response.body);
-  print(convertDataToJson);
-}
-
-typedef void PollCallBack(int choice);
+typedef void BoolCallBack(bool isPressed);
 
 typedef void PollTotal(int total);
 
 late int userPollChoice;
+
+late  String pollText;
 
 class Polls extends StatefulWidget {
 
@@ -59,6 +38,8 @@ class Polls extends StatefulWidget {
 
   /// this call back returns user choice after voting
   final PollCallBack? onVote;
+
+  final BoolCallBack onPressed;
 
   /// this is takes in current user choice
   final int? userChoice;
@@ -98,7 +79,7 @@ class Polls extends StatefulWidget {
     this.backgroundColor = Colors.white,
     this.onVoteBackgroundColor = Colors.blue,
     this.iconColor = Colors.black,
-    this.leadingBackgroundColor = Colors.white, required this.isWeb,
+    this.leadingBackgroundColor = Colors.white, required this.isWeb, required this.onPressed,
   })  : highest = null,
         getHighest = null,
         getTotal = null,
@@ -130,7 +111,7 @@ class Polls extends StatefulWidget {
       this.backgroundColor = Colors.blue,
       this.leadingBackgroundColor = Colors.blueAccent,
       this.onVoteBackgroundColor,
-      this.iconColor = Colors.black, required this.isWeb})
+      this.iconColor = Colors.black, required this.isWeb, required this.onPressed})
       : allowCreatorVote = false,
         getTotal = null,
         highest = null,
@@ -153,7 +134,7 @@ class Polls extends StatefulWidget {
       this.backgroundColor = Colors.blue,
       this.leadingBackgroundColor = Colors.blueAccent,
       this.onVoteBackgroundColor = Colors.white,
-      this.allowCreatorVote = false, required this.isWeb})
+      this.allowCreatorVote = false, required this.isWeb, required this.onPressed})
       : viewType = PollsType.creator,
         onVote = null,
         userChoice = null,
@@ -177,7 +158,7 @@ class Polls extends StatefulWidget {
     required this.onVote,
     this.allowCreatorVote = false,
     this.outlineColor = Colors.blue,
-    this.backgroundColor = Colors.white, required this.isWeb,
+    this.backgroundColor = Colors.white, required this.isWeb, required this.onPressed,
   })  : viewType = PollsType.voter,
         userChoice = null,
         highest = null,
@@ -399,11 +380,13 @@ class _PollsState extends State<Polls> {
                 // ignore: deprecated_member_use
                 child: OutlineButton(
                   onPressed: () {
+                    widget.onPressed(true);
                     setState(() {
                       userPollChoice = 1;
+                      pollText = this.c1;
                     });
-                    recordVote('yjhhonw', userPollChoice, this.c1);
-                    widget.onVote!(userPollChoice);
+                    
+                    widget.onVote!(userPollChoice, pollText);
                   },
                   color: Colors.green,
                   padding: EdgeInsets.all(5.0),
@@ -443,11 +426,13 @@ class _PollsState extends State<Polls> {
                 // ignore: deprecated_member_use
                 child: OutlineButton(
                   onPressed: () {
+                    widget.onPressed(true);
                     setState(() {
                       userPollChoice = 2;
+                      pollText = this.c2;
                     });
-                    recordVote('yjhhonw', userPollChoice, this.c2);
-                    widget.onVote!(userPollChoice);
+
+                    widget.onVote!(userPollChoice, pollText);
                   },
                   color: Colors.green,
                   padding: EdgeInsets.all(5.0),
@@ -488,11 +473,13 @@ class _PollsState extends State<Polls> {
                       // ignore: deprecated_member_use
                       child: OutlineButton(
                         onPressed: () {
+                          widget.onPressed(true);
                           setState(() {
                             userPollChoice = 3;
+                            pollText = this.c3!;
                           });
-                          recordVote('yjhhonw', userPollChoice, this.c3!);
-                          widget.onVote!(userPollChoice);
+                          
+                          widget.onVote!(userPollChoice, pollText);
                         },
                         color: Colors.green,
                         padding: EdgeInsets.all(5.0),
@@ -534,11 +521,13 @@ class _PollsState extends State<Polls> {
                       // ignore: deprecated_member_use
                       child: OutlineButton(
                         onPressed: () {
+                          widget.onPressed(true);
                           setState(() {
                             userPollChoice = 4;
+                            pollText = this.c4!;
                           });
-                          recordVote('yjhhonw', userPollChoice, this.c4!);
-                          widget.onVote!(userPollChoice);
+                          
+                          widget.onVote!(userPollChoice, pollText);
                         },
                         color: Colors.green,
                         padding: EdgeInsets.all(5.0),
