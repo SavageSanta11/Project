@@ -5,7 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 
 import 'dart:async';
-
+import '../widgets/cardPreview_widget.dart';
 import '../widgets/duration_widget.dart';
 import '../model/file_DataModel.dart';
 import '../widgets/option_container.dart';
@@ -24,18 +24,21 @@ int minutes = 0;
 int options = 2;
 String option = "";
 String previewImgUrl = "";
+String contentUrl = "";
+String mediaUrl = "";
 String pollId = "";
 
 String writeBody() {
   String body;
   if (optionList.length == 2) {
      body = json.encode(<String, dynamic>{
+      "mediaUrl": mediaUrl,
       "contentUrl":
-          "http://164.52.212.151:8089/api/v1/media/content/ypannx5.png",
+          contentUrl,
       "previewUrls": [
-        "http://164.52.212.151:8089/api/v1/media/preview/ypannx5.png",
-        "http://164.52.212.151:8089/api/v1/media/preview/ypannx5.png"
+        previewImgUrl
       ],
+      "title": 'Title',
       "email": "kano@qonway.com",
       "question": question,
       "answers": {
@@ -50,10 +53,9 @@ String writeBody() {
   } else if (optionList.length == 3) {
      body = json.encode(<String, dynamic>{
       "contentUrl":
-          "http://164.52.212.151:8089/api/v1/media/content/ypannx5.png",
+          contentUrl,
       "previewUrls": [
-        "http://164.52.212.151:8089/api/v1/media/preview/ypannx5.png",
-        "http://164.52.212.151:8089/api/v1/media/preview/ypannx5.png"
+        previewImgUrl
       ],
       "email": "kano@qonway.com",
       "question": question,
@@ -70,10 +72,9 @@ String writeBody() {
   } else {
      body = json.encode(<String, dynamic>{
       "contentUrl":
-          "http://164.52.212.151:8089/api/v1/media/content/ypannx5.png",
+          contentUrl,
       "previewUrls": [
-        "http://164.52.212.151:8089/api/v1/media/preview/ypannx5.png",
-        "http://164.52.212.151:8089/api/v1/media/preview/ypannx5.png"
+        previewImgUrl
       ],
       "email": "kano@qonway.com",
       "question": question,
@@ -99,7 +100,7 @@ Future<String> createPollRest() async {
   };
 
   http.Response response = await http.post(
-      Uri.parse('http://164.52.212.151:7002/api/access/poll/create'),
+      Uri.parse('http://qonway.com:7002/api/access/poll/create'),
       headers: headers,
       body: writeBody());
 
@@ -114,7 +115,7 @@ Future<String> crawlUrl(String url) async {
     'Authorization':
         'Bearer  eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTYyOTI4MjQyMiwianRpIjoiNWMyZmNkYTQtZjgyZS00ODhlLWFmZGEtNTFiZmEyYmZlMzJkIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6Imthbm9AcW9ud2F5LmNvbSIsIm5iZiI6MTYyOTI4MjQyMiwiZXhwIjoxNjI5MjgzMzIyfQ.L6O-rXKbo8vtcyT0K071o108Lljpr_PjLmw14rDHVvI'
   };
-  String baseUri = 'http://164.52.212.151:7002/api/access/crawl/url?url=';
+  String baseUri = 'http://qonway.com:7002/api/access/crawl/url?url=';
   http.Response response = await http.get(
     Uri.parse(baseUri + url),
     headers: headers,
@@ -126,12 +127,13 @@ Future<String> crawlUrl(String url) async {
 
   var convertDataToJson = json.decode(response.body);
   previewImgUrl = convertDataToJson["data"]["preview_image_url"];
+  mediaUrl = convertDataToJson["data"]["media_url"];
   return (previewImgUrl);
 }
 
 Future<void> publishPoll(String poll_id) async {
   String uri =
-      'http://164.52.212.151:7002/api/access/poll/publish?poll_id=' + poll_id;
+      'http://qonway.com:7002/api/access/poll/publish?poll_id=' + poll_id;
 
   http.Response response = await http.get(
     Uri.parse(uri),
@@ -148,6 +150,9 @@ class CreatePoll extends StatefulWidget {
 }
 
 class _CreatePollState extends State<CreatePoll> {
+
+  GlobalKey<FormState> _key = new GlobalKey();
+
   var children = <Widget>[];
 
   File_Data_Model? file;
@@ -179,17 +184,28 @@ class _CreatePollState extends State<CreatePoll> {
   void updatePreviewMode(bool flag) {
     setState(() {
       isPreviewMode = flag;
+      if(flag == false){
+        previewImgUrl = "";
+      }
     });
   }
 
-  void updateValidUrl(String url) async {
-    previewImgUrl = url;
+  void updateValidUrl(String previewUrl, String enteredUrl) async {
+    print(enteredUrl);
+    previewImgUrl = previewUrl;
+    if(enteredUrl==""){
+      contentUrl = previewImgUrl;
+    }
+    else{
+      contentUrl = enteredUrl;
+    }
     setState(() {
       isPreviewMode = true;
     });
-    print(previewImgUrl);
   }
 
+  
+  
   var listDays = [for (var i = 0; i < 8; i += 1) i];
   var listHours = [for (var i = 0; i < 24; i += 1) i];
   var listMinutes = [for (var i = 0; i < 60; i += 1) i];
@@ -204,7 +220,7 @@ class _CreatePollState extends State<CreatePoll> {
       double _uploadwidth = width * 0.8;
 
       _uploadMediaWidget = uploadMode(
-          width * 0.8, height * 0.8, updatePreviewMode, updateValidUrl);
+          width * 0.8, height * 0.8, updatePreviewMode, updateValidUrl,);
 
       return (Container(
           color: Colors.transparent,
@@ -232,19 +248,30 @@ class _CreatePollState extends State<CreatePoll> {
                   Radius.circular(10.0),
                 ),
               ),
-              child: TextField(
-                onChanged: (val) {
-                  question = val;
-                },
-                decoration: InputDecoration(
-                    contentPadding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                    hintText: opText,
-                     border: InputBorder.none,
-                      focusedBorder: InputBorder.none,
-                      enabledBorder: InputBorder.none,
-                      errorBorder: InputBorder.none,
-                      disabledBorder: InputBorder.none,
-                    ),
+              child: Form(
+                key: _key,
+                child: TextFormField(
+                  onChanged: (val) {
+                    setState(() {
+                      question = val;
+                    });
+                  },
+                  validator: (value){
+                    if(value!.isEmpty){
+                      return "Fill this";
+                    }
+                    return null;
+                  },
+                  decoration: InputDecoration(
+                      contentPadding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                      hintText: opText,
+                       border: InputBorder.none,
+                        focusedBorder: InputBorder.none,
+                        enabledBorder: InputBorder.none,
+                        errorBorder: InputBorder.none,
+                        disabledBorder: InputBorder.none,
+                      ),
+                ),
               ),
             ),
           ],
@@ -300,9 +327,11 @@ class _CreatePollState extends State<CreatePoll> {
             primary: Color(0xff092836),
           ),
           onPressed: () async {
-            pollId = await createPollRest();
-            //publishPoll(pollId);
+           if(_key.currentState!.validate()){
+              pollId = await createPollRest();
+              publishPoll(pollId);
             Navigator.of(context).pushNamed(HomePage.route);
+           }
           },
         ),
       ));
@@ -327,7 +356,7 @@ class _CreatePollState extends State<CreatePoll> {
       ));
     }
 
-    ListView _buildCreatePollState(double width, double height) {
+    Widget _buildCreatePollState(double width, double height) {
       return (ListView(
           physics: const AlwaysScrollableScrollPhysics(),
           children: [
@@ -363,6 +392,16 @@ class _CreatePollState extends State<CreatePoll> {
             Container(
               color: Colors.amber,
               width: width * 0.5,
+              child: Align(
+                alignment: Alignment.center,
+                child: Container(
+                 
+                  height: height*0.9,
+                  width: width*0.3,
+                  color: Colors.pink,
+                  child: CardPreview( width*0.3, height*0.8, previewImgUrl, question),
+                ),
+              ),
             )
           ],
         ),

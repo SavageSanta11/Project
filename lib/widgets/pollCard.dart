@@ -58,10 +58,10 @@ class _PollCardState extends State<PollCard> {
   int votedOptionIndex = 0;
   bool viewComment = false;
 
-  int option1 = 0;
-  int option2 = 0;
-  int option3 = 0;
-  int option4 = 0;
+  String option1 = "0.0%";
+  String option2 = "0.0%";
+  String option3 = "0.0%";
+  String option4 = "0.0%";
 
   Future<void> getPollResult(String pollId) async {
     String uri =
@@ -74,10 +74,10 @@ class _PollCardState extends State<PollCard> {
     var convertDataToJson = json.decode(response.body);
 
     setState(() {
-      option1 = convertDataToJson['data']['option_1']['voteCount'];
-      option2 = convertDataToJson['data']['option_2']['voteCount'];
-      option3 = convertDataToJson['data']['option_3']['voteCount'];
-      option4 = convertDataToJson['data']['option_4']['voteCount'];
+      option1 = convertDataToJson['data']['option_1']['votePrct'];
+      option2 = convertDataToJson['data']['option_2']['votePrct'];
+      option3 = convertDataToJson['data']['option_3']['votePrct'];
+      option4 = convertDataToJson['data']['option_4']['votePrct'];
     });
   }
 
@@ -106,19 +106,18 @@ class _PollCardState extends State<PollCard> {
           ['option_3'],
       'option4': widget.params[widget.index]['poll_data']['answers']
           ['option_4'],
-      'option1votes': option1,
-      'option2votes': option2,
-      'option3votes': option3,
-      'option4votes': option4,
+      'option1percent': option1,
+      'option2percent': option2,
+      'option3percent': option3,
+      'option4percent': option4,
     });
 
     var convertdata = jsonDecode(body);
-    print(convertdata['option1votes']);
 
-    Container _createProfilePicture(double width, double height) {
+    Container _createPreviewPicture(double width, double height) {
       return Container(
-        width: width ,
-        height: height*1.1,
+        width: width,
+        height: height,
         color: Colors.transparent,
         //margin: EdgeInsets.symmetric(vertical: 6),
         child: Image.network(
@@ -126,6 +125,30 @@ class _PollCardState extends State<PollCard> {
           fit: BoxFit.cover,
         ),
       );
+    }
+
+    Container _createUserProfilePic(double width, double height) {
+      return Container(
+          width: width,
+          height: height,
+          color: Colors.transparent,
+          //margin: EdgeInsets.symmetric(vertical: 6),
+          child: Row(
+            children: [
+              CircleAvatar(
+                  radius: 25.0,
+                  backgroundColor: Colors.transparent,
+                  backgroundImage: NetworkImage('https://i.natgeofe.com/n/6490d605-b11a-4919-963e-f1e6f3c0d4b6/sumatran-tiger-thumbnail-nationalgeographic_1456276.jpg')),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text("Tiger" ,style: TextStyle(fontWeight: FontWeight.bold),),
+                  Text("Tiger Zinda Hai"),
+                ],
+              ),
+            ],
+          ));
     }
 
     Container _createTitleForPollcard(double width, double height) {
@@ -151,24 +174,26 @@ class _PollCardState extends State<PollCard> {
           width: width,
           height: height,
           color: Colors.white,
-          margin: EdgeInsets.symmetric(vertical: 20),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              _createProfilePicture(width, height * 0.8),
-              _createTitleForPollcard(width, height * 0.2)
+              _createUserProfilePic(width, height*0.15),
+              _createPreviewPicture(width, height*0.8),
+              //_createTitleForPollcard(width, height * 0.2)
             ],
           ));
     }
 
     Container _createQuestionText(double width, double height) {
+      String trimmedOutput = convertdata['question'] ;
       return Container(
         width: width,
+        height: height,
         color: Colors.transparent,
-        margin: EdgeInsets.all(20),
+        margin: EdgeInsets.all(7),
         child: Text(
-          convertdata['question'],
-          style: TextStyle(fontFamily: 'Leto', fontSize: 20),
+          trimmedOutput,
+          style: TextStyle(fontFamily: 'Leto', fontSize: width * 0.03),
         ),
       );
     }
@@ -177,9 +202,8 @@ class _PollCardState extends State<PollCard> {
       double fontSize = width * 0.03;
 
       return (Container(
-        width: width * 0.45,
-        height: height * 0.8,
-        color: Colors.pink,
+        width: width * 0.9,
+        height: height,
         child: OutlinedButton(
             child: Text(
               'SHARE',
@@ -194,14 +218,13 @@ class _PollCardState extends State<PollCard> {
 
     Container _createCommentButton(double width, double height) {
       return Container(
-        width: width * 0.45,
-        height: height * 0.8,
+        width: width,
+        height: height,
         color: Colors.orange,
         child: TextButton.icon(
             onPressed: () {
               setState(() {
                 viewComment = !viewComment;
-                
               });
             },
             icon: Icon(
@@ -216,7 +239,7 @@ class _PollCardState extends State<PollCard> {
     }
 
     Container _createVotedOption(double width, double height, String optionText,
-        int optionIndex, int voteCount) {
+        int optionIndex, String votePercent) {
       double fontSize = width * 0.03;
       int color = 0xfff7f7f7;
 
@@ -234,21 +257,37 @@ class _PollCardState extends State<PollCard> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Text(
-                optionText + " " + voteCount.toString(),
-                style: TextStyle(fontFamily: 'Leto', fontSize: fontSize),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(2, 0, 0, 0),
+                    child: Text(
+                      optionText,
+                      style: TextStyle(fontFamily: 'Leto', fontSize: fontSize),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 0, 2, 0),
+                    child: Text(
+                      votePercent,
+                      style: TextStyle(fontFamily: 'Leto', fontSize: fontSize),
+                    ),
+                  ),
+                ],
               ),
             ],
           )));
     }
 
     Container _createPollOption(
-        // ignore: non_constant_identifier_names
-        double width,
-        double height,
-        String optionText,
-        int optionIndex,
-        int pollCount) {
+      // ignore: non_constant_identifier_names
+      double width,
+      double height,
+      String optionText,
+      int optionIndex,
+    ) {
       double fontSize = width * 0.03;
 
       return (Container(
@@ -258,7 +297,7 @@ class _PollCardState extends State<PollCard> {
           child: Text(optionText,
               style: TextStyle(fontFamily: 'Leto', fontSize: fontSize)),
           style: ElevatedButton.styleFrom(
-              onPrimary: Colors.black, primary: Color(0xfff7f7f7)),
+              onPrimary: Colors.white, primary: Colors.grey),
           onPressed: () async {
             // Call Rest API to register vote
             setState(() {
@@ -317,25 +356,61 @@ class _PollCardState extends State<PollCard> {
           children: toList(() sync* {
             if (convertdata['optionCount'] == 2) {
               yield _createPollOption(
-                  width, height, convertdata['option1'], 1, option1);
+                width,
+                height,
+                convertdata['option1'],
+                1,
+              );
               yield _createPollOption(
-                  width, height, convertdata['option2'], 2, option2);
+                width,
+                height,
+                convertdata['option2'],
+                2,
+              );
             } else if (convertdata['optionCount'] == 3) {
               yield _createPollOption(
-                  width, height, convertdata['option1'], 1, option1);
+                width,
+                height,
+                convertdata['option1'],
+                1,
+              );
               yield _createPollOption(
-                  width, height, convertdata['option2'], 2, option2);
+                width,
+                height,
+                convertdata['option2'],
+                2,
+              );
               yield _createPollOption(
-                  width, height, convertdata['option3'], 3, option3);
+                width,
+                height,
+                convertdata['option3'],
+                3,
+              );
             } else if (convertdata['optionCount'] == 4) {
               yield _createPollOption(
-                  width, height, convertdata['option1'], 1, option1);
+                width,
+                height,
+                convertdata['option1'],
+                1,
+              );
               yield _createPollOption(
-                  width, height, convertdata['option2'], 2, option2);
+                width,
+                height,
+                convertdata['option2'],
+                2,
+              );
               yield _createPollOption(
-                  width, height, convertdata['option3'], 3, option3);
+                width,
+                height,
+                convertdata['option3'],
+                3,
+              );
               yield _createPollOption(
-                  width, height, convertdata['option4'], 4, option4);
+                width,
+                height,
+                convertdata['option4'],
+                4,
+              );
             }
           }),
         ),
@@ -346,9 +421,9 @@ class _PollCardState extends State<PollCard> {
       Widget _PollSection;
 
       if (isVoted) {
-        _PollSection = _createVotedSection(width, height * 0.8);
+        _PollSection = _createVotedSection(width, height * 0.75);
       } else {
-        _PollSection = _createPollSection(width, height * 0.8);
+        _PollSection = _createPollSection(width, height * 0.75);
       }
 
       return Container(
@@ -357,7 +432,7 @@ class _PollCardState extends State<PollCard> {
         color: Color(0xfff4f4f4),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
-          children: [_createQuestionText(width, height * 0.2), _PollSection],
+          children: [_createQuestionText(width, height * 0.15), _PollSection],
         ),
       );
     }
@@ -366,13 +441,12 @@ class _PollCardState extends State<PollCard> {
       return Container(
         width: width,
         height: height,
-        color: Colors.blueGrey,
         child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            _createCommentButton(width, height),
-            _createShareButton(width, height)
+            _createCommentButton(width * 0.3, height),
+            _createShareButton(width * 0.7, height)
           ],
         ),
       );
@@ -386,9 +460,9 @@ class _PollCardState extends State<PollCard> {
         child: Card(
             child: Column(
           children: [
-            _createTopSection(width, height * 0.402),
-            _createMiddleSection(width, height * 0.5355),
-            _createBottomSection(width, height * 0.1)
+            _createTopSection(width, height * 0.6),
+            _createMiddleSection(width, height * 0.33),
+            _createBottomSection(width, height * 0.07)
           ],
         )),
       ));

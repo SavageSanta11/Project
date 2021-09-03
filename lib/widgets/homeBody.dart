@@ -41,7 +41,7 @@ class _HomeBodyState extends State<HomeBody> {
     http.Response response = await http.get(
       Uri.parse(uri),
     );
-
+    print(uri);
     var convertDataToJson = json.decode(response.body);
 
     setState(() {
@@ -55,7 +55,7 @@ class _HomeBodyState extends State<HomeBody> {
   void initState() {
     super.initState();
     //this.getPollRecommendations('awyluvw', 5, 5);
-    this.getPollRecommendations('k8at0ts', 5, 5);
+    this.getPollRecommendations('sa7myom', 5, 5);
   }
   Widget build(BuildContext context) {
     Container _buildDesktopView(double width, double height) {
@@ -67,9 +67,9 @@ class _HomeBodyState extends State<HomeBody> {
             itemCount: itemCount,
             itemBuilder:
                 (BuildContext context, int itemIndex, int pageViewIndex) =>
-                    PollCard(width * 0.33, height * 0.7, polls, itemIndex, polls[itemIndex]['poll_id'],),
+                    PollCard(width * 0.33, height * 0.885, polls, itemIndex, polls[itemIndex]['poll_id'],),
             options: CarouselOptions(
-              height: height * 0.8,
+              height: height * 0.9,
               viewportFraction: 0.35,
               enableInfiniteScroll: true,
               autoPlayCurve: Curves.fastOutSlowIn,
@@ -85,8 +85,8 @@ class _HomeBodyState extends State<HomeBody> {
 
     Widget _homebody;
 
-    double width = MediaQuery.of(context).size.width;
-    double height = MediaQuery.of(context).size.height;
+    double width = widget.width;
+    double height = widget.height;
 
     double aspectRatio = width / height;
 

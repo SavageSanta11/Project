@@ -13,9 +13,10 @@ import 'package:http/http.dart' as http;
 import 'dart:html' as html;
 
 typedef void BoolCallback(bool flag);
-typedef void StringCallback(String url);
+typedef void StringCallback(String previewUrl, String contentUrl);
 
 String uploadUrl = "";
+String mediaUrl = "";
 
 // ignore: camel_case_types
 class uploadMode extends StatefulWidget {
@@ -78,13 +79,14 @@ class _uploadModeState extends State<uploadMode> {
     final response = await request.send();
     final respStr = await response.stream.bytesToString();
     var decode = jsonDecode(respStr);
-     uploadUrl = decode['data']['media_url'];
+     uploadUrl = decode['data']['preview_image_url'];
+     mediaUrl = decode['data']['media_url'];
     print(uploadUrl);
     widget.setPreviewMode(true);
-    widget.onSubmitted(uploadUrl);
+    widget.onSubmitted(uploadUrl,mediaUrl);
   }
 
-  Future<String> crawlUrl(String url) async {
+  Future<List> crawlUrl(String url) async {
   var headers = {
     'Authorization':
         'Bearer  eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTYyOTI4MjQyMiwianRpIjoiNWMyZmNkYTQtZjgyZS00ODhlLWFmZGEtNTFiZmEyYmZlMzJkIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6Imthbm9AcW9ud2F5LmNvbSIsIm5iZiI6MTYyOTI4MjQyMiwiZXhwIjoxNjI5MjgzMzIyfQ.L6O-rXKbo8vtcyT0K071o108Lljpr_PjLmw14rDHVvI'
@@ -97,7 +99,8 @@ class _uploadModeState extends State<uploadMode> {
 
   var convertDataToJson = json.decode(response.body);
   previewImgUrl = convertDataToJson["data"]["preview_image_url"];
-  return previewImgUrl;
+  String mediaUrl = convertDataToJson["data"]["media_url"];
+  return [previewImgUrl, mediaUrl];
 }
 
   @override
@@ -116,7 +119,7 @@ class _uploadModeState extends State<uploadMode> {
                 onDroppedFile: (file) => setState(() {
                       this.file = file;
                       isPreviewMode = true;
-                      widget.onSubmitted(file.url);
+                      widget.onSubmitted(file.url,"");
                     }),
                 width: width,
                 height: height),
@@ -135,10 +138,10 @@ class _uploadModeState extends State<uploadMode> {
                   return null;
                 }
               },
-              onFieldSubmitted: (value) async {
-                 previewImgUrl = await crawlUrl(value);
-                
-                widget.onSubmitted(previewImgUrl);
+              onFieldSubmitted: (contentUrl) async {
+                 previewImgUrl = (await crawlUrl(contentUrl))[0];
+                 mediaUrl = (await crawlUrl(contentUrl))[1];
+                widget.onSubmitted(previewImgUrl, mediaUrl);
               },
             ),
           ],

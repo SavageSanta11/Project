@@ -39,7 +39,9 @@ class _OptionContainerState extends State<OptionContainer> {
                     color: Colors.white),
                 child: TextField(
                   onChanged: (val) {
-                    optionList[index - 1] = val;
+                    setState(() {
+                      optionList[index - 1] = val;
+                    });
                   },
                   decoration: InputDecoration(
                       contentPadding: EdgeInsets.fromLTRB(10, 15, 10, 0),

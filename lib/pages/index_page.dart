@@ -10,14 +10,35 @@ import 'package:google_sign_in/google_sign_in.dart';
 String accessToken = "";
 String refreshToken = "";
 
-setToken() async {
+setEmail() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  prefs.setString('token', "abc");
+  prefs.setString('email', "kano@qonway.com");
 }
-getToken() async {
+getEmail() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   //Return String
-  String? stringValue = prefs.getString('token');
+  String? stringValue = prefs.getString('email');
+  return stringValue;
+}
+
+setAccessToken() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  prefs.setString('accessToken', accessToken);
+}
+getAccessToken() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  //Return String
+  String? stringValue = prefs.getString('accessToken');
+  return stringValue;
+}
+setRefreshToken() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  prefs.setString('refreshToken', refreshToken);
+}
+getRefreshToken() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  //Return String
+  String? stringValue = prefs.getString('refreshToken');
   return stringValue;
 }
 
@@ -74,7 +95,7 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-    setToken();
+    
     _googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount? account) {
       setState(() {
         _currentUser = account;
@@ -157,14 +178,14 @@ class _HomeState extends State<Home> {
             ),
             onPressed: () async {
               
-              String token = await getToken();
-              
-              
              /* _handleSignIn();
               print(user!.email);
               */
               userType = await registerUser("kano@qonway.com");
               print(userType);
+              setAccessToken();
+              setRefreshToken();
+             
               if (userType == "influencer") {
                 Navigator.of(context).pushNamed(CreatePoll.route);
               } else {
