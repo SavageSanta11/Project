@@ -61,7 +61,7 @@ class _HomeBodyState extends State<HomeBody> {
      initializePreference().whenComplete((){
        setState(() {});
      });
-    this.getPollRecommendations((this.preferences!.getString('email') ?? " "), 5, 5);
+    this.getPollRecommendations('sa7myom', 5, 5);
   }
    Future<void> initializePreference() async{
      this.preferences = await SharedPreferences.getInstance();
