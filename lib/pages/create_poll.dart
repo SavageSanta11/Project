@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
+import 'package:project/pages/index_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'dart:async';
 import '../widgets/cardPreview_widget.dart';
@@ -27,12 +29,26 @@ String previewImgUrl = "";
 String contentUrl = "";
 String mediaUrl = "";
 String pollId = "";
+var email =  getEmail().toString();
+
+setPollId() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  prefs.setString('pollId', pollId);
+}
+
+getPollId() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  //Return String
+  String? stringValue = prefs.getString('pollId');
+  return stringValue;
+}
 
 String writeBody() {
   String body;
   if (optionList.length == 2) {
      body = json.encode(<String, dynamic>{
       "mediaUrl": mediaUrl,
+      //"screenName": getDisplayName(),
       "contentUrl":
           contentUrl,
       "previewUrls": [
@@ -52,11 +68,14 @@ String writeBody() {
     });
   } else if (optionList.length == 3) {
      body = json.encode(<String, dynamic>{
+      "mediaUrl": mediaUrl,
+      //"screenName": getDisplayName(),
       "contentUrl":
           contentUrl,
       "previewUrls": [
         previewImgUrl
       ],
+      "title": 'Title',
       "email": "kano@qonway.com",
       "question": question,
       "answers": {
@@ -71,11 +90,14 @@ String writeBody() {
     });
   } else {
      body = json.encode(<String, dynamic>{
+      "mediaUrl": mediaUrl,
+      //"screenName": getDisplayName(),
       "contentUrl":
           contentUrl,
       "previewUrls": [
         previewImgUrl
       ],
+      "title": 'Title',
       "email": "kano@qonway.com",
       "question": question,
       "answers": {
@@ -144,7 +166,7 @@ Future<void> publishPoll(String poll_id) async {
 }
 
 class CreatePoll extends StatefulWidget {
-  static const String route = 'CreatePoll';
+  static const String route = '/CreatePoll';
   @override
   State<CreatePoll> createState() => _CreatePollState();
 }
@@ -329,6 +351,8 @@ class _CreatePollState extends State<CreatePoll> {
           onPressed: () async {
            if(_key.currentState!.validate()){
               pollId = await createPollRest();
+              setPollId();
+              getPollId();
               publishPoll(pollId);
             Navigator.of(context).pushNamed(HomePage.route);
            }

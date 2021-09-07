@@ -6,7 +6,10 @@ import 'package:google_fonts/google_fonts.dart';
 
 // ignore: camel_case_types
 class HomePage extends StatefulWidget {
-  static const String route = 'HomePage';
+  static const String route = '/HomePage';
+  final String id;
+
+  const HomePage({Key? key, required this.id  }) : super(key: key);
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -25,7 +28,7 @@ class _HomePageState extends State<HomePage> {
           child: ListView(
             children: [
               Navigation(width, height * 0.1),
-              HomeBody(width, height * 0.9)
+              HomeBody(width, height * 0.9, widget.id)
             ],
           ),
         ),
@@ -48,7 +51,7 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ),
-          body: HomeBody(width * 0.95, height * 0.9));
+          body: HomeBody(width * 0.95, height * 0.9, widget.id));
     }
 
     Widget carousel;

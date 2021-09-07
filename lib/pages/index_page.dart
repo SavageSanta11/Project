@@ -9,15 +9,31 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 String accessToken = "";
 String refreshToken = "";
+String emailId = "";
+String displayName = "";
 
 setEmail() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  prefs.setString('email', "kano@qonway.com");
+  prefs.setString('email', emailId);
 }
-getEmail() async {
+
+ getEmail() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   //Return String
   String? stringValue = prefs.getString('email');
+  print(stringValue);
+  return stringValue;
+}
+
+setDisplayName() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  prefs.setString('displayName', displayName);
+}
+
+getDisplayName() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  //Return String
+  String? stringValue = prefs.getString('displayName');
   return stringValue;
 }
 
@@ -25,16 +41,19 @@ setAccessToken() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   prefs.setString('accessToken', accessToken);
 }
+
 getAccessToken() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   //Return String
   String? stringValue = prefs.getString('accessToken');
   return stringValue;
 }
+
 setRefreshToken() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   prefs.setString('refreshToken', refreshToken);
 }
+
 getRefreshToken() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   //Return String
@@ -95,7 +114,7 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-    
+
     _googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount? account) {
       setState(() {
         _currentUser = account;
@@ -177,22 +196,27 @@ class _HomeState extends State<Home> {
                   fontFamily: 'Leto'),
             ),
             onPressed: () async {
+              /*_handleSignIn();
+              emailId = user!.email;
+              displayName = user.displayName!;
+              setEmail();
+              setDisplayName();
               
-             /* _handleSignIn();
-              print(user!.email);
-              */
+              userType = await registerUser(user.email);*/
+
+              emailId = "kano@qonway.com";
+              setEmail();
               userType = await registerUser("kano@qonway.com");
               print(userType);
               setAccessToken();
               setRefreshToken();
-             
+
               if (userType == "influencer") {
                 Navigator.of(context).pushNamed(CreatePoll.route);
               } else {
                 Navigator.of(context).pushNamed(HomePage.route);
               }
               //Navigator.of(context).pushNamed(CreatePoll.route);
-              
             }),
       )));
     }

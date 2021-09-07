@@ -13,8 +13,9 @@ List polls = [];
 class HomeBody extends StatefulWidget {
   final double width;
   final double height;
+  final String id;
 
-  const HomeBody(this.width, this.height);
+  const HomeBody(this.width, this.height, this.id);
   _HomeBodyState createState() => _HomeBodyState();
 }
 
@@ -55,7 +56,7 @@ class _HomeBodyState extends State<HomeBody> {
   void initState() {
     super.initState();
     //this.getPollRecommendations('awyluvw', 5, 5);
-    this.getPollRecommendations('sa7myom', 5, 5);
+    this.getPollRecommendations(widget.id, 5, 5);
   }
   Widget build(BuildContext context) {
     Container _buildDesktopView(double width, double height) {

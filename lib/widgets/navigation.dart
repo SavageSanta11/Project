@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:project/pages/profile_page_self.dart';
+
+import 'custom_dropdown/simple_account_menu.dart';
 
 class Navigation extends StatefulWidget {
   final double width;
@@ -56,14 +59,17 @@ class _NavigationState extends State<Navigation> {
     Container _createMenuButton(double width, double height) {
       return Container(
         width: 0.1 * width,
-        child: IconButton(
-          icon: Icon(
-            Icons.menu,
-            size: 30,
-          ),
-          color: Color(0xff092836),
-          onPressed: () {},
-        ),
+        child: SimpleAccountMenu(
+              icons: [
+                Icon(Icons.person),
+              ],
+              iconColor: Colors.white,
+              onChange: (index) {
+                print(index);
+              },  borderRadius: BorderRadius.all(
+                  Radius.circular(10.0),
+                ),
+            )
       );
     }
 
