@@ -29,7 +29,7 @@ String previewImgUrl = "";
 String contentUrl = "";
 String mediaUrl = "";
 String pollId = "";
-var email =  getEmail().toString();
+
 
 setPollId() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -43,62 +43,68 @@ getPollId() async {
   return stringValue;
 }
 
+
+class CreatePoll extends StatefulWidget {
+  static const String route = '/CreatePoll';
+  @override
+  State<CreatePoll> createState() => _CreatePollState();
+}
+
+class _CreatePollState extends State<CreatePoll> {
+  GlobalKey<FormState> _key = new GlobalKey();
+
+  var children = <Widget>[];
+
+  SharedPreferences? preferences;
+
+  File_Data_Model? file;
+
+  
 String writeBody() {
   String body;
   if (optionList.length == 2) {
-     body = json.encode(<String, dynamic>{
+    body = json.encode(<String, dynamic>{
       "mediaUrl": mediaUrl,
-      //"screenName": getDisplayName(),
-      "contentUrl":
-          contentUrl,
-      "previewUrls": [
-        previewImgUrl
-      ],
+      //screenName": (this.preferences!.getString('displayName') ?? " "),
+      "contentUrl": contentUrl,
+      "previewUrls": [previewImgUrl],
       "title": 'Title',
-      "email": "kano@qonway.com",
+      "email": (this.preferences!.getString('email') ?? " "),
       "question": question,
       "answers": {
         "options": options,
         "option_1": optionList[0],
         "option_2": optionList[1],
-        
       },
       "duration": {"days": days, "hours": hours, "minutes": minutes},
       "tags": ["delhi", "metro", "mumbai", "rail"]
     });
   } else if (optionList.length == 3) {
-     body = json.encode(<String, dynamic>{
+    body = json.encode(<String, dynamic>{
       "mediaUrl": mediaUrl,
       //"screenName": getDisplayName(),
-      "contentUrl":
-          contentUrl,
-      "previewUrls": [
-        previewImgUrl
-      ],
+      "contentUrl": contentUrl,
+      "previewUrls": [previewImgUrl],
       "title": 'Title',
-      "email": "kano@qonway.com",
+     "email": (this.preferences!.getString('email') ?? " "),
       "question": question,
       "answers": {
         "options": options,
         "option_1": optionList[0],
         "option_2": optionList[1],
         "option_3": optionList[2],
-        
       },
       "duration": {"days": days, "hours": hours, "minutes": minutes},
       "tags": ["delhi", "metro", "mumbai", "rail"]
     });
   } else {
-     body = json.encode(<String, dynamic>{
+    body = json.encode(<String, dynamic>{
       "mediaUrl": mediaUrl,
-      //"screenName": getDisplayName(),
-      "contentUrl":
-          contentUrl,
-      "previewUrls": [
-        previewImgUrl
-      ],
+      //"screenName": (this.preferences!.getString('displayName') ?? " "),
+      "contentUrl": contentUrl,
+      "previewUrls": [previewImgUrl],
       "title": 'Title',
-      "email": "kano@qonway.com",
+      "email": (this.preferences!.getString('email') ?? " "),
       "question": question,
       "answers": {
         "options": options,
@@ -121,7 +127,7 @@ Future<String> createPollRest() async {
     'Content-Type': 'application/json'
   };
 
-  http.Response response = await http.post(
+  /*http.Response response = await http.post(
       Uri.parse('http://qonway.com:7002/api/access/poll/create'),
       headers: headers,
       body: writeBody());
@@ -129,6 +135,9 @@ Future<String> createPollRest() async {
   var convertDataToJson = json.decode(response.body);
   print(convertDataToJson);
   String pollId = convertDataToJson['data']['pollId'];
+  */
+  String pollId = 'sa7myom';
+  print(writeBody());
   return pollId;
 }
 
@@ -143,9 +152,7 @@ Future<String> crawlUrl(String url) async {
     headers: headers,
   );
 
-  
-  print(baseUri+url);
- 
+  print(baseUri + url);
 
   var convertDataToJson = json.decode(response.body);
   previewImgUrl = convertDataToJson["data"]["preview_image_url"];
@@ -164,20 +171,6 @@ Future<void> publishPoll(String poll_id) async {
   var convertDataToJson = json.decode(response.body);
   print(convertDataToJson);
 }
-
-class CreatePoll extends StatefulWidget {
-  static const String route = '/CreatePoll';
-  @override
-  State<CreatePoll> createState() => _CreatePollState();
-}
-
-class _CreatePollState extends State<CreatePoll> {
-
-  GlobalKey<FormState> _key = new GlobalKey();
-
-  var children = <Widget>[];
-
-  File_Data_Model? file;
 
   void updateDays(int duration) {
     setState(() {
@@ -206,7 +199,7 @@ class _CreatePollState extends State<CreatePoll> {
   void updatePreviewMode(bool flag) {
     setState(() {
       isPreviewMode = flag;
-      if(flag == false){
+      if (flag == false) {
         previewImgUrl = "";
       }
     });
@@ -215,10 +208,9 @@ class _CreatePollState extends State<CreatePoll> {
   void updateValidUrl(String previewUrl, String enteredUrl) async {
     print(enteredUrl);
     previewImgUrl = previewUrl;
-    if(enteredUrl==""){
+    if (enteredUrl == "") {
       contentUrl = previewImgUrl;
-    }
-    else{
+    } else {
       contentUrl = enteredUrl;
     }
     setState(() {
@@ -226,8 +218,6 @@ class _CreatePollState extends State<CreatePoll> {
     });
   }
 
-  
-  
   var listDays = [for (var i = 0; i < 8; i += 1) i];
   var listHours = [for (var i = 0; i < 24; i += 1) i];
   var listMinutes = [for (var i = 0; i < 60; i += 1) i];
@@ -235,6 +225,19 @@ class _CreatePollState extends State<CreatePoll> {
   String opText = 'What Do you want to poll?';
 
   @override
+  void initState() {
+    super.initState();
+
+    initializePreference().whenComplete((){
+       setState(() {});
+     });
+    
+  }
+
+  Future<void> initializePreference() async{
+     this.preferences = await SharedPreferences.getInstance();
+  }
+
   Widget build(BuildContext context) {
     Widget _uploadMediaWidget;
 
@@ -242,7 +245,11 @@ class _CreatePollState extends State<CreatePoll> {
       double _uploadwidth = width * 0.8;
 
       _uploadMediaWidget = uploadMode(
-          width * 0.8, height * 0.8, updatePreviewMode, updateValidUrl,);
+        width * 0.8,
+        height * 0.8,
+        updatePreviewMode,
+        updateValidUrl,
+      );
 
       return (Container(
           color: Colors.transparent,
@@ -278,21 +285,21 @@ class _CreatePollState extends State<CreatePoll> {
                       question = val;
                     });
                   },
-                  validator: (value){
-                    if(value!.isEmpty){
+                  validator: (value) {
+                    if (value!.isEmpty) {
                       return "Fill this";
                     }
                     return null;
                   },
                   decoration: InputDecoration(
-                      contentPadding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                      hintText: opText,
-                       border: InputBorder.none,
-                        focusedBorder: InputBorder.none,
-                        enabledBorder: InputBorder.none,
-                        errorBorder: InputBorder.none,
-                        disabledBorder: InputBorder.none,
-                      ),
+                    contentPadding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                    hintText: opText,
+                    border: InputBorder.none,
+                    focusedBorder: InputBorder.none,
+                    enabledBorder: InputBorder.none,
+                    errorBorder: InputBorder.none,
+                    disabledBorder: InputBorder.none,
+                  ),
                 ),
               ),
             ),
@@ -304,7 +311,6 @@ class _CreatePollState extends State<CreatePoll> {
     Container _createDurationContainer(double width, double height) {
       double _durationWidth = width * 0.9;
       return (Container(
-       
         child: Center(
           child: Container(
             width: _durationWidth,
@@ -337,25 +343,26 @@ class _CreatePollState extends State<CreatePoll> {
           ),
         ),
         child: ElevatedButton(
-          child: Text('PUBLISH', style:  GoogleFonts.lato(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w300,
-                  fontSize: 16,
-                  ),
+          child: Text(
+            'PUBLISH',
+            style: GoogleFonts.lato(
+              color: Colors.white,
+              fontWeight: FontWeight.w300,
+              fontSize: 16,
             ),
+          ),
           style: ElevatedButton.styleFrom(
             shape: new RoundedRectangleBorder(
                 borderRadius: new BorderRadius.circular(20.0)),
             primary: Color(0xff092836),
           ),
           onPressed: () async {
-           if(_key.currentState!.validate()){
+            if (_key.currentState!.validate()) {
               pollId = await createPollRest();
               setPollId();
-              getPollId();
               publishPoll(pollId);
-            Navigator.of(context).pushNamed(HomePage.route);
-           }
+              Navigator.of(context).pushNamed(HomePage.route);
+            }
           },
         ),
       ));
@@ -419,11 +426,11 @@ class _CreatePollState extends State<CreatePoll> {
               child: Align(
                 alignment: Alignment.center,
                 child: Container(
-                 
-                  height: height*0.9,
-                  width: width*0.3,
+                  height: height * 0.9,
+                  width: width * 0.3,
                   color: Colors.pink,
-                  child: CardPreview( width*0.3, height*0.8, previewImgUrl, question),
+                  child: CardPreview(
+                      width * 0.3, height * 0.8, previewImgUrl, question),
                 ),
               ),
             )

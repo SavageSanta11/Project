@@ -33,7 +33,7 @@ setDisplayName() async {
 getDisplayName() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   //Return String
-  String? stringValue = prefs.getString('displayName');
+  String stringValue = (prefs.getString('displayName') ?? " ");
   return stringValue;
 }
 
@@ -59,6 +59,18 @@ getRefreshToken() async {
   //Return String
   String? stringValue = prefs.getString('refreshToken');
   return stringValue;
+}
+getCounter() async{
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  int counter = (prefs.getInt('counter') ?? 0) + 1;
+  print('Got $counter times.');
+}
+
+incrementCounter() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  int counter = (prefs.getInt('counter') ?? 0) + 1;
+  print('Pressed $counter times.');
+  await prefs.setInt('counter', counter);
 }
 
 GoogleSignIn _googleSignIn = GoogleSignIn(
@@ -110,11 +122,14 @@ class _HomeState extends State<Home> {
   GoogleSignInAccount? _currentUser;
 
   String userType = "";
+   SharedPreferences? preferences;
 
   @override
   void initState() {
     super.initState();
-
+    initializePreference().whenComplete((){
+       setState(() {});
+     });
     _googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount? account) {
       setState(() {
         _currentUser = account;
@@ -122,7 +137,10 @@ class _HomeState extends State<Home> {
     });
     _googleSignIn.signInSilently();
   }
-
+  
+  Future<void> initializePreference() async{
+     this.preferences = await SharedPreferences.getInstance();
+  }
   Widget build(BuildContext context) {
     GoogleSignInAccount? user = _currentUser;
     Container _buildImageSection(double width, double height) {
@@ -203,14 +221,14 @@ class _HomeState extends State<Home> {
               setDisplayName();
               
               userType = await registerUser(user.email);*/
-
+              
               emailId = "kano@qonway.com";
               setEmail();
               userType = await registerUser("kano@qonway.com");
               print(userType);
               setAccessToken();
               setRefreshToken();
-
+              
               if (userType == "influencer") {
                 Navigator.of(context).pushNamed(CreatePoll.route);
               } else {

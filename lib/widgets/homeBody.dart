@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:project/widgets/carousel/carousel_slider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'pollCard.dart';
 
@@ -23,6 +24,7 @@ class _HomeBodyState extends State<HomeBody> {
   int itemCount = polls.length;
   bool pollsLoaded = false;
   bool commentPressed = false;
+  SharedPreferences? preferences;
 
   
 
@@ -56,7 +58,13 @@ class _HomeBodyState extends State<HomeBody> {
   void initState() {
     super.initState();
     //this.getPollRecommendations('awyluvw', 5, 5);
-    this.getPollRecommendations(widget.id, 5, 5);
+     initializePreference().whenComplete((){
+       setState(() {});
+     });
+    this.getPollRecommendations((this.preferences!.getString('email') ?? " "), 5, 5);
+  }
+   Future<void> initializePreference() async{
+     this.preferences = await SharedPreferences.getInstance();
   }
   Widget build(BuildContext context) {
     Container _buildDesktopView(double width, double height) {
