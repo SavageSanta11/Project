@@ -12,8 +12,6 @@ import 'dart:async';
 import 'package:http_parser/http_parser.dart';
 import 'package:http/http.dart' as http;
 
-import 'dart:html' as html;
-
 typedef void BoolCallback(bool flag);
 typedef void StringCallback(String previewUrl, String contentUrl);
 
@@ -43,69 +41,56 @@ class _uploadModeState extends State<uploadMode> {
   late List<int> _selectedFile;
   late Uint8List _bytesData;
 
-
   String previewImgUrl = "";
 
-  startWebFilePicker() async {
-    html.FileUploadInputElement uploadInput = html.FileUploadInputElement();
-    uploadInput.multiple = true;
-    uploadInput.draggable = true;
-    uploadInput.click();
+  var image;
 
-    uploadInput.onChange.listen((e) {
-      final files = uploadInput.files;
-      final file = files![0];
-      final reader = new html.FileReader();
+  void _uploadImage() async {
+    final _picker = ImagePicker();
 
-      reader.onLoadEnd.listen((e) {
-        _handleResult(reader.result);
-      });
-      reader.readAsDataUrl(file);
-    });
-  }
+    var _pickedImage = await _picker.getImage(source: ImageSource.gallery);
 
-  void _handleResult(var result) {
     setState(() {
-      _bytesData = Base64Decoder().convert(result.toString().split(",").last);
-      _selectedFile = _bytesData;
-      makeRequest();
+      image = _pickedImage!.path;
     });
+    sendImage(image);
   }
 
-  Future<void> makeRequest() async {
-    var url = Uri.parse("http://164.52.212.151:7002/api/access/upload/media");
-    var request = new http.MultipartRequest("POST", url);
-    request.files.add(http.MultipartFile.fromBytes(
-        'input_file', _selectedFile,
-        contentType: new MediaType('image', 'png'), filename: "file_up"));
-
-    final response = await request.send();
+  Future<void> sendImage(filepath) async {
+    var request = http.MultipartRequest('POST',
+        Uri.parse("http://164.52.212.151:7002/api/access/upload/media"));
+    request.files.add(await http.MultipartFile.fromPath(
+      'input_file',
+      image,
+      contentType: new MediaType('image', 'png'),
+    ));
+    var response = await request.send();
     final respStr = await response.stream.bytesToString();
+
     var decode = jsonDecode(respStr);
-     uploadUrl = decode['data']['preview_image_url'];
-     mediaUrl = decode['data']['media_url'];
-    
+    uploadUrl = decode['data']['preview_image_url'];
+    mediaUrl = decode['data']['media_url'];
+
     widget.setPreviewMode(true);
-    widget.onSubmitted(uploadUrl,mediaUrl);
+    widget.onSubmitted(uploadUrl, mediaUrl);
   }
 
   Future<List> crawlUrl(String url) async {
-  var headers = {
-    'Authorization':
-        'Bearer  eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTYyOTI4MjQyMiwianRpIjoiNWMyZmNkYTQtZjgyZS00ODhlLWFmZGEtNTFiZmEyYmZlMzJkIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6Imthbm9AcW9ud2F5LmNvbSIsIm5iZiI6MTYyOTI4MjQyMiwiZXhwIjoxNjI5MjgzMzIyfQ.L6O-rXKbo8vtcyT0K071o108Lljpr_PjLmw14rDHVvI'
-  };
+    var headers = {
+      'Authorization':
+          'Bearer  eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTYyOTI4MjQyMiwianRpIjoiNWMyZmNkYTQtZjgyZS00ODhlLWFmZGEtNTFiZmEyYmZlMzJkIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6Imthbm9AcW9ud2F5LmNvbSIsIm5iZiI6MTYyOTI4MjQyMiwiZXhwIjoxNjI5MjgzMzIyfQ.L6O-rXKbo8vtcyT0K071o108Lljpr_PjLmw14rDHVvI'
+    };
 
-  http.Response response = await http.get(
-    Uri.parse('http://164.52.212.151:7002/api/access/crawl/url?url=' + url),
-    headers: headers,
-  );
+    http.Response response = await http.get(
+      Uri.parse('http://164.52.212.151:7002/api/access/crawl/url?url=' + url),
+      headers: headers,
+    );
 
-  var convertDataToJson = json.decode(response.body);
-  previewImgUrl = convertDataToJson["data"]["preview_image_url"];
-  String mediaUrl = convertDataToJson["data"]["media_url"];
-  return [previewImgUrl, mediaUrl];
-}
-
+    var convertDataToJson = json.decode(response.body);
+    previewImgUrl = convertDataToJson["data"]["preview_image_url"];
+    String mediaUrl = convertDataToJson["data"]["media_url"];
+    return [previewImgUrl, mediaUrl];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -123,7 +108,7 @@ class _uploadModeState extends State<uploadMode> {
                 onDroppedFile: (file) => setState(() {
                       this.file = file;
                       isPreviewMode = true;
-                      widget.onSubmitted(file.url,"");
+                      widget.onSubmitted(file.url, "");
                     }),
                 width: width,
                 height: height),
@@ -143,8 +128,8 @@ class _uploadModeState extends State<uploadMode> {
                 }
               },
               onFieldSubmitted: (contentUrl) async {
-                 previewImgUrl = (await crawlUrl(contentUrl))[0];
-                 mediaUrl = (await crawlUrl(contentUrl))[1];
+                previewImgUrl = (await crawlUrl(contentUrl))[0];
+                mediaUrl = (await crawlUrl(contentUrl))[1];
                 widget.onSubmitted(previewImgUrl, mediaUrl);
               },
             ),
@@ -164,8 +149,8 @@ class _uploadModeState extends State<uploadMode> {
             onPrimary: Colors.white,
             primary: Colors.white,
           ),
-          onPressed: ()  {
-            startWebFilePicker();
+          onPressed: () {
+           _uploadImage();
             /*openGallery();
              final events = await controller.pickFiles();
                   if (events.isEmpty) return;
