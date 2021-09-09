@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:project/pages/create_poll.dart';
+
 import 'package:project/pages/home_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -21,7 +22,6 @@ setEmail() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   //Return String
   String? stringValue = prefs.getString('email');
-  print(stringValue);
   return stringValue;
 }
 
@@ -66,12 +66,6 @@ getCounter() async{
   print('Got $counter times.');
 }
 
-incrementCounter() async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  int counter = (prefs.getInt('counter') ?? 0) + 1;
-  print('Pressed $counter times.');
-  await prefs.setInt('counter', counter);
-}
 
 GoogleSignIn _googleSignIn = GoogleSignIn(
   scopes: [
@@ -225,7 +219,7 @@ class _HomeState extends State<Home> {
               emailId = "kano@qonway.com";
               setEmail();
               userType = await registerUser("kano@qonway.com");
-              print(userType);
+              
               setAccessToken();
               setRefreshToken();
               

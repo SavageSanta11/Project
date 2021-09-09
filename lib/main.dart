@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
       onGenerateRoute: (settings){
         if(settings.name != null){
           var uriData = Uri.parse(settings.name!);
-          print(uriData);
+          
         }
         if (settings.name == '/IndexPage') {
           return MaterialPageRoute(builder: (context) => Home());

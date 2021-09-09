@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
-import 'package:project/pages/index_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'dart:async';
@@ -28,19 +27,18 @@ String option = "";
 String previewImgUrl = "";
 String contentUrl = "";
 String mediaUrl = "";
-String pollId = "";
+String pollID = "";
 
 
-setPollId() async {
+setPollID() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  prefs.setString('pollId', pollId);
+  prefs.setString('pollID', pollID);
 }
 
-getPollId() async {
+getPollID() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   //Return String
-  String? stringValue = prefs.getString('pollId');
-  print(stringValue);
+  String? stringValue = prefs.getString('pollID');
   return stringValue;
 }
 
@@ -135,10 +133,8 @@ Future<String> createPollRest() async {
 
   var convertDataToJson = json.decode(response.body);
   print(convertDataToJson);
-  String pollId = convertDataToJson['data']['pollId'];
-  
-  print(writeBody());
-  return pollId;
+  String pollID = convertDataToJson['data']['pollId'];
+  return pollID;
 }
 
 Future<String> crawlUrl(String url) async {
@@ -152,17 +148,15 @@ Future<String> crawlUrl(String url) async {
     headers: headers,
   );
 
-  print(baseUri + url);
-
   var convertDataToJson = json.decode(response.body);
   previewImgUrl = convertDataToJson["data"]["preview_image_url"];
   mediaUrl = convertDataToJson["data"]["media_url"];
   return (previewImgUrl);
 }
 
-Future<void> publishPoll(String poll_id) async {
+Future<void> publishPoll(String pollID) async {
   String uri =
-      'http://qonway.com:7002/api/access/poll/publish?poll_id=' + poll_id;
+      'http://qonway.com:7002/api/access/poll/publish?poll_id=' + pollID;
 
   http.Response response = await http.get(
     Uri.parse(uri),
@@ -206,7 +200,6 @@ Future<void> publishPoll(String poll_id) async {
   }
 
   void updateValidUrl(String previewUrl, String enteredUrl) async {
-    print(enteredUrl);
     previewImgUrl = previewUrl;
     if (enteredUrl == "") {
       contentUrl = previewImgUrl;
@@ -358,9 +351,9 @@ Future<void> publishPoll(String poll_id) async {
           ),
           onPressed: () async {
             if (_key.currentState!.validate()) {
-              pollId = await createPollRest();
-              setPollId();
-              publishPoll(pollId);
+              pollID = await createPollRest();
+              setPollID();
+              publishPoll(pollID);
               Navigator.of(context).pushNamed(HomePage.route);
             }
           },

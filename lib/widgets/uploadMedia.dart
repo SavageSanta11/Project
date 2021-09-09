@@ -81,7 +81,7 @@ class _uploadModeState extends State<uploadMode> {
     var decode = jsonDecode(respStr);
      uploadUrl = decode['data']['preview_image_url'];
      mediaUrl = decode['data']['media_url'];
-    print(uploadUrl);
+    
     widget.setPreviewMode(true);
     widget.onSubmitted(uploadUrl,mediaUrl);
   }

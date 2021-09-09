@@ -1,9 +1,9 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:project/widgets/carousel/carousel_slider.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:project/widgets/commentWidget.dart';
-import 'package:project/widgets/tempCard.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'pollCard.dart';
@@ -27,7 +27,7 @@ class _HomeBodyState extends State<HomeBody> {
   bool pollsLoaded = false;
   bool commentPressed = false;
   //for selected card
-  String selectedPollId = "";
+  String selectedPollID = "";
   List selectedParam = [];
   int selectedIndex = 0;
 
@@ -50,7 +50,7 @@ class _HomeBodyState extends State<HomeBody> {
     http.Response response = await http.get(
       Uri.parse(uri),
     );
-    print(uri);
+  
     var convertDataToJson = json.decode(response.body);
 
     setState(() {
@@ -75,9 +75,9 @@ class _HomeBodyState extends State<HomeBody> {
 
   Widget build(BuildContext context) {
     Container _buildDesktopView(double width, double height) {
-      String pollId = (this.preferences!.getString('pollId') ?? " ");
-    print(pollId);
-    this.getPollRecommendations(pollId, 5, 5);
+      String pollID = (this.preferences!.getString('pollID') ?? " ");
+    
+    this.getPollRecommendations(pollID, 5, 5);
       if (pollsLoaded) {
         if (commentPressed) {
           return Container(
@@ -87,19 +87,19 @@ class _HomeBodyState extends State<HomeBody> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 PollCard(
-                    width: width * 0.33,
+                    width: width * 0.27,
                     height: height * 0.885,
                     params: polls,
                     index: selectedIndex,
-                    pollId: selectedPollId,
-                    isCommentPressed: (bool isPressed, String pollId) {
+                    pollID: selectedPollID,
+                    isCommentPressed: (bool isPressed, String pollID) {
                       setState(() {
                         commentPressed = isPressed;
                       });
                     }),
                 Comments(
-                    pollId: selectedPollId,
-                    width: width * 0.33,
+                    pollID: selectedPollID,
+                    width: width * 0.27,
                     height: height * 0.885)
               ],
             ),
@@ -114,15 +114,15 @@ class _HomeBodyState extends State<HomeBody> {
                 itemBuilder:
                     (BuildContext context, int itemIndex, int pageViewIndex) =>
                         PollCard(
-                            width: width * 0.33,
+                            width: width * 0.27,
                             height: height * 0.885,
                             params: polls,
                             index: itemIndex,
-                            pollId: polls[itemIndex]['poll_id'],
-                            isCommentPressed: (bool isPressed, String pollId) {
+                            pollID: polls[itemIndex]['poll_id'],
+                            isCommentPressed: (bool isPressed, String pollID) {
                               setState(() {
                                 commentPressed = isPressed;
-                                selectedPollId = pollId;
+                                selectedPollID = pollID;
                                 selectedIndex = itemIndex;
                                 selectedParam = polls;
                               });

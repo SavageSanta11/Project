@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:project/pages/profile_page_self.dart';
-
 import 'custom_dropdown/simple_account_menu.dart';
 
 class Navigation extends StatefulWidget {
@@ -65,7 +63,7 @@ class _NavigationState extends State<Navigation> {
               ],
               iconColor: Colors.white,
               onChange: (index) {
-                print(index);
+               
               },  borderRadius: BorderRadius.all(
                   Radius.circular(10.0),
                 ),

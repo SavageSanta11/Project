@@ -33,7 +33,7 @@ class _DroppedFileWidgetState extends State<DroppedFileWidget> {
   Widget buildImage(BuildContext context) {
     if (widget.file == null) return buildEmptyFile();
 
-    print(widget.file!.url);
+    
 
     return widget.previewState
         ? Column(

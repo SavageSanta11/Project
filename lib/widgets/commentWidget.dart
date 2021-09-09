@@ -5,10 +5,10 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 
 class Comments extends StatefulWidget {
-  final String pollId;
+  final String pollID;
   final double width;
   final double height;
-  const Comments({Key? key, required this.pollId, required this.width, required this.height}) : super(key: key);
+  const Comments({Key? key, required this.pollID, required this.width, required this.height}) : super(key: key);
 
   @override
   _CommentsState createState() => _CommentsState();
@@ -27,14 +27,14 @@ class _CommentsState extends State<Comments> {
   // ignore: non_constant_identifier_names
   List<String> _CommentList = [];
 
-  Future<String> recordComment(String poll_id, String text) async {
+  Future<String> recordComment(String pollID, String text) async {
     var headers = {
       'Authorization':
           'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTYyOTQzMjE5MSwianRpIjoiZTQzYjMyYmQtOGNlNS00ODU4LWFjNjQtOGJlNzBjMGI0MTY5IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6Imthbm9AcW9ud2F5LmNvbSIsIm5iZiI6MTYyOTQzMjE5MSwiZXhwIjoxNjI5NDMzMDkxfQ.mMHDB_oBSxnjGK8MYXRGrVw9yV-pajJ8YOi5LLbxdII',
       'Content-Type': 'application/json'
     };
     String body =
-        json.encode(<String, String>{"poll_id": poll_id, "text": text, "email": "kano@qonway.com"});
+        json.encode(<String, String>{"poll_id": pollID, "text": text, "email": "kano@qonway.com"});
 
     http.Response response = await http.post(
         Uri.parse('http://164.52.212.151:7002/api/access/record/comment'),
@@ -43,7 +43,7 @@ class _CommentsState extends State<Comments> {
 
     var convertDataToJson = json.decode(response.body);
     String success = convertDataToJson["success"];
-    print(success);
+   
     return success;
   
   }
@@ -131,7 +131,7 @@ class _CommentsState extends State<Comments> {
   @override
   void initState() {
     super.initState();
-    this.showComments(widget.pollId, 5, 1);
+    this.showComments(widget.pollID, 5, 1);
   }
 
   List comments = [];
@@ -163,7 +163,7 @@ class _CommentsState extends State<Comments> {
     });
 
     print(comments[0]['text']);
-    print(convertDataToJson);
+   
   }
 
   Widget build(BuildContext context) {
@@ -219,7 +219,7 @@ class _CommentsState extends State<Comments> {
                       style: TextStyle(color: Colors.white),
                     ),
                     onPressed: () async {
-                      success =  await recordComment(widget.pollId, enteredText);
+                      success =  await recordComment(widget.pollID, enteredText);
                           if(success == "true")_addComment(enteredText);
                           _textFieldController.clear();
                     }),

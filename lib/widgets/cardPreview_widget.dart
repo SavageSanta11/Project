@@ -5,7 +5,7 @@ import '../widgets/option_container.dart';
 
 typedef Iterable<T> IterableCallback<T>();
 
-typedef void BoolCallback(bool viewComment, String pollId);
+typedef void BoolCallback(bool viewComment, String pollID);
 
 List<T> toList<T>(IterableCallback<T> cb) {
   return List.unmodifiable(cb());
@@ -179,9 +179,9 @@ class _CardPreviewState extends State<CardPreview> {
     }
 
     Container _createMiddleSection(double width, double height) {
-      Widget _PollSection;
+      Widget pollSection;
 
-      _PollSection = _createPollSection(width, height * 0.75);
+      pollSection = _createPollSection(width, height * 0.75);
 
       return Container(
         width: width,
@@ -189,7 +189,7 @@ class _CardPreviewState extends State<CardPreview> {
         color: Color(0xfff4f4f4),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
-          children: [_createQuestionText(width, height * 0.15), _PollSection],
+          children: [_createQuestionText(width, height * 0.15), pollSection],
         ),
       );
     }
