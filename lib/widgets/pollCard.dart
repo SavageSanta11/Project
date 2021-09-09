@@ -4,6 +4,8 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 
+import 'package:social_share/social_share.dart';
+
 List<dynamic> polls = [];
 
 typedef Iterable<T> IterableCallback<T>();
@@ -47,8 +49,9 @@ class PollCard extends StatefulWidget {
   final List params;
   final int index;
   final String pollId;
+  final BoolCallback isCommentPressed;
 
-  PollCard(this.width, this.height, this.params, this.index, this.pollId);
+  PollCard({required this.width, required this.height, required this.params, required this.index, required this.pollId,  required this.isCommentPressed});
   @override
   _PollCardState createState() => _PollCardState();
 }
@@ -212,7 +215,9 @@ class _PollCardState extends State<PollCard> {
                   color: Colors.black,
                   fontWeight: FontWeight.bold),
             ),
-            onPressed: () async {}),
+            onPressed: () async {
+                SocialShare.shareWhatsapp("Hello World");
+            }),
       ));
     }
 
@@ -225,6 +230,7 @@ class _PollCardState extends State<PollCard> {
             onPressed: () {
               setState(() {
                 viewComment = !viewComment;
+                widget.isCommentPressed(viewComment, convertdata['pollId']);
               });
             },
             icon: Icon(
@@ -460,7 +466,7 @@ class _PollCardState extends State<PollCard> {
         child: Card(
             child: Column(
           children: [
-            _createTopSection(width, height * 0.6),
+            _createTopSection(width, height * 0.58),
             _createMiddleSection(width, height * 0.33),
             _createBottomSection(width, height * 0.07)
           ],

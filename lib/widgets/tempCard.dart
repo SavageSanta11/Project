@@ -10,6 +10,7 @@ typedef Iterable<T> IterableCallback<T>();
 
 typedef void BoolCallback(bool viewComment, String pollId);
 
+
 List<T> toList<T>(IterableCallback<T> cb) {
   return List.unmodifiable(cb());
 }
@@ -177,8 +178,7 @@ class _tempCardState extends State<tempCard> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              _createUserProfilePic(width, height*0.15),
-              _createPreviewPicture(width, height*0.8),
+              _createPreviewPicture(width, height),
               //_createTitleForPollcard(width, height * 0.2)
             ],
           ));
@@ -456,15 +456,29 @@ class _tempCardState extends State<tempCard> {
       return (Container(
         width: width,
         height: height,
-        color: Colors.red,
-        child: Card(
-            child: Column(
+        
+        child: Column(
           children: [
-            _createTopSection(width, height * 0.6),
-            _createMiddleSection(width, height * 0.33),
-            _createBottomSection(width, height * 0.07)
+            _createUserProfilePic(width, height*0.1),
+            Container(
+              width: width,
+        height: height*0.9,
+              child: ClipRRect(
+                 borderRadius: BorderRadius.circular(25.0),
+                
+                child: Card(
+                   
+                    child: Column(
+                  children: [
+                    _createTopSection(width, height * 0.5),
+                    _createMiddleSection(width, height * 0.33),
+                    //_createBottomSection(width, height * 0.07)
+                  ],
+                )),
+              ),
+            ),
           ],
-        )),
+        ),
       ));
     }
 

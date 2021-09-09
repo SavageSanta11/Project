@@ -6,7 +6,9 @@ import 'package:flutter/material.dart';
 
 class Comments extends StatefulWidget {
   final String pollId;
-  const Comments({Key? key, required this.pollId}) : super(key: key);
+  final double width;
+  final double height;
+  const Comments({Key? key, required this.pollId, required this.width, required this.height}) : super(key: key);
 
   @override
   _CommentsState createState() => _CommentsState();
@@ -25,18 +27,6 @@ class _CommentsState extends State<Comments> {
   // ignore: non_constant_identifier_names
   List<String> _CommentList = [];
 
-  void _addComment(String comment) {
-    if (comment.length > 0) {
-      setState(() => _CommentList.add(comment));
-    }
-  }
-
-  // ignore: unused_element
-  void _removeComment(int index) {
-    setState(() => _CommentList.removeAt(index));
-  }
-
-  // ignore: non_constant_identifier_names
   Future<String> recordComment(String poll_id, String text) async {
     var headers = {
       'Authorization':
@@ -53,67 +43,76 @@ class _CommentsState extends State<Comments> {
 
     var convertDataToJson = json.decode(response.body);
     String success = convertDataToJson["success"];
+    print(success);
     return success;
   
   }
 
-  // ignore: unused_element
-  Widget _buildCommentList() {
-    return new ListView.builder(itemBuilder: (context, index) {
-      if (index < _CommentList.length) {
-        return Dismissible(
-            key: Key(_CommentList[index]),
-            onDismissed: (direction) {
-              setState(() {
-                _CommentList.removeAt(index);
-              });
-            },
-            child: _buildComment(_CommentList[index], index));
-      } else {
-        return Text('');
-      }
-    });
+  void _addComment(String comment) {
+    if (comment.length > 0) {
+      setState(() => _CommentList.add(comment));
+    }
   }
 
-  Widget _buildComment(
-    String comment,
-    int index,
-  ) {
+  // ignore: unused_element
+  void _removeComment(int index) {
+    setState(() => _CommentList.removeAt(index));
+  }
+
+  // ignore: non_constant_identifier_names
+
+  // ignore: unused_element
+  Widget _buildCommentList(double width, double height) {
+    return Container(
+      height: height,
+      width: width,
+      child: new ListView.builder(itemBuilder: (context, index) {
+        if (index < _CommentList.length) {
+          return Dismissible(
+              key: Key(_CommentList[index]),
+              onDismissed: (direction) {
+                setState(() {
+                  _CommentList.removeAt(index);
+                });
+              },
+              child: _buildComment(width, height*0.2,_CommentList[index], index));
+        } else {
+          return Text('');
+        }
+      }),
+    );
+  }
+
+  Widget _buildComment(double width,double height,String comment,int index,) {
     return new Container(
-      width: 300.0,
-      height: 106.0,
+      width: width,
+      height: height,
       decoration: BoxDecoration(
           border: Border(bottom: BorderSide(width: 1, color: Colors.black))),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Padding(
-          padding: const EdgeInsets.all(2.0),
-          child: Row(
-            children: [
-              Text(
-                '@BombayRocker',
-              ),
-              SizedBox(
-                width: 20.0,
-              ),
-              Text('16 hours ago'),
-            ],
-          ),
+        Row(
+          children: [
+            Text(
+              '@BombayRocker',
+            ),
+            SizedBox(
+              width: 20.0,
+            ),
+            Text('16 hours ago'),
+          ],
         ),
-        Padding(
-          padding: const EdgeInsets.all(2.0),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(comment),
-              SizedBox(
-                width: 20.0,
-              ),
-              IconButton(
-                  icon: Icon(Icons.thumb_up_outlined),
-                  tooltip: 'Reply',
-                  onPressed: () {}),
-            ],
-          ),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(comment),
+            SizedBox(
+              width: width/20,
+            ),
+            IconButton(
+                icon: Icon(Icons.thumb_up_outlined),
+                tooltip: 'Reply',
+                onPressed: () {}),
+          ],
         ),
         TextButton.icon(
             icon: Icon(
@@ -168,76 +167,82 @@ class _CommentsState extends State<Comments> {
   }
 
   Widget build(BuildContext context) {
-    Scaffold commentSection(double height, double width) {
+    Container _createCommentField(double width, double height) {
+      return Container(
+        width: width,
+        height: height,
+        child: TextField(
+          inputFormatters: [LengthLimitingTextInputFormatter(100)],
+          controller: _textFieldController,
+          autofocus: true,
+          decoration: InputDecoration(
+              border: OutlineInputBorder(), hintText: 'Add a comment'),
+          maxLines: 3,
+
+          onChanged: (value) {
+            setState(() {
+              enteredText = value;
+            });
+          },
+
+          //autofocus: true,
+          onSubmitted: (val) {},
+        ),
+      );
+    }
+
+    Container _createCommentBar(double width, double height) {
+      return Container(
+          width: width,
+          height: height,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                  height: height,
+                  width: width * 0.69,
+                  decoration: BoxDecoration(color: Color(0xffececec)),
+                  child: Padding(
+                    padding: const EdgeInsets.all(2.0),
+                    child: Text(
+                      enteredText.length.toString() + "/100",
+                      textAlign: TextAlign.end,
+                    ),
+                  )),
+              Container(
+                width: width * 0.3,
+                height: height,
+                decoration: BoxDecoration(color: Colors.black),
+                child: TextButton(
+                    child: Text(
+                      'Comment',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    onPressed: () async {
+                      success =  await recordComment(widget.pollId, enteredText);
+                          if(success == "true")_addComment(enteredText);
+                          _textFieldController.clear();
+                    }),
+              )
+            ],
+          ));
+    }
+
+    Widget commentSection(double width, double height) {
       if (isLoaded) {
-        return Scaffold(
-          body: Container(
+        return Container(
+          
             height: height,
             width: width,
             decoration: BoxDecoration(border: Border.all()),
             child: Column(
               children: [
-                Container(
-                  width: width,
-                  height: height * 0.12,
-                  child: TextField(
-                    inputFormatters: [LengthLimitingTextInputFormatter(100)],
-                    controller: _textFieldController,
-                    autofocus: true,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: 'Add a comment'
-                    ),
-                    maxLines: 3,
-                    
-                    onChanged: (value) {
-                      setState(() {
-                        enteredText = value;
-                      });
-                    },
-
-                    //autofocus: true,
-                    onSubmitted: (val) {},
-                  ),
-                ),
-                Row(
-                  children: [
-                    Container(
-                        height: height * 0.04,
-                        width: width * 0.7,
-                        decoration: BoxDecoration(color: Color(0xffececec)),
-                        child: Padding(
-                          padding: const EdgeInsets.all(2.0),
-                          child: Text(
-                            enteredText.length.toString() + "/100",
-                            textAlign: TextAlign.end,
-                          ),
-                        )),
-                    Container(
-                      width: width * 0.243,
-                      height: height * 0.04,
-                      decoration: BoxDecoration(color: Colors.black),
-                      child: TextButton(
-                        child: Text(
-                          'Comment',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        onPressed: () async {
-                          success =  await recordComment(widget.pollId, enteredText);
-                          if(success == "true")_addComment(enteredText);
-                          _textFieldController.clear();
-                        },
-                      ),
-                    )
-                  ],
-                ),
-                Container(
-                    height: height * 0.79,
-                    width: width,
-                    child: _buildCommentList()),
+                _createCommentField(width, height * 0.125),
+                _createCommentBar(width, height * 0.035),
+                _buildCommentList(width, height * 0.835),
               ],
             ),
-          ),
+          
         );
       } else {
         return Scaffold();
@@ -246,16 +251,16 @@ class _CommentsState extends State<Comments> {
 
     Widget commentcard;
 
-    double width = MediaQuery.of(context).size.width;
-    double height = MediaQuery.of(context).size.height;
+    double width = widget.width;
+    double height = widget.height;
 
     double aspectRatio =
         MediaQuery.of(context).size.width / MediaQuery.of(context).size.height;
 
     if (aspectRatio >= 1.5) {
-      commentcard = commentSection(height * 0.8, width * 0.40);
+      commentcard = commentSection(width, height);
     } else {
-      commentcard = commentSection(height, width);
+      commentcard = commentSection(width, height);
     }
 
     return commentcard;

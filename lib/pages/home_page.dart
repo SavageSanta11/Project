@@ -17,7 +17,7 @@ class HomePage extends StatefulWidget {
 // ignore: camel_case_types
 class _HomePageState extends State<HomePage> {
   @override
-  Widget selectedCard = Text("data");
+  
 
   Widget build(BuildContext context) {
     Material _buildDesktopView(double width, double height) {

@@ -40,6 +40,7 @@ getPollId() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   //Return String
   String? stringValue = prefs.getString('pollId');
+  print(stringValue);
   return stringValue;
 }
 
@@ -65,7 +66,7 @@ String writeBody() {
   if (optionList.length == 2) {
     body = json.encode(<String, dynamic>{
       "mediaUrl": mediaUrl,
-      //screenName": (this.preferences!.getString('displayName') ?? " "),
+      //"screenName": (this.preferences!.getString('displayName') ?? " "),
       "contentUrl": contentUrl,
       "previewUrls": [previewImgUrl],
       "title": 'Title',
@@ -127,7 +128,7 @@ Future<String> createPollRest() async {
     'Content-Type': 'application/json'
   };
 
-  /*http.Response response = await http.post(
+  http.Response response = await http.post(
       Uri.parse('http://qonway.com:7002/api/access/poll/create'),
       headers: headers,
       body: writeBody());
@@ -135,8 +136,7 @@ Future<String> createPollRest() async {
   var convertDataToJson = json.decode(response.body);
   print(convertDataToJson);
   String pollId = convertDataToJson['data']['pollId'];
-  */
-  String pollId = 'sa7myom';
+  
   print(writeBody());
   return pollId;
 }

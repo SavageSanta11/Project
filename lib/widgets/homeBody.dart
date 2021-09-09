@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:project/widgets/carousel/carousel_slider.dart';
+import 'package:project/widgets/commentWidget.dart';
+import 'package:project/widgets/tempCard.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'pollCard.dart';
@@ -24,9 +26,13 @@ class _HomeBodyState extends State<HomeBody> {
   int itemCount = polls.length;
   bool pollsLoaded = false;
   bool commentPressed = false;
-  SharedPreferences? preferences;
+  //for selected card
+  String selectedPollId = "";
+  List selectedParam = [];
+  int selectedIndex = 0;
 
-  
+  SharedPreferences? preferences;
+  Widget selectedCard = Text("data");
 
   Future<void> getPollRecommendations(
       // ignore: non_constant_identifier_names
@@ -51,41 +57,90 @@ class _HomeBodyState extends State<HomeBody> {
       pollsLoaded = true;
       polls = convertDataToJson['data'];
     });
-   
   }
 
   @override
   void initState() {
     super.initState();
     //this.getPollRecommendations('awyluvw', 5, 5);
-     initializePreference().whenComplete((){
-       setState(() {});
-     });
-    this.getPollRecommendations('sa7myom', 5, 5);
+    initializePreference().whenComplete(() {
+      setState(() {});
+    });
+    
   }
-   Future<void> initializePreference() async{
-     this.preferences = await SharedPreferences.getInstance();
+
+  Future<void> initializePreference() async {
+    this.preferences = await SharedPreferences.getInstance();
   }
+
   Widget build(BuildContext context) {
     Container _buildDesktopView(double width, double height) {
-      return pollsLoaded ? (Container(
-          width: width,
-          height: height,
-          color: Colors.lightBlue,
-          child: CarouselSlider.builder(
-            itemCount: itemCount,
-            itemBuilder:
-                (BuildContext context, int itemIndex, int pageViewIndex) =>
-                    PollCard(width * 0.33, height * 0.885, polls, itemIndex, polls[itemIndex]['poll_id'],),
-            options: CarouselOptions(
-              height: height * 0.9,
-              viewportFraction: 0.35,
-              enableInfiniteScroll: true,
-              autoPlayCurve: Curves.fastOutSlowIn,
-              enlargeCenterPage: false,
-              
+      String pollId = (this.preferences!.getString('pollId') ?? " ");
+    print(pollId);
+    this.getPollRecommendations(pollId, 5, 5);
+      if (pollsLoaded) {
+        if (commentPressed) {
+          return Container(
+            width: width,
+            height: height,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                PollCard(
+                    width: width * 0.33,
+                    height: height * 0.885,
+                    params: polls,
+                    index: selectedIndex,
+                    pollId: selectedPollId,
+                    isCommentPressed: (bool isPressed, String pollId) {
+                      setState(() {
+                        commentPressed = isPressed;
+                      });
+                    }),
+                Comments(
+                    pollId: selectedPollId,
+                    width: width * 0.33,
+                    height: height * 0.885)
+              ],
             ),
-          ))) : Container(child: Text('loading...'),);
+          );
+        } else {
+          return (Container(
+              width: width,
+              height: height,
+              color: Colors.lightBlue,
+              child: CarouselSlider.builder(
+                itemCount: itemCount,
+                itemBuilder:
+                    (BuildContext context, int itemIndex, int pageViewIndex) =>
+                        PollCard(
+                            width: width * 0.33,
+                            height: height * 0.885,
+                            params: polls,
+                            index: itemIndex,
+                            pollId: polls[itemIndex]['poll_id'],
+                            isCommentPressed: (bool isPressed, String pollId) {
+                              setState(() {
+                                commentPressed = isPressed;
+                                selectedPollId = pollId;
+                                selectedIndex = itemIndex;
+                                selectedParam = polls;
+                              });
+                            }),
+                options: CarouselOptions(
+                  height: height * 0.9,
+                  viewportFraction: 0.35,
+                  enableInfiniteScroll: true,
+                  autoPlayCurve: Curves.fastOutSlowIn,
+                  enlargeCenterPage: false,
+                ),
+              )));
+        }
+      } else {
+        return Container(
+          child: Text('loading...'),
+        );
+      }
     }
 
     Container _buildMobileView(double width, double height) {
@@ -107,7 +162,6 @@ class _HomeBodyState extends State<HomeBody> {
     return Container(
       width: widget.width,
       height: widget.height,
-      color: Colors.amber,
       child: _homebody,
     );
   }
