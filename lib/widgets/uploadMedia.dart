@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_dropzone/flutter_dropzone.dart';
-import 'package:image_picker/image_picker.dart';
 import '../model/file_DataModel.dart';
 
 import 'DropZoneWidget.dart';
